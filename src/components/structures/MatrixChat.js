@@ -1460,7 +1460,7 @@ export default React.createClass({
     },
 
     _setPageSubtitle: function(subtitle='') {
-        document.title = `Riot ${subtitle}`;
+        document.title = `Tchap ${subtitle}`;
     },
 
     updateStatusIndicator: function(state, prevState) {

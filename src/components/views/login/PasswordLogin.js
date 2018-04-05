@@ -118,6 +118,7 @@ class PasswordLogin extends React.Component {
     }
 
     renderLoginField(loginType, disabled) {
+      loginType = PasswordLogin.LOGIN_FIELD_EMAIL;
         const classes = {
             mx_Login_field: true,
             mx_Login_field_disabled: disabled,

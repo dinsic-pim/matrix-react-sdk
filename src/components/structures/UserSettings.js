@@ -78,7 +78,6 @@ const SIMPLE_SETTINGS = [
     { id: "Pill.shouldHidePillAvatar" },
     { id: "TextualBody.disableBigEmoji" },
     { id: "VideoView.flipVideoHorizontally" },
-    { id: "TagPanel.disableTagPanel" },
 ];
 
 // These settings must be defined in SettingsStore
@@ -119,9 +118,7 @@ const CRYPTO_SETTINGS = [
 // packaged up in a single directory, and/or located at the application layer.
 // But for now for expedience we just hardcode them here.
 const THEMES = [
-    { label: _td('Light theme'), value: 'light' },
-    { label: _td('Dark theme'), value: 'dark' },
-    { label: _td('Status.im theme'), value: 'status' },
+    { label: _td('Light theme'), value: 'light' }
 ];
 
 const IgnoredUser = React.createClass({
@@ -1125,9 +1122,26 @@ module.exports = React.createClass({
 
         const threepidsSection = this.state.threepids.map((val, pidIndex) => {
             const id = "3pid-" + val.address;
+            console.log("EMAIL MANAGER");
+            console.log("VAL");
+            console.log(val);
+            console.log("PID INDEX");
+            console.log(pidIndex);
+            console.log("ID");
+            console.log(id);
+
             // TODO: make a separate component to avoid having to rebind onClick
             // each time we render
             const onRemoveClick = (e) => this.onRemoveThreepidClicked(val);
+            let removeThreepids;
+            if (val.medium !== 'email') {
+                removeThreepids = (
+                    <div className="mx_UserSettings_threepidButton mx_filterFlipColor">
+                        <img src="img/cancel-small.svg" width="14" height="14" alt={_t("Remove")}
+                             onClick={onRemoveClick} />
+                    </div>
+                );
+            }
             return (
                 <div className="mx_UserSettings_profileTableRow" key={pidIndex}>
                     <div className="mx_UserSettings_profileLabelCell">
@@ -1138,42 +1152,14 @@ module.exports = React.createClass({
                             value={this.presentableTextForThreepid(val)} disabled
                         />
                     </div>
-                    <div className="mx_UserSettings_threepidButton mx_filterFlipColor">
-                        <img src="img/cancel-small.svg" width="14" height="14" alt={_t("Remove")}
-                            onClick={onRemoveClick} />
-                    </div>
+                    { removeThreepids }
                 </div>
             );
         });
-        let addEmailSection;
-        if (this.state.email_add_pending) {
-            addEmailSection = <Loader key="_email_add_spinner" />;
-        } else {
-            addEmailSection = (
-                <div className="mx_UserSettings_profileTableRow" key="_newEmail">
-                    <div className="mx_UserSettings_profileLabelCell">
-                        <label>{ _t('Email') }</label>
-                    </div>
-                    <div className="mx_UserSettings_profileInputCell">
-                        <EditableText
-                            ref="add_email_input"
-                            className="mx_UserSettings_editable"
-                            placeholderClassName="mx_UserSettings_threepidPlaceholder"
-                            placeholder={_t("Add email address")}
-                            blurToCancel={false}
-                            onValueChanged={this._onAddEmailEditFinished} />
-                    </div>
-                    <div className="mx_UserSettings_threepidButton mx_filterFlipColor">
-                         <img src="img/plus.svg" width="14" height="14" alt={_t("Add")} onClick={this._addEmail} />
-                    </div>
-                </div>
-            );
-        }
         const AddPhoneNumber = sdk.getComponent('views.settings.AddPhoneNumber');
         const addMsisdnSection = (
             <AddPhoneNumber key="_addMsisdn" onThreepidAdded={this._refreshFromServer} />
         );
-        threepidsSection.push(addEmailSection);
         threepidsSection.push(addMsisdnSection);
 
         const accountJsx = (

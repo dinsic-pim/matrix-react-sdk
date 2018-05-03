@@ -29,6 +29,8 @@ import SettingsStore, {SettingLevel} from "../../../settings/SettingsStore";
 
 // For validating phone numbers without country codes
 const PHONE_NUMBER_REGEX = /^[0-9\(\)\-\s]*$/;
+const TCHAP_API_URL = '/_matrix/identity/api/v1/info?medium=emil&address=';
+const TCHAP_HOSTS = ['https://matrix.a.tchap.gouv.fr', 'https://matrix.e.tchap.gouv.fr', 'https://matrix.i.tchap.gouv.fr'];
 
 /**
  * A wire component which glues together login UI components and Login logic
@@ -94,6 +96,17 @@ module.exports = React.createClass({
         this._unmounted = true;
     },
 
+    discoverTchapPlatform: async function(username) {
+        const selectedUrl = TCHAP_HOSTS[(Math.floor(Math.random() * (TCHAP_HOSTS.length)) + 1) - 1];
+        const res = await fetch(selectedUrl + TCHAP_API_URL + username);
+        const data = await res.json();
+        this.setState({
+            enteredHomeserverUrl: 'https://matrix.' + data.hs,
+            enteredIdentityServerUrl: 'https://matrix.' + data.hs,
+        });
+        this._initLoginLogic(this.state.enteredHomeserverUrl, this.state.enteredIdentityServerUrl);
+    },
+
     onPasswordLogin: function(username, phoneCountry, phoneNumber, password) {
         this.setState({
             busy: true,
@@ -101,58 +114,60 @@ module.exports = React.createClass({
             loginIncorrect: false,
         });
 
-        this._loginLogic.loginViaPassword(
-            username, phoneCountry, phoneNumber, password,
-        ).then((data) => {
-            this.props.onLoggedIn(data);
-        }, (error) => {
-            if (this._unmounted) {
-                return;
-            }
-            let errorText;
-
-            // Some error strings only apply for logging in
-            const usingEmail = username.indexOf("@") > 0;
-            if (error.httpStatus == 400 && usingEmail) {
-                errorText = _t('This Home Server does not support login using email address.');
-            } else if (error.httpStatus === 401 || error.httpStatus === 403) {
-                if (SdkConfig.get().disable_custom_urls) {
-                    errorText = (
-                        <div>
-                            <div>{ _t('Incorrect username and/or password.') }</div>
-                            <div className="mx_Login_smallError">
-                                { _t('Please note you are logging into the %(hs)s server, not matrix.org.',
-                                    {
-                                        hs: this.props.defaultHsUrl.replace(/^https?:\/\//, ''),
-                                    })
-                                }
-                            </div>
-                        </div>
-                    );
-                } else {
-                    errorText = _t('Incorrect username and/or password.');
+        this.discoverTchapPlatform(username).then(() => {
+            this._loginLogic.loginViaPassword(
+                username, phoneCountry, phoneNumber, password,
+            ).then((data) => {
+                this.props.onLoggedIn(data);
+            }, (error) => {
+                if (this._unmounted) {
+                    return;
                 }
-            } else {
-                // other errors, not specific to doing a password login
-                errorText = this._errorTextFromError(error);
-            }
+                let errorText;
 
-            this.setState({
-                errorText: errorText,
-                // 401 would be the sensible status code for 'incorrect password'
-                // but the login API gives a 403 https://matrix.org/jira/browse/SYN-744
-                // mentions this (although the bug is for UI auth which is not this)
-                // We treat both as an incorrect password
-                loginIncorrect: error.httpStatus === 401 || error.httpStatus == 403,
-            });
-        }).finally(() => {
-            if (this._unmounted) {
-                return;
-            }
-            this.setState({
-                busy: false,
-            });
-        }).done();
+                // Some error strings only apply for logging in
+                const usingEmail = username.indexOf("@") > 0;
+                if (error.httpStatus == 400 && usingEmail) {
+                    errorText = _t('This Home Server does not support login using email address.');
+                } else if (error.httpStatus === 401 || error.httpStatus === 403) {
+                    if (SdkConfig.get().disable_custom_urls) {
+                        errorText = (
+                            <div>
+                                <div>{ _t('Incorrect username and/or password.') }</div>
+                                <div className="mx_Login_smallError">
+                                    { _t('Please note you are logging into the %(hs)s server, not matrix.org.',
+                                        {
+                                            hs: this.props.defaultHsUrl.replace(/^https?:\/\//, ''),
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        );
+                    } else {
+                        errorText = _t('Incorrect username and/or password.');
+                    }
+                } else {
+                    // other errors, not specific to doing a password login
+                    errorText = this._errorTextFromError(error);
+                }
+
+                this.setState({
+                    errorText: errorText,
+                    // 401 would be the sensible status code for 'incorrect password'
+                    // but the login API gives a 403 https://matrix.org/jira/browse/SYN-744
+                    // mentions this (although the bug is for UI auth which is not this)
+                    // We treat both as an incorrect password
+                    loginIncorrect: error.httpStatus === 401 || error.httpStatus == 403,
+                });
+            }).finally(() => {
+                if (this._unmounted) {
+                    return;
+                }
+                this.setState({
+                    busy: false,
+                });
+            }).done();
+        });
     },
 
     onCasLogin: function() {

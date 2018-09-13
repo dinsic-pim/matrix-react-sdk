@@ -1275,7 +1275,6 @@ module.exports = React.createClass({
                 { this._renderCryptoInfo() }
                 { this._renderIgnoredUsers() }
                 { this._renderBulkOptions() }
-                { this._renderBugReport() }
 
                 { PlatformPeg.get().isElectron() && this._renderElectronSettings() }
 

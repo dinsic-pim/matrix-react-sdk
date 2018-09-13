@@ -434,7 +434,6 @@ module.exports = React.createClass({
                         <div className="mx_RoomDirectory_topic"
                              onClick={ function(e) { e.stopPropagation() } }
                              dangerouslySetInnerHTML={{ __html: topic }}/>
-                        <div className="mx_RoomDirectory_alias">{ get_display_alias_for_room(rooms[i]) }</div>
                     </td>
                     <td className="mx_RoomDirectory_roomMemberCount">
                         { rooms[i].num_joined_members }

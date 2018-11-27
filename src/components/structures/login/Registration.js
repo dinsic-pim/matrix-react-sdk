@@ -311,7 +311,8 @@ module.exports = React.createClass({
     },
 
     discoverTchapPlatform: async function(username) {
-        const selectedUrl = TCHAP_HOSTS[(Math.floor(Math.random() * (TCHAP_HOSTS.length)) + 1) - 1];
+        let tchapHostsList  = SdkConfig.get()['hs_main_list'];
+        const selectedUrl = tchapHostsList[(Math.floor(Math.random() * (tchapHostsList.length)) + 1) - 1];
         const res = await fetch(TCHAP_HOSTS_BASE + selectedUrl + TCHAP_API_URL + username).catch(err => console.error(err));
         const data = await res.json();
         this.setState({

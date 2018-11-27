@@ -30,7 +30,6 @@ import SettingsStore from "../../../settings/SettingsStore";
 const PHONE_NUMBER_REGEX = /^[0-9()\-\s]*$/;
 const TCHAP_API_URL = '/_matrix/identity/api/v1/info?medium=email&address=';
 const TCHAP_HOSTS_BASE = 'https://matrix.';
-const TCHAP_HOSTS = ['dev-durable.tchap.gouv.fr', 'education.tchap.gouv.fr', 'culture.tchap.gouv.fr'];
 
 /**
  * A wire component which glues together login UI components and Login logic
@@ -64,12 +63,14 @@ module.exports = React.createClass({
     },
 
     getInitialState: function() {
+        let tchapHostsList  = SdkConfig.get()['hs_main_list'];
+        const randomHs = TCHAP_HOSTS_BASE + tchapHostsList[(Math.floor(Math.random() * (tchapHostsList.length)) + 1) - 1];
         return {
             busy: false,
             errorText: null,
             loginIncorrect: false,
-            enteredHomeserverUrl: this.props.customHsUrl || this.props.defaultHsUrl,
-            enteredIdentityServerUrl: this.props.customIsUrl || this.props.defaultIsUrl,
+            enteredHomeserverUrl: randomHs || this.props.customHsUrl || this.props.defaultHsUrl,
+            enteredIdentityServerUrl: randomHs || this.props.customIsUrl || this.props.defaultIsUrl,
 
             // used for preserving form values when changing homeserver
             username: "",
@@ -104,7 +105,8 @@ module.exports = React.createClass({
     },
 
     discoverTchapPlatform: async function(username) {
-        const selectedUrl = TCHAP_HOSTS[(Math.floor(Math.random() * (TCHAP_HOSTS.length)) + 1) - 1];
+        let tchapHostsList  = SdkConfig.get()['hs_main_list'];
+        const selectedUrl = tchapHostsList[(Math.floor(Math.random() * (tchapHostsList.length)) + 1) - 1];
 
         const res = await fetch(TCHAP_HOSTS_BASE + selectedUrl + TCHAP_API_URL + username).catch(err => console.error(err));
         const data = await res.json();

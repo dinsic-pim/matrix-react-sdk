@@ -33,7 +33,6 @@ import SettingsStore from "../../../settings/SettingsStore";
 const MIN_PASSWORD_LENGTH = 6;
 const TCHAP_API_URL = '/_matrix/identity/api/v1/info?medium=email&address=';
 const TCHAP_HOSTS_BASE = 'https://matrix.';
-const TCHAP_HOSTS = ['dev-durable.tchap.gouv.fr', 'education.tchap.gouv.fr', 'culture.tchap.gouv.fr'];
 
 module.exports = React.createClass({
     displayName: 'Registration',

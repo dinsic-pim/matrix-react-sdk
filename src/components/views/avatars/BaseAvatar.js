@@ -36,6 +36,7 @@ module.exports = React.createClass({
         // XXX resizeMethod not actually used.
         resizeMethod: PropTypes.string,
         defaultToInitialLetter: PropTypes.bool, // true to add default url
+        direct: PropTypes.bool,
     },
 
     contextTypes: {
@@ -171,9 +172,11 @@ module.exports = React.createClass({
 
         const {
             name, idName, title, url, urls, width, height, resizeMethod,
-            defaultToInitialLetter, onClick,
+            defaultToInitialLetter, onClick, direct,
             ...otherProps
         } = this.props;
+
+        console.error("DIRECT ? ", direct);
 
         if (imageUrl === this.state.defaultImageUrl) {
             const initialLetter = this._getInitialLetter(name);
@@ -186,8 +189,11 @@ module.exports = React.createClass({
                     { initialLetter }
                 </EmojiText>
             );
+
+            let directClass = direct ? "mx_BaseAvatar_image" : "mx_BaseAvatar_image_room";
+
             const imgNode = (
-                <img className="mx_BaseAvatar_image" src={imageUrl}
+                <img className={directClass} src={imageUrl}
                     alt="" title={title} onError={this.onError}
                     width={width} height={height} />
             );

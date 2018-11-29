@@ -33,6 +33,7 @@ module.exports = React.createClass({
         height: PropTypes.number,
         resizeMethod: PropTypes.string,
         viewAvatarOnClick: PropTypes.bool,
+        direct: PropTypes.bool,
     },
 
     getDefaultProps: function() {
@@ -178,7 +179,7 @@ module.exports = React.createClass({
         const BaseAvatar = sdk.getComponent("avatars.BaseAvatar");
 
         /*eslint no-unused-vars: ["error", { "ignoreRestSiblings": true }]*/
-        const {room, oobData, viewAvatarOnClick, ...otherProps} = this.props;
+        const {room, oobData, viewAvatarOnClick, direct, ...otherProps} = this.props;
 
         const roomName = room ? room.name : oobData.name;
 
@@ -186,7 +187,7 @@ module.exports = React.createClass({
             <BaseAvatar {...otherProps} name={roomName}
                 idName={room ? room.roomId : null}
                 urls={this.state.urls}
-                onClick={this.props.viewAvatarOnClick ? this.onRoomAvatarClick : null} />
+                onClick={this.props.viewAvatarOnClick ? this.onRoomAvatarClick : null} direct={direct} />
         );
     },
 });

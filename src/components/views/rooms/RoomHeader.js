@@ -33,6 +33,7 @@ import AccessibleButton from '../elements/AccessibleButton';
 import ManageIntegsButton from '../elements/ManageIntegsButton';
 import {CancelButton} from './SimpleRoomHeader';
 import SettingsStore from "../../../settings/SettingsStore";
+import DMRoomMap from "../../../utils/DMRoomMap";
 
 linkifyMatrix(linkify);
 
@@ -332,7 +333,9 @@ module.exports = React.createClass({
             );
         }
 
-        if (this.props.onSettingsClick) {
+        const dmRoomMap = new DMRoomMap(MatrixClientPeg.get());
+        let isDMRoom = Boolean(dmRoomMap.getUserIdForRoomId(this.props.room.roomId));
+        if (this.props.onSettingsClick && !isDMRoom) {
             settingsButton =
                 <AccessibleButton className="mx_RoomHeader_button" onClick={this.props.onSettingsClick} title={_t("Settings")}>
                     <TintableSvg src="img/icons-settings-room.svg" width="16" height="16" />

@@ -64,6 +64,7 @@ module.exports = React.createClass({
             validAddressTypes: addressTypes,
             pickerType: 'user',
             includeSelf: false,
+            textareaDisabled: null,
         };
     },
 
@@ -191,6 +192,7 @@ module.exports = React.createClass({
                 selectedList,
                 suggestedList: [],
                 query: "",
+                textareaDisabled: null
             });
             if (this._cancelThreepidLookup) this._cancelThreepidLookup();
         };
@@ -209,6 +211,7 @@ module.exports = React.createClass({
             selectedList,
             suggestedList: [],
             query: "",
+            textareaDisabled: true
         });
         if (this._cancelThreepidLookup) this._cancelThreepidLookup();
     },
@@ -545,6 +548,8 @@ module.exports = React.createClass({
         }
 
         // Add the query at the end
+        // The use of 'disabled' and 'style' is a hack in order to prevent
+        // adding multiple peaople from the 1:1 creation window.
         query.push(
             <textarea key={this.state.selectedList.length}
                 rows="1"
@@ -554,7 +559,10 @@ module.exports = React.createClass({
                 onChange={this.onQueryChanged}
                 placeholder={this.props.placeholder}
                 defaultValue={this.props.value}
-                autoFocus={this.props.focus}>
+                autoFocus={this.props.focus}
+                disabled={this.state.textareaDisabled}
+                style={{display:  this.state.textareaDisabled ? 'none' : 'inline' }}
+                >
             </textarea>,
         );
 

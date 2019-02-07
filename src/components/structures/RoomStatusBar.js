@@ -422,12 +422,9 @@ module.exports = React.createClass({
         if (this.props.sentMessageAndIsAlone) {
             return (
                 <div className="mx_RoomStatusBar_isAlone">
-                    { _t("There's no one else here! Would you like to <inviteText>invite others</inviteText> " +
-                            "or <nowarnText>stop warning about the empty room</nowarnText>?",
+                    { _t("There's no one else here! Would you like to <nowarnText>stop warning about the empty room</nowarnText>?",
                         {},
                         {
-                            'inviteText': (sub) =>
-                                <a className="mx_RoomStatusBar_resend_link" key="invite" onClick={this.props.onInviteClick}>{ sub }</a>,
                             'nowarnText': (sub) =>
                                 <a className="mx_RoomStatusBar_resend_link" key="nowarn" onClick={this.props.onStopWarningClick}>{ sub }</a>,
                         },

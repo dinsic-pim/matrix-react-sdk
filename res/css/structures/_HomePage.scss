@@ -16,20 +16,185 @@ limitations under the License.
 */
 
 .mx_HomePage {
-    max-width: 960px;
-    width: 100%;
-    height: 100%;
-    margin-left: auto;
-    margin-right: auto;
+  max-width: 960px;
+  width: 100%;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .mx_HomePage iframe {
-    display: block;
-	width: 100%;
-	height: 100%;
-	border: 0px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0px;
 }
 
-.mx_HomePage_body {
-//  margin-left: 63px;
+
+// Global Elements
+
+.tc_HomePage_Element {
+  color: #374c72;
+  min-width: 300px;
+  width: 300px;
+}
+
+.tc_HomePage_Element:hover {
+  color: red;
+}
+
+.tc_HomePage_Element hr {
+  border-width: 0;
+  height: 1px;
+  background-color: #374c72;
+  margin: 10px auto;
+  width: 50px;
+}
+
+
+// Generic Group Elements
+
+.tc_HomePage_GroupElement {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+}
+
+
+// Specific Group Elements
+
+.tc_HomePage_ThreeGroupElement {
+  padding: 0 10%;
+  height: 350px;
+}
+
+.tc_HomePage_TwoGroupElement {
+  padding: 0 25%;
+  height: 300px;
+}
+
+.tc_HomePage_GroupElement_Descr {
+  color: #162d58;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 3px;
+  font-size: 26px;
+  margin: 0;
+}
+
+
+// Generic Elements
+
+.tc_HomePage_Element_Descr {
+  color: grey;
+  display: block;
+}
+
+.tc_HomePage_Element_Button::after {
+  white-space: pre;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+// Specific Elements
+
+.tc_HomePage_Element_StartChat::after {
+  content: "\A nouvelle \A discussion ";
+}
+
+.tc_HomePage_Element_CreateRoom::after {
+  content: "\A nouveau \A salon ";
+}
+
+.tc_HomePage_Element_RoomDirectory::after {
+  content: "\A accéder \A à un salon public ";
+}
+
+.tc_HomePage_Element_Settings::after {
+  content: "\A paramètres \A utilisateur ";
+}
+
+.tc_HomePage_Element_Faq {
+  display: block;
+  width: 120px;
+  height: 120px;
+  background: url("../../img/tc_icons-faq.svg") no-repeat left top;
+  background-size: contain;
+  padding-bottom: 45px;
+  margin: 0 auto;
+}
+
+.tc_HomePage_Element_Faq:hover {
+  color: red;
+}
+
+.tc_HomePage_Element_Faq::after {
+  content: "\A foire \A aux questions ";
+  margin-top: 105px;
+  position: absolute;
+  margin-left: -60px;
+}
+
+.tc_HomePage_Element_Logo {
+  height: 25%;
+  padding-top: 30px;
+  text-align: center;
+}
+
+.tc_HomePage_Version {
+  position: absolute;
+  right: 0;
+  bottom: 15px;
+}
+
+@media screen and (max-width: 1400px), screen and (max-height: 820px) {
+
+  .tc_HomePage_Element {
+    min-width: 150px;
+    width: 150px;
+  }
+
+  .tc_HomePage_Element object {
+    width: 100px;
+    height: 100px;
+  }
+
+  .tc_HomePage_TwoGroupElement {
+    height: 150px;
+  }
+
+  .tc_HomePage_ThreeGroupElement {
+    height: 200px;
+  }
+
+  .tc_HomePage_Element_Button::after {
+    font-size: 10px;
+  }
+
+  .tc_HomePage_Element_Descr {
+    font-size: 10px;
+  }
+
+  .tc_HomePage_Element_Faq {
+    width: 100px;
+    height: 100px;
+  }
+
+  .tc_HomePage_Element_Faq::after {
+    margin-top: 97px;
+    margin-left: -43px;
+  }
+
+  .tc_HomePage_Element_Logo object {
+    width: 80px;
+    height: 80px;
+  }
+
+  .tc_HomePage_Version {
+    font-size: 10px;
+  }
+
+  .tc_HomePage_GroupElement_Descr {
+    font-size: 16px;
+  }
 }

@@ -1,27 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 25 25" style="enable-background:new 0 0 25 25;" xml:space="preserve">
-<style type="text/css">
-	.st1{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
-</style>
-<g id="Layer_1">
-	<title>81230A28-D944-4572-B5DB-C03CAA2B1FCA</title>
-	<desc>Created with sketchtool.</desc>
-	<g id="Symbols">
-		<g id="Left-nav-default" transform="translate(-50.000000, -725.000000)">
-			<g id="Left-panel">
-				<g>
-					<g id="icons_people" transform="translate(50.000000, 725.000000)">
-						<path id="Oval-1-Copy-7" fill="#374c72" d="M12.5,25C19.4,25,25,19.4,25,12.5S19.4,0,12.5,0S0,5.6,0,12.5S5.6,25,12.5,25z"/>
-					</g>
-				</g>
-			</g>
-		</g>
-	</g>
-</g>
-<g id="Layer_2">
-	<rect x="7.8" y="10.7" class="st1" stroke="#ffffff" width="9.4" height="7.4"/>
-	<polygon class="st1" stroke="#ffffff" points="12.5,6 6.2,10.7 18.8,10.7 	"/>
-</g>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="0 0 200 200" width="200" height="200"><defs><path d="M200 100C200 155.19 155.19 200 100 200C44.81 200 0 155.19 0 100C0 44.81 44.81 0 100 0C155.19 0 200 44.81 200 100Z" id="a3mKUea9UO"></path><path d="M55 85.63L145 85.63L145 153.5L55 153.5L55 85.63Z" id="byFFdmbEz"></path><path d="M130 63.44L160 91.37L100 91.37L40 91.37L70 63.44L100 35.5L130 63.44Z" id="a3em99OdI9"></path></defs><g><g><g><use xlink:href="#a3mKUea9UO" opacity="1" fill="#374c72" fill-opacity="1"></use></g><g><use xlink:href="#byFFdmbEz" opacity="1" fill="#ffffff" fill-opacity="1"></use></g><g><use xlink:href="#a3em99OdI9" opacity="1" fill="#ffffff" fill-opacity="1"></use></g></g></g></svg>

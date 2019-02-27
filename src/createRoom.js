@@ -74,6 +74,14 @@ function createRoom(opts) {
         opts.andView = true;
     }
 
+    let alias;
+    if (createOpts.name) {
+        let tmpAlias = createOpts.name.replace(/[^a-z0-9]/gi, "");
+        alias = tmpAlias + randomString(7);
+    } else {
+        alias = randomString(7);
+    }
+
     createOpts.initial_state = createOpts.initial_state || [
         {
             content: {
@@ -94,6 +102,10 @@ function createRoom(opts) {
     createOpts.power_level_content_override = {
         invite: 50,
     };
+
+    if (createOpts.visibility !== 'private') {
+        createOpts.room_alias_name = alias;
+    }
 
     const modal = Modal.createDialog(Loader, null, 'mx_Dialog_spinner');
 
@@ -136,6 +148,16 @@ function createRoom(opts) {
         });
         return null;
     });
+}
+
+function randomString(len) {
+    let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let str = '';
+    for (let i = 0; i < len; i++) {
+        let r = Math.floor(Math.random() * charset.length);
+        str += charset.substring(r, r + 1);
+    }
+    return str;
 }
 
 module.exports = createRoom;

@@ -74,9 +74,6 @@ function createRoom(opts) {
         opts.andView = true;
     }
 
-    // Allow guests by default since the room is private and they'd
-    // need an invite. This means clicking on a 3pid invite email can
-    // actually drop you right in to a chat.
     createOpts.initial_state = createOpts.initial_state || [
         {
             content: {
@@ -87,7 +84,7 @@ function createRoom(opts) {
         },
         {
             content: {
-                history_visibility: 'world_readable',
+                history_visibility: createOpts.visibility === "private" ? 'invited' : 'world_readable',
             },
             type: 'm.room.history_visibility',
             state_key: '',

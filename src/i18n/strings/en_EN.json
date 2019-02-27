@@ -1027,7 +1027,7 @@
     "%(count)s new messages|other": "%(count)s new messages",
     "%(count)s new messages|one": "%(count)s new message",
     "Active call": "Active call",
-    "There's no one else here! Would you like to <nowarnText>stop warning about the empty room</nowarnText>?": "There's no one else here! Would you like to <nowarnText>stop warning about the empty room</nowarnText>?",
+    "There's no one else here! Would you like to <inviteText>invite others</inviteText> or <nowarnText>stop warning about the empty room</nowarnText>?": "There's no one else here! Would you like to <inviteText>invite others</inviteText> or <nowarnText>stop warning about the empty room</nowarnText>?",
     "more": "more",
     "You seem to be uploading files, are you sure you want to quit?": "You seem to be uploading files, are you sure you want to quit?",
     "You seem to be in a call, are you sure you want to quit?": "You seem to be in a call, are you sure you want to quit?",

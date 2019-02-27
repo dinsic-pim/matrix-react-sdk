@@ -304,8 +304,6 @@ export default class MessageComposer extends React.Component {
                 }
             }
 
-            const stickerpickerButton = <Stickerpicker key='stickerpicker_controls_button' room={this.props.room} />;
-
             controls.push(
                 <MessageComposerInput
                     ref={(c) => this.messageComposerInput = c}
@@ -317,7 +315,6 @@ export default class MessageComposer extends React.Component {
                     onContentChanged={this.onInputContentChanged}
                     onInputStateChanged={this.onInputStateChanged} />,
                 formattingButton,
-                stickerpickerButton,
                 uploadButton,
                 hangupButton,
                 callButton,

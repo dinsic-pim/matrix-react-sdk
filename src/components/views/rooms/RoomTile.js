@@ -320,10 +320,17 @@ module.exports = React.createClass({
 
         const RoomAvatar = sdk.getComponent('avatars.RoomAvatar');
 
-        let dmIndicator;
+        let encryptedIndicator;
+        let cli = MatrixClientPeg.get();
         let mainAvatarClass = avatarClasses;
+        const isEncrypted = cli.isRoomEncrypted(this.props.room.roomId);
+
         if (!this._isDirectMessageRoom(this.props.room.roomId)) {
             mainAvatarClass += " mx_RoomTile_avatar_room";
+        }
+
+        if (isEncrypted) {
+            encryptedIndicator = <img src="img/padlock-encrypted_room.svg" className="mx_RoomTile_dm" width="10" height="12" alt="encrypted" />;
         }
 
         return <AccessibleButton tabIndex="0"
@@ -336,6 +343,7 @@ module.exports = React.createClass({
             <div className={mainAvatarClass}>
                 <div className="mx_RoomTile_avatar_container">
                     <RoomAvatar room={this.props.room} width={24} height={24} />
+                    { encryptedIndicator }
                 </div>
             </div>
             <div className="mx_RoomTile_nameContainer">

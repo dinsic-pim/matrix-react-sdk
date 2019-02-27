@@ -107,17 +107,17 @@ export const SETTINGS = {
     "hideJoinLeaves": {
         supportedLevels: LEVELS_ROOM_SETTINGS_WITH_ROOM,
         displayName: _td('Hide join/leave messages (invites/kicks/bans unaffected)'),
-        default: false,
+        default: true,
     },
     "hideAvatarChanges": {
         supportedLevels: LEVELS_ROOM_SETTINGS_WITH_ROOM,
         displayName: _td('Hide avatar changes'),
-        default: false,
+        default: true,
     },
     "hideDisplaynameChanges": {
         supportedLevels: LEVELS_ROOM_SETTINGS_WITH_ROOM,
         displayName: _td('Hide display name changes'),
-        default: false,
+        default: true,
     },
     "hideReadReceipts": {
         supportedLevels: LEVELS_ROOM_SETTINGS,
@@ -185,7 +185,7 @@ export const SETTINGS = {
     "TagPanel.disableTagPanel": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
         displayName: _td('Disable Community Filter Panel'),
-        default: false,
+        default: true,
     },
     "theme": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,

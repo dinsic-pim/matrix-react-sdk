@@ -327,9 +327,10 @@ module.exports = React.createClass({
 
         if (!this._isDirectMessageRoom(this.props.room.roomId)) {
             mainAvatarClass += " mx_RoomTile_avatar_room";
-            if (isEncrypted) {
-                encryptedIndicator = <img src="img/padlock-encrypted_room.svg" className="mx_RoomTile_dm" width="10" height="12" alt="encrypted" />;
-            }
+        }
+
+        if (isEncrypted) {
+            encryptedIndicator = <img src="img/padlock-encrypted_room.svg" className="mx_RoomTile_dm" width="10" height="12" alt="encrypted" />;
         }
 
         return <AccessibleButton tabIndex="0"

@@ -418,21 +418,6 @@ module.exports = React.createClass({
             );
         }
 
-        // If you're alone in the room, and have sent a message, suggest to invite someone
-        if (this.props.sentMessageAndIsAlone) {
-            return (
-                <div className="mx_RoomStatusBar_isAlone">
-                    { _t("There's no one else here! Would you like to <nowarnText>stop warning about the empty room</nowarnText>?",
-                        {},
-                        {
-                            'nowarnText': (sub) =>
-                                <a className="mx_RoomStatusBar_resend_link" key="nowarn" onClick={this.props.onStopWarningClick}>{ sub }</a>,
-                        },
-                    ) }
-                </div>
-            );
-        }
-
         return null;
     },
 

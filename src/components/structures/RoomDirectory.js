@@ -53,7 +53,6 @@ module.exports = React.createClass({
     getInitialState: function() {
         return {
             publicRooms: [],
-            allPublicRooms: [],
             loading: true,
             protocolsLoading: true,
             instanceId: null,
@@ -99,7 +98,7 @@ module.exports = React.createClass({
                 opts.server = serverList[i];
                 MatrixClientPeg.get().publicRooms(opts).then((data) => {
                     this.setState((st) => {
-                        st.allPublicRooms.push(...data.chunk);
+                        st.publicRooms.push(...data.chunk);
                         st.loading = false;
                         return st;
                     });
@@ -195,7 +194,6 @@ module.exports = React.createClass({
             }
 
             this.setState({ loading: false });
-            if (my_server === "all.tchap.gouv.fr") return;
             console.error("Failed to get publicRooms: %s", JSON.stringify(err));
             var ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
             Modal.createTrackedDialog('Failed to get public room list', '', ErrorDialog, {
@@ -405,14 +403,10 @@ module.exports = React.createClass({
     getRows: function() {
         var BaseAvatar = sdk.getComponent('avatars.BaseAvatar');
 
-        if (!this.state.publicRooms || !this.state.allPublicRooms) return [];
+        if (!this.state.publicRooms) return [];
 
         var rooms = null;
-        if (this.state.roomServer === "all.tchap.gouv.fr") {
-            rooms = this.state.allPublicRooms;
-        } else {
-            rooms = this.state.publicRooms;
-        }
+        rooms = this.state.publicRooms;
         rooms.sort((a, b) => {
             return b.num_joined_members - a.num_joined_members;
         });
@@ -557,11 +551,6 @@ module.exports = React.createClass({
 
 
         let placeholder = _t('Search for a room');
-        if (!this.state.instanceId) {
-            placeholder = _t('#example') + ':' + this.state.roomServer;
-        } else if (instance_expected_field_type) {
-            placeholder = instance_expected_field_type.placeholder;
-        }
 
         let showJoinButton = this._stringLooksLikeId(this.state.filterString, instance_expected_field_type);
         if (protocolName) {
@@ -571,7 +560,11 @@ module.exports = React.createClass({
             }
         }
 
-        const NetworkDropdown = sdk.getComponent('directory.NetworkDropdown');
+        // The NetworkDropdown previously used here was removed.
+        // The new default behavior is to list all the public rooms from the federation.
+        // There is no more ways to to filter rooms by federation.
+        // See dinsic-pim/matrix-react-sdk#144 for more informations.
+
         const DirectorySearchBox = sdk.getComponent('elements.DirectorySearchBox');
         return (
             <div className="mx_RoomDirectory">
@@ -583,7 +576,6 @@ module.exports = React.createClass({
                             onChange={this.onFilterChange} onClear={this.onFilterClear} onJoinClick={this.onJoinClick}
                             placeholder={placeholder} showJoinButton={showJoinButton}
                         />
-                        <NetworkDropdown config={this.props.config} protocols={this.protocols} onOptionChange={this.onOptionChange} />
                     </div>
                     {content}
                 </div>

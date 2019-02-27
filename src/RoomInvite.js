@@ -59,6 +59,7 @@ export function showStartChatInviteDialog() {
         placeholder: _t("Name"),
         validAddressTypes: ['mx-user-id', 'email'],
         button: _t("Start Chat"),
+        invitationType: 'direct',
         onFinished: _onStartChatFinished,
     });
 }
@@ -70,6 +71,7 @@ export function showRoomInviteDialog(roomId) {
         description: _t('Who would you like to add to this room?'),
         button: _t('Send Invites'),
         placeholder: _t("Name"),
+        invitationType: 'room',
         onFinished: (shouldInvite, addrs) => {
             _onRoomInviteFinished(roomId, shouldInvite, addrs);
         },

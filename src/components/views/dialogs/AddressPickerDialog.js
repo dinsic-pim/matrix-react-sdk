@@ -55,6 +55,7 @@ module.exports = React.createClass({
         // Whether the current user should be included in the addresses returned. Only
         // applicable when pickerType is `user`. Default: false.
         includeSelf: PropTypes.bool,
+        invitationType: PropTypes.oneOf(['direct', 'room'])
     },
 
     getDefaultProps: function() {
@@ -63,6 +64,7 @@ module.exports = React.createClass({
             focus: true,
             validAddressTypes: addressTypes,
             pickerType: 'user',
+            invitationType: 'direct',
             includeSelf: false,
             textareaDisabled: null,
         };
@@ -207,11 +209,12 @@ module.exports = React.createClass({
     onSelected: function(index) {
         const selectedList = this.state.selectedList.slice();
         selectedList.push(this.state.suggestedList[index]);
+        const textareaDisabledVal = this.props.invitationType === 'direct' ? true : null;
         this.setState({
             selectedList,
             suggestedList: [],
             query: "",
-            textareaDisabled: true
+            textareaDisabled: textareaDisabledVal
         });
         if (this._cancelThreepidLookup) this._cancelThreepidLookup();
     },
@@ -550,6 +553,11 @@ module.exports = React.createClass({
         // Add the query at the end
         // The use of 'disabled' and 'style' is a hack in order to prevent
         // adding multiple peaople from the 1:1 creation window.
+        let invitationTypeStyle;
+        if (this.props.invitationType === 'direct') {
+            invitationTypeStyle = {display:  this.state.textareaDisabled ? 'none' : 'inline' };
+        }
+
         query.push(
             <textarea key={this.state.selectedList.length}
                 rows="1"
@@ -561,7 +569,7 @@ module.exports = React.createClass({
                 defaultValue={this.props.value}
                 autoFocus={this.props.focus}
                 disabled={this.state.textareaDisabled}
-                style={{display:  this.state.textareaDisabled ? 'none' : 'inline' }}
+                style={invitationTypeStyle}
                 >
             </textarea>,
         );

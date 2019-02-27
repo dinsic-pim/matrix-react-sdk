@@ -94,6 +94,10 @@ function createRoom(opts) {
         },
     ];
 
+    createOpts.power_level_content_override = {
+        invite: 50,
+    };
+
     const modal = Modal.createDialog(Loader, null, 'mx_Dialog_spinner');
 
     let roomId;

@@ -24,7 +24,7 @@ const SettingsButton = function(props) {
     return (
         <ActionButton action="view_user_settings"
             label={_t("Settings")}
-            iconPath="img/tc_icons-settings.svg"
+            iconPath="img/icons-settings.svg"
             size={props.size}
             tooltip={props.tooltip}
         />

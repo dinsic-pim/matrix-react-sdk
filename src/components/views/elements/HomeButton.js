@@ -24,7 +24,7 @@ const HomeButton = function(props) {
     return (
         <ActionButton action="view_home_page"
             label={_t("Home")}
-            iconPath="img/tc_icons-home.svg"
+            iconPath="img/icons-home.svg"
             size={props.size}
             tooltip={props.tooltip}
         />

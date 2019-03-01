@@ -143,8 +143,9 @@ module.exports = React.createClass({
 
         const my_filter_string = this.state.filterString;
         const my_server = srv || this.state.roomServer;
-        // remember the next batch token when we sent the request
-        // too. If it's changed, appending to the list will corrupt it.
+        // We could not keep the current implementation of the paginate chunk because we want to retrieve the rooms from several servers.
+        // So the pagination system have been disabled for the moment.
+        // We retrieve all the rooms on each request.
         const opts = {};
         if (my_server != MatrixClientPeg.getHomeServerName()) {
             opts.server = my_server;
@@ -159,7 +160,7 @@ module.exports = React.createClass({
             if (
                 my_filter_string != this.state.filterString)
             {
-                // if the filter or server has changed since this request was sent,
+                // if the filter has changed since this request was sent,
                 // throw away the result (don't even clear the busy flag
                 // since we must still have a request in flight)
                 return;
@@ -182,7 +183,7 @@ module.exports = React.createClass({
                 my_server != this.state.roomServer)
             {
                 // as above: we don't care about errors for old
-                // requests or other server
+                // requests or different server
                 return;
             }
 

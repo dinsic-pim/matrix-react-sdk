@@ -154,13 +154,17 @@ module.exports = React.createClass({
     },
 
     onFormSubmit: async function(formVals) {
-        await this.discoverTchapPlatform(formVals.email);
-        this.setState({
-            errorText: "",
-            busy: true,
-            formVals: formVals,
-            doingUIAuth: true,
-        });
+        try {
+            await this.discoverTchapPlatform(formVals.email);
+            this.setState({
+                errorText: "",
+                busy: true,
+                formVals: formVals,
+                doingUIAuth: true,
+            });
+				} catch (err) {
+            this.onFormValidationFailed(err.message);
+        }
     },
 
     _onUIAuthFinished: function(success, response, extra) {
@@ -293,6 +297,9 @@ module.exports = React.createClass({
             case "RegistrationForm.ERR_USERNAME_BLANK":
                 errMsg = _t('You need to enter a user name.');
                 break;
+            case "RegistrationForm.ERR_UNAUTHORIZED_EMAIL":
+                errMsg = _t('Unauthorized email');
+                break;
             default:
                 console.error("Unknown error code: %s", errCode);
                 errMsg = _t('An unknown error occurred.');
@@ -315,6 +322,11 @@ module.exports = React.createClass({
             const selectedUrl = tchapHostsList[(Math.floor(Math.random() * (tchapHostsList.length)) + 1) - 1];
             const res = await fetch(TCHAP_HOSTS_BASE + selectedUrl + TCHAP_API_URL + username).catch(err => console.error(err));
             const data = await res.json();
+            if (data && !data.hs) {
+                // This is a hack to make the "Unauthorized email error" looks like a normal form error.
+                // We need to throw an error in order to break the current call stack.
+                throw new Error("RegistrationForm.ERR_UNAUTHORIZED_EMAIL");
+            }
             this.setState({
                 hsUrl: TCHAP_HOSTS_BASE + data.hs,
                 isUrl: TCHAP_HOSTS_BASE + data.hs,

@@ -1218,5 +1218,6 @@
     "Demote": "Rétrograder",
     "Back to login screen": "Retourner à l'écran de connexion",
     "You need to enter an email.": "Vous devez saisir une adresse email.",
-    "Unable to decrypt: The sender's device has not sent us the keys for this message.": "Déchiffrement impossible : L'utilisateur n'a pas envoyé les clefs de déchiffrement pour ce message."
+    "Unable to decrypt: The sender's device has not sent us the keys for this message.": "Déchiffrement impossible : L'utilisateur n'a pas envoyé les clefs de déchiffrement pour ce message.",
+    "Unauthorized email": "Cette adresse e-mail n'est pas autorisée"
 }

@@ -1189,5 +1189,6 @@
     "Failed to set direct chat tag": "Failed to set direct chat tag",
     "Failed to remove tag %(tagName)s from room": "Failed to remove tag %(tagName)s from room",
     "Failed to add tag %(tagName)s to room": "Failed to add tag %(tagName)s to room",
-    "Back to login screen": "Back to login screen"
+    "Back to login screen": "Back to login screen",
+    "Unauthorized email": "Unauthorized email"
 }

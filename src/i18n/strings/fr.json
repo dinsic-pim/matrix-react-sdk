@@ -1218,5 +1218,7 @@
     "Demote": "Rétrograder",
     "Back to login screen": "Retourner à l'écran de connexion",
     "You need to enter an email.": "Vous devez saisir une adresse email.",
-    "Unable to decrypt: The sender's device has not sent us the keys for this message.": "Déchiffrement impossible : L'utilisateur n'a pas envoyé les clefs de déchiffrement pour ce message."
+    "Unable to decrypt: The sender's device has not sent us the keys for this message.": "Déchiffrement impossible : L'utilisateur n'a pas envoyé les clefs de déchiffrement pour ce message.",
+    "Register my account on the red list": "Inscrire mon compte sur liste rouge",
+    "Other users will not be able to discover my account on their searches": "Les autres utilisateurs ne pourrons pas découvrir mon compte lors de leurs recherches"
 }

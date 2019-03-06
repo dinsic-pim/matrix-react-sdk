@@ -1205,6 +1205,21 @@ module.exports = React.createClass({
             </div>);
         }
 
+        let redlistOptionSection = (
+          <div className="mx_UserSettings_redList">
+              <input id="redlistOption"
+                     ref="redlistOption"
+                     type="checkbox"
+                     checked={ this.state.redList }
+                     onChange={ this._onRedlistOptionChange } />
+              <label htmlFor="redlistOption">
+                  <b>{ _t('Register my account on the red list') }</b>
+                  <br />
+                  { '(' + _t('Other users will not be able to discover my account on their searches') + ')'}
+              </label>
+          </div>
+        );
+
         const olmVersion = MatrixClientPeg.get().olmVersion;
         // If the olmVersion is not defined then either crypto is disabled, or
         // we are using a version old version of olm. We assume the former.
@@ -1260,18 +1275,7 @@ module.exports = React.createClass({
                             <input id="avatarInput" type="file" onChange={this.onAvatarSelected} />
                         </div>
                     </div>
-                    <div className="mx_UserSettings_redList">
-                        <input id="redlistOption"
-                               ref="redlistOption"
-                               type="checkbox"
-                               checked={ this.state.redList }
-                               onChange={ this._onRedlistOptionChange } />
-                        <label htmlFor="redlistOption">
-                            <b>{ _t('Register my account on the red list') }</b>
-                            <br />
-                            { '(' + _t('Other users will not be able to discover my account on their searches') + ')'}
-                        </label>
-                    </div>
+                    { redlistOptionSection }
                 </div>
 
                 <h3>{ _t("Account") }</h3>

@@ -1189,5 +1189,7 @@
     "Failed to set direct chat tag": "Failed to set direct chat tag",
     "Failed to remove tag %(tagName)s from room": "Failed to remove tag %(tagName)s from room",
     "Failed to add tag %(tagName)s to room": "Failed to add tag %(tagName)s to room",
-    "Back to login screen": "Back to login screen"
+    "Back to login screen": "Back to login screen",
+    "Register my account on the red list": "Register my account on the red list",
+    "Other users will not be able to discover my account on their searches": "Other users will not be able to discover my account on their searches"
 }

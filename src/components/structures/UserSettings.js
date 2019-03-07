@@ -185,6 +185,7 @@ module.exports = React.createClass({
             rejectingInvites: false,
             mediaDevices: null,
             ignoredUsers: [],
+            redList: false,
         };
     },
 
@@ -224,8 +225,12 @@ module.exports = React.createClass({
             ipcRenderer.send('settings_get');
         }
 
+        const accountData = MatrixClientPeg.get().getAccountData('im.vector.hide_profile');
+        const redList = accountData ? accountData.event.content.hide_profile : false;
+
         this.setState({
             language: languageHandler.getCurrentLanguage(),
+            redList: redList,
         });
 
         this._sessionStore = sessionStore;
@@ -1118,6 +1123,16 @@ module.exports = React.createClass({
         }
     },
 
+    _onRedlistOptionChange: async function(e) {
+        try {
+            const redlistChecked = this.refs.redlistOption.checked;
+            await MatrixClientPeg.get().setAccountData('im.vector.hide_profile', {hide_profile: redlistChecked});
+            this.setState({redList: redlistChecked});
+        } catch (err) {
+            console.error("Error setting AccountData 'im.vector.hide_profile': " + err);
+        }
+    },
+
     render: function() {
         const Loader = sdk.getComponent("elements.Spinner");
         switch (this.state.phase) {
@@ -1190,6 +1205,21 @@ module.exports = React.createClass({
             </div>);
         }
 
+        let redlistOptionSection = (
+          <div className="mx_UserSettings_redList">
+              <input id="redlistOption"
+                     ref="redlistOption"
+                     type="checkbox"
+                     checked={ this.state.redList }
+                     onChange={ this._onRedlistOptionChange } />
+              <label htmlFor="redlistOption">
+                  <b>{ _t('Register my account on the red list') }</b>
+                  <br />
+                  { '(' + _t('Other users will not be able to discover my account on their searches') + ')'}
+              </label>
+          </div>
+        );
+
         const olmVersion = MatrixClientPeg.get().olmVersion;
         // If the olmVersion is not defined then either crypto is disabled, or
         // we are using a version old version of olm. We assume the former.
@@ -1245,6 +1275,7 @@ module.exports = React.createClass({
                             <input id="avatarInput" type="file" onChange={this.onAvatarSelected} />
                         </div>
                     </div>
+                    { redlistOptionSection }
                 </div>
 
                 <h3>{ _t("Account") }</h3>

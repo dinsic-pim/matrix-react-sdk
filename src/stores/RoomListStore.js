@@ -202,7 +202,17 @@ class RoomListStore extends Store {
                     }
                 } else if (dmRoomMap.getUserIdForRoomId(room.roomId)) {
                     // "Direct Message" rooms (that we're still in and that aren't otherwise tagged)
-                    lists["im.vector.fake.direct"].push(room);
+                    const members = room.currentState.members;
+                    let him;
+                    Object.keys(members).forEach(memberId => {
+                        if (members[memberId].userId !== me.userId) {
+                            him = members[memberId];
+                        }
+                    });
+                    if (him && him.membership !== "leave") {
+                        // If the other user of the direct has left, don't add the room in the list.
+                        lists["im.vector.fake.direct"].push(room);
+                    }
                 } else {
                     lists["im.vector.fake.recent"].push(room);
                 }

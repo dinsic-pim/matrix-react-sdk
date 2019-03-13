@@ -98,7 +98,7 @@ export default class DMRoomMap {
             const room = this.matrixClient.getRoom(roomId);
             if (room) {
                 const me = room.getMember(this.matrixClient.credentials.userId);
-                if (me.membership == 'invite') {
+                if (me && me.membership == 'invite') {
                     // The 'direct' hihnt is there, so declare that this is a DM room for
                     // whoever invited us.
                     if (me.events.member.getContent().is_direct) {

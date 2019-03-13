@@ -91,11 +91,11 @@ limitations under the License.
 
 .mx_RightPanel_footer {
     order: 3;
-
     border-top: 1px solid $primary-hairline-color;
     margin-right: 20px;
-
     flex: 0 0 60px;
+    position: absolute;
+    bottom: 8px;
 }
 
 .mx_RightPanel_footer .mx_RightPanel_invite {

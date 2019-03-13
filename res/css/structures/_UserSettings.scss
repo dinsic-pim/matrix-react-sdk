@@ -255,3 +255,11 @@ input.mx_UserSettings_phoneNumberField {
 .mx_UserSettings_analyticsModal table {
     margin: 10px 0px;
 }
+
+.mx_UserSettings_redList {
+    display: inline-flex;
+}
+
+.mx_UserSettings_redList label {
+    margin-left: 10px;
+}

@@ -59,6 +59,7 @@ module.exports = React.createClass({
             includeAll: false,
             roomServer: null,
             filterString: null,
+            serverList: [],
         }
     },
 
@@ -92,7 +93,7 @@ module.exports = React.createClass({
         let hsMainList = SdkConfig.get()['hs_main_list'];
         if (hsMainList) {
             let serverList = hsMainList.concat(SdkConfig.get()['hs_additional_list']).filter(Boolean);
-
+            this.setState({serverList: serverList});
             for (let i = 0; i <= serverList.length; i++) {
                 let opts = {};
                 opts.server = serverList[i];
@@ -131,18 +132,21 @@ module.exports = React.createClass({
             publicRooms: [],
             loading: true,
         });
-        this.getMoreRooms().done();
+        let srvList = this.state.serverList;
+        for (let i = 0; i <= srvList.length; i++) {
+            this.getMoreRooms(srvList[i]).done();
+        }
     },
 
-    getMoreRooms: function() {
+    getMoreRooms: function(srv) {
         if (!MatrixClientPeg.get()) return Promise.resolve();
 
         const my_filter_string = this.state.filterString;
-        const my_server = this.state.roomServer;
-        // remember the next batch token when we sent the request
-        // too. If it's changed, appending to the list will corrupt it.
-        const my_next_batch = this.nextBatch;
-        const opts = {limit: 20};
+        const my_server = srv || this.state.roomServer;
+        // We could not keep the current implementation of the paginate chunk because we want to retrieve the rooms from several servers.
+        // So the pagination system have been disabled for the moment.
+        // We retrieve all the rooms on each request.
+        const opts = {};
         if (my_server != MatrixClientPeg.getHomeServerName()) {
             opts.server = my_server;
         }
@@ -151,15 +155,12 @@ module.exports = React.createClass({
         } else if (this.state.includeAll) {
             opts.include_all_networks = true;
         }
-        if (this.nextBatch) opts.since = this.nextBatch;
         if (my_filter_string) opts.filter = { generic_search_term: my_filter_string } ;
         return MatrixClientPeg.get().publicRooms(opts).then((data) => {
             if (
-                my_filter_string != this.state.filterString ||
-                my_server != this.state.roomServer ||
-                my_next_batch != this.nextBatch)
+                my_filter_string != this.state.filterString)
             {
-                // if the filter or server has changed since this request was sent,
+                // if the filter has changed since this request was sent,
                 // throw away the result (don't even clear the busy flag
                 // since we must still have a request in flight)
                 return;
@@ -170,7 +171,6 @@ module.exports = React.createClass({
                 return;
             }
 
-            this.nextBatch = data.next_batch;
             this.setState((s) => {
                 s.publicRooms.push(...data.chunk);
                 s.loading = false;
@@ -180,11 +180,10 @@ module.exports = React.createClass({
         }, (err) => {
             if (
                 my_filter_string != this.state.filterString ||
-                my_server != this.state.roomServer ||
-                my_next_batch != this.nextBatch)
+                my_server != this.state.roomServer)
             {
                 // as above: we don't care about errors for old
-                // requests either
+                // requests or different server
                 return;
             }
 

@@ -22,6 +22,7 @@ import dis from '../../dispatcher';
 import Velocity from 'velocity-vector';
 import 'velocity-vector/velocity.ui';
 import SettingsStore from '../../settings/SettingsStore';
+import MatrixClientPeg from '../../MatrixClientPeg';
 
 const CALLOUT_ANIM_DURATION = 1000;
 
@@ -150,6 +151,11 @@ module.exports = React.createClass({
         }
     },
 
+    _isUserExtern: function() {
+        const hsUrl = MatrixClientPeg.get().getHomeserverUrl();
+        return hsUrl.includes('.e.') || hsUrl.includes('.externe.');
+    },
+
     _collectPeopleButton: function(e) {
         this._peopleButton = e;
     },
@@ -169,19 +175,41 @@ module.exports = React.createClass({
         const CreateRoomButton = sdk.getComponent('elements.CreateRoomButton');
         const SettingsButton = sdk.getComponent('elements.SettingsButton');
 
+        let startChatButtonContent;
+        if (!this._isUserExtern()) {
+            startChatButtonContent = (
+                <div ref={this._collectPeopleButton}>
+                    <StartChatButton tooltip={true} />
+                </div>
+            );
+        }
+
+        let roomDirectoryButtonContent;
+        if (!this._isUserExtern()) {
+            roomDirectoryButtonContent = (
+                <div ref={this._collectDirectoryButton}>
+                    <RoomDirectoryButton tooltip={true} />
+                </div>
+            );
+        }
+
+        let createRoomButtonContent;
+        if (!this._isUserExtern()) {
+            createRoomButtonContent = (
+                <div ref={this._collectCreateRoomButton}>
+                    <CreateRoomButton tooltip={true} />
+                </div>
+            );
+        }
+
+
         return (
             <div className="mx_BottomLeftMenu">
                 <div className="mx_BottomLeftMenu_options">
                     <HomeButton tooltip={true} />
-                    <div ref={this._collectPeopleButton}>
-                        <StartChatButton tooltip={true} />
-                    </div>
-                    <div ref={this._collectDirectoryButton}>
-                        <RoomDirectoryButton tooltip={true} />
-                    </div>
-                    <div ref={this._collectCreateRoomButton}>
-                        <CreateRoomButton tooltip={true} />
-                    </div>
+                    { startChatButtonContent }
+                    { roomDirectoryButtonContent }
+                    { createRoomButtonContent }
                     <span className="mx_BottomLeftMenu_settings">
                         <SettingsButton tooltip={true} />
                     </span>

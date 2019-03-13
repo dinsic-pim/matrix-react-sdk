@@ -199,6 +199,11 @@ module.exports = React.createClass({
         }
     },
 
+    _isUserExtern: function() {
+        const hsUrl = MatrixClientPeg.get().getHomeserverUrl();
+        return hsUrl.includes('.e.') || hsUrl.includes('.externe.');
+    },
+
     _delayedUpdate: new RateLimitedFunc(function() {
         this.forceUpdate(); // eslint-disable-line babel/no-invalid-this
     }, 500),
@@ -262,6 +267,7 @@ module.exports = React.createClass({
     render: function() {
         const dmRoomMap = new DMRoomMap(MatrixClientPeg.get());
         let isDMRoom = Boolean(dmRoomMap.getUserIdForRoomId(this.props.roomId));
+        let isUserExtern = this._isUserExtern();
 
         const MemberList = sdk.getComponent('rooms.MemberList');
         const MemberInfo = sdk.getComponent('rooms.MemberInfo');
@@ -292,7 +298,7 @@ module.exports = React.createClass({
                 isUserInRoom = room.hasMembershipState(this.context.matrixClient.credentials.userId, 'join');
             }
 
-            if (isUserInRoom && !isDMRoom) {
+            if (isUserInRoom && !isDMRoom && !isUserExtern) {
                 inviteGroup =
                     <AccessibleButton className="mx_RightPanel_invite" onClick={this.onInviteButtonClick}>
                         <div className="mx_RightPanel_icon" >

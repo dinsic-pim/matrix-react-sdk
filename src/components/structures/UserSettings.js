@@ -973,6 +973,12 @@ module.exports = React.createClass({
         CallMediaHandler.setVideoInput(deviceId);
     },
 
+    _isUserExtern: function() {
+        const hsUrl = MatrixClientPeg.get().getHomeserverUrl();
+        return hsUrl.includes('.e.') || hsUrl.includes('.externe.');
+    },
+
+
     _requestMediaPermissions: function(event) {
         const getUserMedia = (
             window.navigator.getUserMedia || window.navigator.webkitGetUserMedia || window.navigator.mozGetUserMedia
@@ -1159,6 +1165,8 @@ module.exports = React.createClass({
             this.state.avatarUrl ? MatrixClientPeg.get().mxcUrlToHttp(this.state.avatarUrl) : null
         );
 
+        let isUserExternam = this._isUserExtern();
+
         const threepidsSection = this.state.threepids.map((val, pidIndex) => {
             const id = "3pid-" + val.address;
             // TODO: make a separate component to avoid having to rebind onClick
@@ -1205,20 +1213,25 @@ module.exports = React.createClass({
             </div>);
         }
 
-        let redlistOptionSection = (
-          <div className="mx_UserSettings_redList">
-              <input id="redlistOption"
-                     ref="redlistOption"
-                     type="checkbox"
-                     checked={ this.state.redList }
-                     onChange={ this._onRedlistOptionChange } />
-              <label htmlFor="redlistOption">
-                  <b>{ _t('Register my account on the red list') }</b>
-                  <br />
-                  { '(' + _t('Other users will not be able to discover my account on their searches') + ')'}
-              </label>
-          </div>
-        );
+        let redlistOptionSection;
+
+        if (!isUserExternam) {
+            redlistOptionSection = (
+                <div className="mx_UserSettings_redList">
+                    <input id="redlistOption"
+                    ref="redlistOption"
+                    type="checkbox"
+                    checked={ this.state.redList }
+                    onChange={ this._onRedlistOptionChange } />
+                    <label htmlFor="redlistOption">
+                        <b>{ _t('Register my account on the red list') }</b>
+                        <br />
+                        { '(' + _t('Other users will not be able to discover my account on their searches') + ')'}
+                    </label>
+                </div>
+            );
+        }
+
 
         const olmVersion = MatrixClientPeg.get().olmVersion;
         // If the olmVersion is not defined then either crypto is disabled, or

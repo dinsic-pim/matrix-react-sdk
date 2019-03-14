@@ -146,11 +146,16 @@ function selectRoom(addrTexts) {
                     selectedRoom = {room : room, status : "join-leave", date : roomCreateEventDate};
                 }
             } else {
-                selectedRoom = null;
+                selectedRoom = {
+                    room : null,
+                    status: null,
+                    date: null
+                };
             }
         }
     });
 
+    selectedRoom = selectedRoom.room && selectedRoom.status && selectedRoom.date ? selectedRoom : null;
     return selectedRoom;
 }
 

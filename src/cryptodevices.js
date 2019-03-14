@@ -44,10 +44,11 @@ export function markAllDevicesKnown(matrixClient, devices) {
  * module:crypto~DeviceInfo|DeviceInfo}.
  */
 export function getUnknownDevicesForRoom(matrixClient, room) {
-    const roomMembers = room.getJoinedMembers().map((m) => {
-        return m.userId;
+    const roomMembers = room.currentState.members;
+    const roomMembersId = Object.keys(roomMembers).map((m) => {
+        return roomMembers[m].userId;
     });
-    return matrixClient.downloadKeys(roomMembers, false).then((devices) => {
+    return matrixClient.downloadKeys(roomMembersId, false).then((devices) => {
         const unknownDevices = {};
         // This is all devices in this room, so find the unknown ones.
         Object.keys(devices).forEach((userId) => {

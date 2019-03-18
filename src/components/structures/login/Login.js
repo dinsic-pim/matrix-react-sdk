@@ -116,6 +116,10 @@ module.exports = React.createClass({
             const res = await fetch(TCHAP_HOSTS_BASE + selectedUrl + TCHAP_API_URL + username).catch(err => console.error(err));
             const data = await res.json();
 
+            if (data && !data.hs) {
+                throw new Error("ERR_UNAUTHORIZED_EMAIL");
+            }
+
             this.setState({
                 enteredHomeserverUrl: TCHAP_HOSTS_BASE + data.hs,
                 enteredIdentityServerUrl: TCHAP_HOSTS_BASE + data.hs,
@@ -157,25 +161,34 @@ module.exports = React.createClass({
                     // We treat both as an incorrect password
                     loginIncorrect: error.httpStatus === 401 || error.httpStatus === 403,
                 });
-            }).finally(() => {
-                if (this._unmounted) {
-                    return;
-                }
-                this.setState({
-                    busy: false,
-                });
-            }).done();
+            });
         }).catch(err => {
-            let errorText2 = (
-                <div>
-                    <div>{ _t('Error: Problem communicating with the given homeserver.') }</div>
-                </div>
-            );
+            let errorText2;
+            if (err.message === 'ERR_UNAUTHORIZED_EMAIL') {
+                errorText2 = (
+                  <div>
+                      <div>{ _t('Unauthorized email') }</div>
+                  </div>
+                );
+            } else {
+                errorText2 = (
+                  <div>
+                      <div>{ _t('Error: Problem communicating with the given homeserver.') }</div>
+                  </div>
+                );
+            }
             this.setState({
                 errorText: errorText2,
                 loginIncorrect: err.httpStatus === 401 || err.httpStatus === 403,
             });
-        });
+        }).finally(() => {
+            if (this._unmounted) {
+                return;
+            }
+            this.setState({
+                busy: false,
+            });
+        }).done();
     },
 
     onCasLogin: function() {

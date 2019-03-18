@@ -1,9 +1,9 @@
 {
   "name": "matrix-react-sdk",
-  "version": "0.12.8",
+  "version": "0.16.0",
   "description": "SDK for matrix.org using React",
   "author": "matrix.org",
-  "appVersion": "0.6.1",
+  "appVersion": "0.16.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/matrix-org/matrix-react-sdk"
@@ -78,7 +78,7 @@
     "lodash": "^4.13.1",
     "lolex": "2.3.2",
     "matrix-js-sdk": "0.10.5",
-    "olm": "https://matrix.org/packages/npm/olm/olm-2.3.0.tgz",
+    "olm": "https://matrix.org/packages/npm/olm/olm-3.0.0.tgz",
     "optimist": "^0.6.1",
     "pako": "^1.0.5",
     "prop-types": "^15.5.8",

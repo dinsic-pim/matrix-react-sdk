@@ -201,8 +201,11 @@ class RoomListStore extends Store {
                         lists[tagName].push(room);
                     }
                 } else if (dmRoomMap.getUserIdForRoomId(room.roomId)) {
-                    // "Direct Message" rooms (that we're still in and that aren't otherwise tagged)
-                    lists["im.vector.fake.direct"].push(room);
+                    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+                    if (!emailRegex.test(dmRoomMap.getUserIdForRoomId(room.roomId))) {
+                        // "Direct Message" rooms (that we're still in, that aren't email invitations and that aren't otherwise tagged)
+                        lists["im.vector.fake.direct"].push(room);
+                    }
                 } else {
                     lists["im.vector.fake.recent"].push(room);
                 }

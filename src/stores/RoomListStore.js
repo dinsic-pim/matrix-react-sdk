@@ -17,6 +17,7 @@ import {Store} from 'flux/utils';
 import dis from '../dispatcher';
 import DMRoomMap from '../utils/DMRoomMap';
 import Unread from '../Unread';
+import Email from '../email';
 
 /**
  * A class for storing application state for categorising rooms in
@@ -194,15 +195,15 @@ class RoomListStore extends Store {
                     }
                 }
 
+                const dmUserId = dmRoomMap.getUserIdForRoomId(room.roomId);
                 if (tagNames.length) {
                     for (let i = 0; i < tagNames.length; i++) {
                         const tagName = tagNames[i];
                         lists[tagName] = lists[tagName] || [];
                         lists[tagName].push(room);
                     }
-                } else if (dmRoomMap.getUserIdForRoomId(room.roomId)) {
-                    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-                    if (!emailRegex.test(dmRoomMap.getUserIdForRoomId(room.roomId))) {
+                } else if (dmUserId) {
+                    if (!Email.looksValid(dmUserId)) {
                         // "Direct Message" rooms (that we're still in, that aren't email invitations and that aren't otherwise tagged)
                         lists["im.vector.fake.direct"].push(room);
                     }

@@ -41,7 +41,7 @@ import * as FormattingUtils from '../../utils/FormattingUtils';
 
 // if this looks like a release, use the 'version' from package.json; else use
 // the git sha. Prepend version with v, to look like riot-web version
-const REACT_SDK_VERSION = 'dist' in packageJson ? packageJson.version : packageJson.gitHead || '<local>';
+const REACT_SDK_VERSION = packageJson.version || '<local>';
 
 // Simple method to help prettify GH Release Tags and Commit Hashes.
 const semVerRegex = /^v?(\d+\.\d+\.\d+(?:-rc.+)?)(?:-(?:\d+-g)?([0-9a-fA-F]+))?(?:-dirty)?$/i;
@@ -1344,11 +1344,11 @@ module.exports = React.createClass({
                     </div>
                     <div className="mx_UserSettings_advanced">
                         { _t('matrix-react-sdk version:') } { (REACT_SDK_VERSION !== '<local>')
-                            ? gHVersionLabel('matrix-org/matrix-react-sdk', REACT_SDK_VERSION)
+                            ? gHVersionLabel('dinsic-pim/matrix-react-sdk', REACT_SDK_VERSION)
                             : REACT_SDK_VERSION
                         }<br />
                         { _t('tchap-web version:') } { (this.state.vectorVersion !== undefined)
-                            ? this.state.vectorVersion
+                            ? gHVersionLabel('dinsic-pim/tchap-web', this.state.vectorVersion)
                             : 'unknown'
                         }<br />
                         { _t("olm version:") } { olmVersionString }<br />

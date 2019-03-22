@@ -103,7 +103,7 @@ class HomePage extends React.Component {
         else {
             const GeminiScrollbarWrapper = sdk.getComponent("elements.GeminiScrollbarWrapper");
             const TintableSvg = sdk.getComponent("elements.TintableSvg");
-            const faqUrl = `${SdkConfig.get()['host_url']}/faq.html`;
+            const faqUrl = `${SdkConfig.get()['host_url']}/faq/`;
             const version = p.appVersion;
 
             return (

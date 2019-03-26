@@ -94,20 +94,13 @@ module.exports = React.createClass({
                 description:
                     <div>
                         { _t(
-                            'Resetting password will currently reset any ' +
-                            'end-to-end encryption keys on all devices, ' +
-                            'making encrypted chat history unreadable, ' +
-                            'unless you first export your room keys and re-import ' +
-                            'them afterwards. In future this will be improved.',
-                        ) }
+                          'Changing your password will reset any end-to-end ' +
+                          'encryption keys on all of your devices, making ' +
+                          'encrypted chat history unreadable. ' +
+                          'Export your room keys from another ' +
+                          'device before resetting your password.') }
                     </div>,
                 button: _t('Continue'),
-                extraButtons: [
-                    <button key="export_keys" className="mx_Dialog_primary"
-                            onClick={this._onExportE2eKeysClicked}>
-                        { _t('Export E2E room keys') }
-                    </button>,
-                ],
                 onFinished: (confirmed) => {
                     if (confirmed) {
                         this.submitPasswordReset(

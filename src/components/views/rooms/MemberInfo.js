@@ -41,6 +41,7 @@ import withMatrixClient from '../../../wrappers/withMatrixClient';
 import AccessibleButton from '../elements/AccessibleButton';
 import RoomViewStore from '../../../stores/RoomViewStore';
 import SdkConfig from '../../../SdkConfig';
+import { isCurrentUserExtern, isUserExtern } from '../../../Users'
 
 module.exports = withMatrixClient(React.createClass({
     displayName: 'MemberInfo',
@@ -589,18 +590,6 @@ module.exports = withMatrixClient(React.createClass({
         return member.powerLevel < levelToSend;
     },
 
-    _isUserExtern: function() {
-        const hsUrl = this.props.matrixClient.getHomeserverUrl();
-        return hsUrl.includes('.e.') || hsUrl.includes('.externe.');
-    },
-
-    _isUserExternFromUserId: function(userId) {
-        return userId ? (
-            userId.split(':')[1].startsWith('e.') ||
-            userId.split(':')[1].startsWith('externe.')
-        ) : false;
-    },
-
     onCancel: function(e) {
         dis.dispatch({
             action: "view_user",
@@ -765,8 +754,8 @@ module.exports = withMatrixClient(React.createClass({
             // XXX: we potentially want DMs we have been invited to, to also show up here :L
             // especially as logic below concerns specially if we haven't joined but have been invited
             const dmRooms = dmRoomMap.getDMRoomsForUserId(this.props.member.userId);
-            let isUserExter = this._isUserExtern();
-            let isOtherUserExtern = this._isUserExternFromUserId(this.props.member.userId);
+            let userExtern = isCurrentUserExtern();
+            let otherUserExtern = isUserExtern(this.props.member.userId);
 
             const RoomTile = sdk.getComponent("rooms.RoomTile");
 
@@ -812,7 +801,7 @@ module.exports = withMatrixClient(React.createClass({
                 <div className={labelClasses}><i>{ _t("Start a chat") }</i></div>
             </AccessibleButton>;
 
-            if (!(isUserExter && isOtherUserExtern)) {
+            if (!(userExtern && otherUserExtern)) {
                 startChat = <div>
                     <h3>{ _t("Direct chats") }</h3>
                     { tiles }

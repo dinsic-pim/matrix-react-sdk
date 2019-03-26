@@ -30,6 +30,7 @@ import { showGroupInviteDialog, showGroupAddRoomDialog } from '../../GroupAddres
 import GroupStore from '../../stores/GroupStore';
 
 import { formatCount } from '../../utils/FormattingUtils';
+import { isCurrentUserExtern } from '../../Users'
 
 import DMRoomMap from '../../utils/DMRoomMap';
 import MatrixClientPeg from '../../MatrixClientPeg';
@@ -199,11 +200,6 @@ module.exports = React.createClass({
         }
     },
 
-    _isUserExtern: function() {
-        const hsUrl = MatrixClientPeg.get().getHomeserverUrl();
-        return hsUrl.includes('.e.') || hsUrl.includes('.externe.');
-    },
-
     _delayedUpdate: new RateLimitedFunc(function() {
         this.forceUpdate(); // eslint-disable-line babel/no-invalid-this
     }, 500),
@@ -267,7 +263,7 @@ module.exports = React.createClass({
     render: function() {
         const dmRoomMap = new DMRoomMap(MatrixClientPeg.get());
         let isDMRoom = Boolean(dmRoomMap.getUserIdForRoomId(this.props.roomId));
-        let isUserExtern = this._isUserExtern();
+        let isUserExtern = isCurrentUserExtern();
 
         const MemberList = sdk.getComponent('rooms.MemberList');
         const MemberInfo = sdk.getComponent('rooms.MemberInfo');

@@ -1194,6 +1194,7 @@
     "Unauthorized email": "Unauthorized email",
     "Register my account on the red list": "Register my account on the red list",
     "Other users will not be able to discover my account on their searches": "Other users will not be able to discover my account on their searches",
+    "Changing your password will reset any end-to-end encryption keys on all of your devices, making encrypted chat history unreadable. Export your room keys from another device before resetting your password.": "Changing your password will reset any end-to-end encryption keys on all of your devices, making encrypted chat history unreadable. Export your room keys from another device before resetting your password.",
     "You have already sent an invitation to %(email)s.": "You have already sent an invitation to %(email)s.",
     "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.": "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community."
 }

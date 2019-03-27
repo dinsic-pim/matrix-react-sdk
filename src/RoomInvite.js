@@ -24,7 +24,6 @@ import sdk from './';
 import dis from './dispatcher';
 import DMRoomMap from './utils/DMRoomMap';
 import { _t } from './languageHandler';
-import * as Rooms from "./Rooms";
 
 export function inviteToRoom(roomId, addr) {
     const addrType = getAddressType(addr);
@@ -100,20 +99,23 @@ function errorHandler(action, err) {
 }
 
 function selectRoom(invitedUserId) {
-    const rooms = MatrixClientPeg.get().getRooms();
+    const matrixClient = MatrixClientPeg.get();
+    const dmRoomMap = new DMRoomMap(matrixClient);
+    const roomList = dmRoomMap.getDMRoomsForUserId(invitedUserId);
 
     let selectedRoom = {
         room : null,
         status: null,
-        date: null
+        date: null,
+        weight: 0
     };
 
-    rooms.forEach(room => {
-        const members = room.currentState.members;
-        const me = members[MatrixClientPeg.get().credentials.userId];
+    roomList.forEach(roomId => {
+        const room = matrixClient.getRoom(roomId);
 
-        if (invitedUserId in members && room.getInvitedAndJoinedMemberCount() === 2) {
-            const him = Rooms.getOnlyOtherMember(room, me) || members[invitedUserId];
+        if (room) {
+            const members = room.currentState.members;
+            const him = members[invitedUserId];
             const myMembership = room.getMyMembership();
             const hisMembership = him.membership;
 
@@ -124,35 +126,40 @@ function selectRoom(invitedUserId) {
 
             // "join" <=> "join" state.
             if (myMembership === "join" && hisMembership === "join") {
-                if (selectedRoom.date === null || roomCreateEventDate < selectedRoom.date) {
-                    selectedRoom = {room : room, status : "join-join", date : roomCreateEventDate};
+                if (selectedRoom === null || selectedRoom.weight < 4 ||
+                    (selectedRoom.weight === 4 && roomCreateEventDate < selectedRoom.date)) {
+                    selectedRoom = { room: room, status: "join-join", date: roomCreateEventDate, weight: 4 };
                 }
 
             // "invite" <=> "join" state.
             // I have received an invitation from the other member.
             } else if (myMembership === "invite" && hisMembership === "join") {
-                if (selectedRoom.date === null || roomCreateEventDate < selectedRoom.date) {
-                    selectedRoom = {room: room, status: "invite-join", date: roomCreateEventDate};
+                if (selectedRoom === null || selectedRoom.weight < 3 ||
+                    (selectedRoom.weight === 3 && roomCreateEventDate < selectedRoom.date)) {
+                    selectedRoom = { room: room, status: "invite-join", date: roomCreateEventDate, weight: 3 };
                 }
 
             // "join" <=> "invite" state.
             // The other member already have an invitation.
             } else if (myMembership === "join" && hisMembership === "invite") {
-                if (selectedRoom.date === null || roomCreateEventDate < selectedRoom.date) {
-                    selectedRoom = {room : room, status : "join-invite", date : roomCreateEventDate};
+                if (selectedRoom === null || selectedRoom.weight < 2 ||
+                    (selectedRoom.weight === 2 && roomCreateEventDate < selectedRoom.date)) {
+                    selectedRoom = { room: room, status: "join-invite", date: roomCreateEventDate, weight: 2 };
                 }
 
             // "join" <=> "leave" state.
             // The other member have left/reject my invitation.
             } else if (myMembership === "join" && hisMembership === "leave") {
-                if (selectedRoom.date === null || roomCreateEventDate < selectedRoom.date) {
-                    selectedRoom = {room : room, status : "join-leave", date : roomCreateEventDate};
+                if (selectedRoom === null || selectedRoom.weight < 1 ||
+                    (selectedRoom.weight === 1 && roomCreateEventDate < selectedRoom.date)) {
+                    selectedRoom = { room: room, status: "join-leave", date: roomCreateEventDate, weight: 1 };
                 }
             } else {
                 selectedRoom = {
                     room : null,
                     status: null,
-                    date: null
+                    date: null,
+                    weight: 0
                 };
             }
         }
@@ -164,13 +171,14 @@ function selectRoom(invitedUserId) {
 
 
 function directRoomManager(addrs) {
+    const matrixClient = MatrixClientPeg.get();
     const addrTexts = addrs.map((addr) => addr.address)[0];
     const addrType = addrs.map((addr) => addr.addressType)[0];
     const addrKnown = addrs.map((addr) => addr.isKnown)[0];
     const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
 
     if (addrKnown === true) {
-        MatrixClientPeg.get().lookupThreePid(addrType, addrTexts).then(res => {
+        matrixClient.lookupThreePid(addrType, addrTexts).then(res => {
             const invitedUserId = Object.entries(res).length === 0 ? addrTexts : res.mxid;
             const selectedRoom = selectRoom(invitedUserId);
             const roomStatus = selectedRoom ? selectedRoom.status : null;
@@ -183,7 +191,7 @@ function directRoomManager(addrs) {
 
                 case "invite-join":
                     // Join room then redirect to this room.
-                    MatrixClientPeg.get().joinRoom(selectedRoom.room.roomId).done(() => {
+                    matrixClient.joinRoom(selectedRoom.room.roomId).done(() => {
                         viewRoomDispatcher(selectedRoom.room.roomId);
                     }, err => errorHandler('join_room_error', err));
                     break;
@@ -218,20 +226,18 @@ function directRoomManager(addrs) {
         });
 
     } else if (addrKnown === false && addrType === "email") {
-        // Case when a new user is invited by email
+        // Case where a non-Tchap user is invited by email
+        const dmRoomMap = new DMRoomMap(matrixClient);
+        const dmRoomList = dmRoomMap.getDMRoomsForUserId(addrTexts);
         const InformationDialog = sdk.getComponent("dialogs.InformationDialog");
-        const usersInDmRoomMap = new DMRoomMap(MatrixClientPeg.get()).userToRooms;
         let existingRoom = false;
 
-        if (addrTexts in usersInDmRoomMap) {
-            existingRoom = false;
-            usersInDmRoomMap[addrTexts].forEach(r => {
-                let cRoom = MatrixClientPeg.get().getRoom(r);
-                if (cRoom !== null && cRoom.getMyMembership() === "join") {
-                    existingRoom = true;
-                }
-            });
-        }
+        dmRoomList.forEach(roomId => {
+            let room = matrixClient.getRoom(roomId);
+            if (room && room.getMyMembership() === "join") {
+                existingRoom = true;
+            }
+        });
 
         if (existingRoom) {
             Modal.createTrackedDialog('New user by email : Invitation already sent', '', InformationDialog, {
@@ -254,7 +260,7 @@ function directRoomManager(addrs) {
         // Error case (no email nor mxid).
         Modal.createTrackedDialog('Failed to invite user', '', ErrorDialog, {
             title: _t("Failed to invite user"),
-            description: ((err && err.message) ? err.message : _t("Operation failed")),
+            description: _t("Operation failed"),
         });
     }
 }

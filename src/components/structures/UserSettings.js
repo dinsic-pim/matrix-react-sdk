@@ -36,12 +36,13 @@ const SdkConfig = require('../../SdkConfig');
 import Analytics from '../../Analytics';
 import AccessibleButton from '../views/elements/AccessibleButton';
 import { _t, _td } from '../../languageHandler';
+import { isCurrentUserExtern } from '../../Users'
 import * as languageHandler from '../../languageHandler';
 import * as FormattingUtils from '../../utils/FormattingUtils';
 
 // if this looks like a release, use the 'version' from package.json; else use
 // the git sha. Prepend version with v, to look like riot-web version
-const REACT_SDK_VERSION = 'dist' in packageJson ? packageJson.version : packageJson.gitHead || '<local>';
+const REACT_SDK_VERSION = packageJson.version || '<local>';
 
 // Simple method to help prettify GH Release Tags and Commit Hashes.
 const semVerRegex = /^v?(\d+\.\d+\.\d+(?:-rc.+)?)(?:-(?:\d+-g)?([0-9a-fA-F]+))?(?:-dirty)?$/i;
@@ -973,12 +974,6 @@ module.exports = React.createClass({
         CallMediaHandler.setVideoInput(deviceId);
     },
 
-    _isUserExtern: function() {
-        const hsUrl = MatrixClientPeg.get().getHomeserverUrl();
-        return hsUrl.includes('.e.') || hsUrl.includes('.externe.');
-    },
-
-
     _requestMediaPermissions: function(event) {
         const getUserMedia = (
             window.navigator.getUserMedia || window.navigator.webkitGetUserMedia || window.navigator.mozGetUserMedia
@@ -1165,7 +1160,7 @@ module.exports = React.createClass({
             this.state.avatarUrl ? MatrixClientPeg.get().mxcUrlToHttp(this.state.avatarUrl) : null
         );
 
-        let isUserExternam = this._isUserExtern();
+        let isUserExtern = isCurrentUserExtern();
 
         const threepidsSection = this.state.threepids.map((val, pidIndex) => {
             const id = "3pid-" + val.address;
@@ -1215,7 +1210,7 @@ module.exports = React.createClass({
 
         let redlistOptionSection;
 
-        if (!isUserExternam) {
+        if (!isUserExtern) {
             redlistOptionSection = (
                 <div className="mx_UserSettings_redList">
                     <input id="redlistOption"
@@ -1344,11 +1339,11 @@ module.exports = React.createClass({
                     </div>
                     <div className="mx_UserSettings_advanced">
                         { _t('matrix-react-sdk version:') } { (REACT_SDK_VERSION !== '<local>')
-                            ? gHVersionLabel('matrix-org/matrix-react-sdk', REACT_SDK_VERSION)
+                            ? gHVersionLabel('dinsic-pim/matrix-react-sdk', REACT_SDK_VERSION)
                             : REACT_SDK_VERSION
                         }<br />
                         { _t('tchap-web version:') } { (this.state.vectorVersion !== undefined)
-                            ? this.state.vectorVersion
+                            ? gHVersionLabel('dinsic-pim/tchap-web', this.state.vectorVersion)
                             : 'unknown'
                         }<br />
                         { _t("olm version:") } { olmVersionString }<br />

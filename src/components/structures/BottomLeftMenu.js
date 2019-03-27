@@ -22,7 +22,7 @@ import dis from '../../dispatcher';
 import Velocity from 'velocity-vector';
 import 'velocity-vector/velocity.ui';
 import SettingsStore from '../../settings/SettingsStore';
-import MatrixClientPeg from '../../MatrixClientPeg';
+import {isCurrentUserExtern} from '../../Users';
 
 const CALLOUT_ANIM_DURATION = 1000;
 
@@ -151,11 +151,6 @@ module.exports = React.createClass({
         }
     },
 
-    _isUserExtern: function() {
-        const hsUrl = MatrixClientPeg.get().getHomeserverUrl();
-        return hsUrl.includes('.e.') || hsUrl.includes('.externe.');
-    },
-
     _collectPeopleButton: function(e) {
         this._peopleButton = e;
     },
@@ -176,7 +171,7 @@ module.exports = React.createClass({
         const SettingsButton = sdk.getComponent('elements.SettingsButton');
 
         let startChatButtonContent;
-        if (!this._isUserExtern()) {
+        if (!isCurrentUserExtern()) {
             startChatButtonContent = (
                 <div ref={this._collectPeopleButton}>
                     <StartChatButton tooltip={true} />
@@ -185,7 +180,7 @@ module.exports = React.createClass({
         }
 
         let roomDirectoryButtonContent;
-        if (!this._isUserExtern()) {
+        if (!isCurrentUserExtern()) {
             roomDirectoryButtonContent = (
                 <div ref={this._collectDirectoryButton}>
                     <RoomDirectoryButton tooltip={true} />
@@ -194,7 +189,7 @@ module.exports = React.createClass({
         }
 
         let createRoomButtonContent;
-        if (!this._isUserExtern()) {
+        if (!isCurrentUserExtern()) {
             createRoomButtonContent = (
                 <div ref={this._collectCreateRoomButton}>
                     <CreateRoomButton tooltip={true} />

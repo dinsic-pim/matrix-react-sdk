@@ -1222,5 +1222,5 @@
     "Unauthorized email": "Cette adresse e-mail n'est pas autorisée",
     "Register my account on the red list": "Inscrire mon compte sur liste rouge",
     "Other users will not be able to discover my account on their searches": "Les autres utilisateurs ne pourrons pas découvrir mon compte lors de leurs recherches",
-    "Changing your password will reset any end-to-end encryption keys on all of your devices, making encrypted chat history unreadable. Export your room keys from another device before resetting your password.": "Changer le mot de passe va réinitialiser les clés de chiffrement sur tous les appareils, rendant l’historique des salons chiffrés illisible. Exportez vos clés de salon depuis un autre appareil avant de réinitialiser votre mot de passe."
+    "Changing your password will reset any end-to-end encryption keys on all of your devices, making encrypted chat history unreadable. Export your room keys from another device before resetting your password.": "Changer le mot de passe va réinitialiser les clés de chiffrement sur tous les appareils, rendant l’historique des salons chiffrés illisible. Vous pouvez éventuellement exporter vos clés de chiffrement depuis un autre appareil avant de réinitialiser votre mot de passe."
 }

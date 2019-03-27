@@ -254,6 +254,7 @@
     "Decline": "Decline",
     "Accept": "Accept",
     "Error": "Error",
+    "Information": "Information",
     "A text message has been sent to +%(msisdn)s. Please enter the verification code it contains": "A text message has been sent to +%(msisdn)s. Please enter the verification code it contains",
     "Incorrect verification code": "Incorrect verification code",
     "Enter Code": "Enter Code",
@@ -1192,5 +1193,7 @@
     "Back to login screen": "Back to login screen",
     "Unauthorized email": "Unauthorized email",
     "Register my account on the red list": "Register my account on the red list",
-    "Other users will not be able to discover my account on their searches": "Other users will not be able to discover my account on their searches"
+    "Other users will not be able to discover my account on their searches": "Other users will not be able to discover my account on their searches",
+    "You have already sent an invitation to %(email)s.": "You have already sent an invitation to %(email)s.",
+    "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.": "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community."
 }

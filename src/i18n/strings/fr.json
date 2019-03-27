@@ -17,6 +17,7 @@
     "End-to-end encryption is in beta and may not be reliable": "Le chiffrement de bout en bout est en bêta et risque de ne pas être fiable",
     "Enter Code": "Saisir le code",
     "Error": "Erreur",
+    "Information": "Information",
     "Event information": "Informations de l'événement",
     "Existing Call": "Appel en cours",
     "Export E2E room keys": "Exporter les clés de chiffrement de salon",
@@ -1221,5 +1222,7 @@
     "Unable to decrypt: The sender's device has not sent us the keys for this message.": "Déchiffrement impossible : L'utilisateur n'a pas envoyé les clefs de déchiffrement pour ce message.",
     "Unauthorized email": "Cette adresse e-mail n'est pas autorisée",
     "Register my account on the red list": "Inscrire mon compte sur liste rouge",
-    "Other users will not be able to discover my account on their searches": "Les autres utilisateurs ne pourrons pas découvrir mon compte lors de leurs recherches"
+    "Other users will not be able to discover my account on their searches": "Les autres utilisateurs ne pourrons pas découvrir mon compte lors de leurs recherches",
+    "You have already sent an invitation to %(email)s.": "Vous avez déjà envoyé une invitation à %(email)s.",
+    "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.": "Une invitation a été envoyée à %(email)s. Vous recevrez une notification lorsque votre invité rejoindra la communauté Tchap."
 }

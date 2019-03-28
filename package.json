@@ -1,12 +1,12 @@
 {
   "name": "matrix-react-sdk",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "SDK for matrix.org using React",
   "author": "matrix.org",
-  "appVersion": "0.16.0",
+  "appVersion": "1.5.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matrix-org/matrix-react-sdk"
+    "url": "https://github.com/dinsic-pim/matrix-react-sdk"
   },
   "license": "Apache-2.0",
   "main": "lib/index.js",

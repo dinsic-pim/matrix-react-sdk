@@ -78,6 +78,32 @@ module.exports = React.createClass({
         });
     },
 
+    _discoverTchapPlatform(username) {
+        const TCHAP_API_URL = '/_matrix/identity/api/v1/info?medium=email&address=';
+        const TCHAP_HOSTS_BASE = 'https://matrix.';
+        return new Promise((resolve, reject) => {
+            const tchapHostsList = SdkConfig.get()['hs_main_list'];
+            if (tchapHostsList) {
+                const selectedUrl = tchapHostsList[(Math.floor(Math.random() * (tchapHostsList.length)) + 1) - 1];
+                fetch(TCHAP_HOSTS_BASE + selectedUrl + TCHAP_API_URL + username)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.hs) {
+                            resolve(TCHAP_HOSTS_BASE + data.hs);
+                        } else {
+                            reject("ERR_UNAUTHORIZED_EMAIL");
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        reject("ERR_UNREACHABLE_HOMESERVER");
+                    });
+            } else {
+                reject("ERR_EMPTY_HOMESERVER_CONFIG");
+            }
+        });
+    },
+
     onSubmitForm: function(ev) {
         ev.preventDefault();
 
@@ -88,28 +114,35 @@ module.exports = React.createClass({
         } else if (this.state.password !== this.state.password2) {
             this.showErrorDialog(_t('New passwords must match each other.'));
         } else {
-            const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
-            Modal.createTrackedDialog('Forgot Password Warning', '', QuestionDialog, {
-                title: _t('Warning!'),
-                description:
-                    <div>
-                        { _t(
-                          'Changing your password will reset any end-to-end ' +
-                          'encryption keys on all of your devices, making ' +
-                          'encrypted chat history unreadable. ' +
-                          'Export your room keys from another ' +
-                          'device before resetting your password.') }
-                    </div>,
-                button: _t('Continue'),
-                onFinished: (confirmed) => {
-                    if (confirmed) {
-                        this.submitPasswordReset(
-                            this.state.enteredHomeserverUrl, this.state.enteredIdentityServerUrl,
-                            this.state.email, this.state.password,
-                        );
-                    }
-                },
-            });
+            this._discoverTchapPlatform(this.state.email).then(hs => {
+                this.setState({
+                    enteredHomeserverUrl: hs,
+                    enteredIdentityServerUrl: hs
+                });
+            }).finally(() => {
+                const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
+                Modal.createTrackedDialog('Forgot Password Warning', '', QuestionDialog, {
+                    title: _t('Warning!'),
+                    description:
+                        <div>
+                            { _t(
+                                'Changing your password will reset any end-to-end ' +
+                                'encryption keys on all of your devices, making ' +
+                                'encrypted chat history unreadable. ' +
+                                'Export your room keys from another ' +
+                                'device before resetting your password.') }
+                        </div>,
+                    button: _t('Continue'),
+                    onFinished: (confirmed) => {
+                        if (confirmed) {
+                            this.submitPasswordReset(
+                                this.state.enteredHomeserverUrl, this.state.enteredIdentityServerUrl,
+                                this.state.email, this.state.password,
+                            );
+                        }
+                    },
+                });
+            })
         }
     },
 

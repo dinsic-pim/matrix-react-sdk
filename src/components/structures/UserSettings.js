@@ -408,7 +408,7 @@ module.exports = React.createClass({
 
     onPasswordChangeError: function(err) {
         let errMsg = err.error || "";
-        if (err.httpStatus === 403) {
+        if (err.httpStatus === 403 || err.httpStatus === 401) {
             errMsg = _t("Failed to change password. Is your password correct?");
         } else if (err.httpStatus) {
             errMsg += ` (HTTP status ${err.httpStatus})`;

@@ -1180,11 +1180,6 @@ module.exports = React.createClass({
                 </div>
             );
         })
-        const AddPhoneNumber = sdk.getComponent('views.settings.AddPhoneNumber');
-        const addMsisdnSection = (
-            <AddPhoneNumber key="_addMsisdn" onThreepidAdded={this._refreshFromServer} />
-        );
-        threepidsSection.push(addMsisdnSection);
 
         const accountJsx = (
                 <ChangePassword

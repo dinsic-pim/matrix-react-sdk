@@ -28,6 +28,8 @@ import { _t } from '../../../languageHandler';
 
 import sessionStore from '../../../stores/SessionStore';
 
+const MIN_PASSWORD_LENGTH = 8;
+
 module.exports = React.createClass({
     displayName: 'ChangePassword',
     propTypes: {
@@ -61,6 +63,10 @@ module.exports = React.createClass({
                 } else if (!newPass || newPass.length === 0) {
                     return {
                         error: _t("Passwords can't be empty"),
+                    };
+                } else if (newPass.length < MIN_PASSWORD_LENGTH) {
+                    return {
+                        error: _t('Password too short (min %(MIN_PASSWORD_LENGTH)s).', {MIN_PASSWORD_LENGTH}),
                     };
                 }
             },

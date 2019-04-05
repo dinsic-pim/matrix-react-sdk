@@ -703,27 +703,6 @@ module.exports = React.createClass({
                                             showEmpty={showEmpty} />;
                     }
                 }) }
-
-                <RoomSubList list={self.state.lists['im.vector.fake.archived']}
-                             emptyContent={self.props.collapsed ? null :
-                                 <div className="mx_RoomList_emptySubListTip_container">
-                                     <div className="mx_RoomList_emptySubListTip">
-                                         { _t('You have no historical rooms') }
-                                     </div>
-                                 </div>
-                             }
-                             label={_t('Historical')}
-                             editable={false}
-                             order="recent"
-                             collapsed={self.props.collapsed}
-                             alwaysShowHeader={true}
-                             startAsHidden={true}
-                             showSpinner={self.state.isLoadingLeftRooms}
-                             onHeaderClick={self.onArchivedHeaderClick}
-                             incomingCall={self.state.incomingCall}
-                             searchFilter={self.props.searchFilter}
-                             onShowMoreRooms={self.onShowMoreRooms}
-                             showEmpty={showEmpty} />
             </div>
             </GeminiScrollbarWrapper>
         );

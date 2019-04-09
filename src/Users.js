@@ -18,7 +18,7 @@ export function isCurrentUserExtern() {
  */
 export function isUserExtern(userId) {
 	return userId ? (
-		userId.split(':')[1].startsWith('e.') ||
-		userId.split(':')[1].startsWith('externe.')
+		userId.split(':')[1].startsWith('agent.e.') ||
+		userId.split(':')[1].startsWith('agent.externe.')
 	) : false;
 }

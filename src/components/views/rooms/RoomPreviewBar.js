@@ -74,16 +74,25 @@ module.exports = React.createClass({
         // If this is an invite and we've been told what email
         // address was invited, fetch the user's list of 3pids
         // so we can check them against the one that was invited
-        if (this.props.inviterName && this.props.invitedEmail) {
+        if (this.props.inviterName) {
             this.setState({busy: true});
-            MatrixClientPeg.get().lookupThreePid(
-                'email', this.props.invitedEmail,
+            if (this.props.invitedEmail) {
+                MatrixClientPeg.get().lookupThreePid(
+                    'email', this.props.invitedEmail,
+                ).finally(() => {
+                    this.setState({busy: false});
+                }).done((result) => {
+                    this.setState({invitedEmailMxid: result.mxid});
+                }, (err) => {
+                    this.setState({threePidFetchError: err});
+                });
+            }
+            MatrixClientPeg.get().getProfileInfo(
+                this.props.inviterName
             ).finally(() => {
                 this.setState({busy: false});
-            }).done((result) => {
-                this.setState({invitedEmailMxid: result.mxid});
-            }, (err) => {
-                this.setState({threePidFetchError: err});
+            }).done((data) => {
+                this.setState({realName: data.displayname});
             });
         }
     },
@@ -110,6 +119,7 @@ module.exports = React.createClass({
         const myMember = this.props.room ?
             this.props.room.getMember(MatrixClientPeg.get().getUserId()) :
             null;
+        const fullName = this.state.realName;
         const kicked = myMember && myMember.isKicked();
         const banned = myMember && myMember && myMember.membership == 'ban';
 
@@ -138,7 +148,7 @@ module.exports = React.createClass({
             joinBlock = (
                 <div>
                     <div className="mx_RoomPreviewBar_invite_text">
-                        { _t('You have been invited to join this room by %(inviterName)s', {inviterName: this.props.inviterName}) }
+                        { _t('You have been invited to join this room by %(inviterName)s', {inviterName: fullName}) }
                     </div>
                     <div className="mx_RoomPreviewBar_join_text">
                         { _t(

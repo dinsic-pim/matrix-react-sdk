@@ -295,6 +295,7 @@ module.exports = React.createClass({
     },
 
     render: function() {
+        const cli = MatrixClientPeg.get();
         const isInvite = this.props.room.getMyMembership() === "invite";
         const notificationCount = this.props.notificationCount;
         // var highlightCount = this.props.room.getUnreadNotificationCount("highlight");
@@ -374,21 +375,15 @@ module.exports = React.createClass({
         //}
 
         let contextMenuButton;
-        if (!MatrixClientPeg.get().isGuest()) {
+        if (!cli.isGuest()) {
             contextMenuButton = <AccessibleButton className="mx_RoomTile_menuButton" onClick={this.onOpenMenu} />;
         }
 
         const RoomAvatar = sdk.getComponent('avatars.RoomAvatar');
 
-        let dmIndicator;
-        if (this._isDirectMessageRoom(this.props.room.roomId)) {
-            dmIndicator = <img
-                src={require("../../../../res/img/icon_person.svg")}
-                className="mx_RoomTile_dm"
-                width="11"
-                height="13"
-                alt="dm"
-            />;
+        let encryptedIndicator;
+        if (cli.isRoomEncrypted(this.props.room.roomId)) {
+            encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-encrypted_room.svg")} className="mx_RoomTile_dm" width="10" height="12" alt="encrypted" />;
         }
 
         return <AccessibleButton tabIndex="0"
@@ -401,7 +396,7 @@ module.exports = React.createClass({
             <div className={avatarClasses}>
                 <div className="mx_RoomTile_avatar_container">
                     <RoomAvatar room={this.props.room} width={24} height={24} />
-                    { dmIndicator }
+                    { encryptedIndicator }
                 </div>
             </div>
             <div className="mx_RoomTile_nameContainer">

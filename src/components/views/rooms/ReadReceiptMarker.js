@@ -191,14 +191,13 @@ module.exports = React.createClass({
             if (!this.props.member || this.props.fallbackUserId === this.props.member.rawDisplayName) {
                 title = _t(
                     "Seen by %(userName)s at %(dateTime)s",
-                    {userName: this.props.fallbackUserId,
+                    {userName: this.props.member.rawDisplayName,
                     dateTime: dateString},
                 );
             } else {
                 title = _t(
-                    "Seen by %(displayName)s (%(userName)s) at %(dateTime)s",
+                    "Seen by %(displayName)s at %(dateTime)s",
                     {displayName: this.props.member.rawDisplayName,
-                    userName: this.props.fallbackUserId,
                     dateTime: dateString},
                 );
             }

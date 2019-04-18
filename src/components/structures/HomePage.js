@@ -29,6 +29,7 @@ import CreateRoomButton from "../views/elements/CreateRoomButton";
 import SettingsButton from "../views/elements/SettingsButton";
 import SdkConfig from '../../SdkConfig';
 import p from '../../../package';
+import * as Users from '../../Users';
 
 class HomePage extends React.Component {
     static displayName = 'HomePage';
@@ -105,6 +106,49 @@ class HomePage extends React.Component {
             const TintableSvg = sdk.getComponent("elements.TintableSvg");
             const faqUrl = `${SdkConfig.get()['host_url']}/faq/`;
             const version = p.appVersion;
+            const isUserExtern = Users.isCurrentUserExtern();
+
+            const welcomePageRowOne = (
+                <div className="tc_HomePage_GroupElement tc_HomePage_ThreeGroupElement">
+                    <div className="tc_HomePage_Element">
+                        <div className="tc_HomePage_Element_Button tc_HomePage_Element_StartChat">
+                            <StartChatButton size="160" callout={true}/>
+                        </div>
+                        <hr />
+                        <span className="tc_HomePage_Element_Descr">Rechercher un utilisateur Tchap<br />et lancer une discussion<br />(ou inviter un contact par son courriel)</span>
+                    </div>
+                    <div className="tc_HomePage_Element">
+                        <div className="tc_HomePage_Element_Button tc_HomePage_Element_CreateRoom">
+                            <CreateRoomButton size="160" callout={true}/>
+                        </div>
+                        <hr />
+                        <span className="tc_HomePage_Element_Descr">Créer un salon<br />et inviter des utilisateurs<br />à le rejoindre</span>
+                    </div>
+                    <div className="tc_HomePage_Element">
+                        <div className="tc_HomePage_Element_Button tc_HomePage_Element_RoomDirectory">
+                            <RoomDirectoryButton size="160" callout={true}/>
+                        </div>
+                        <hr />
+                        <span className="tc_HomePage_Element_Descr">Consulter la liste<br />et rejoindre un salon public</span>
+                    </div>
+                </div>
+            );
+
+            const welcomePageRowTwo = (
+                <div className="tc_HomePage_GroupElement tc_HomePage_TwoGroupElement">
+                    <div className="tc_HomePage_Element">
+                        <div className="tc_HomePage_Element_Button tc_HomePage_Element_Settings">
+                            <SettingsButton size="120" callout={true}/>
+                        </div>
+                        <hr />
+                        <span className="tc_HomePage_Element_Descr">Personnaliser le compte,<br />changer le mot de passe,<br />gérer les notifications, se déconnecter,...</span>
+                    </div>
+                    <div className="tc_HomePage_Element">
+                        <a href={faqUrl} className="tc_HomePage_Element_Button tc_HomePage_Element_Faq" target="_blank"></a>
+                        <hr />
+                    </div>
+                </div>
+            );
 
             return (
                 <GeminiScrollbarWrapper autoshow={true} className="tc_HomePage">
@@ -112,42 +156,8 @@ class HomePage extends React.Component {
                         <TintableSvg src="img/logos/tchap-logo.svg" width="120" height="120" />
                         <p className="tc_HomePage_GroupElement_Descr">Tchap</p>
                     </div>
-                    <div className="tc_HomePage_GroupElement tc_HomePage_ThreeGroupElement">
-                        <div className="tc_HomePage_Element">
-                            <div className="tc_HomePage_Element_Button tc_HomePage_Element_StartChat">
-                                <StartChatButton size="160" callout={true}/>
-                            </div>
-                            <hr />
-                            <span className="tc_HomePage_Element_Descr">Rechercher un utilisateur Tchap<br />et lancer une discussion<br />(ou inviter un contact par son courriel)</span>
-                        </div>
-                        <div className="tc_HomePage_Element">
-                            <div className="tc_HomePage_Element_Button tc_HomePage_Element_CreateRoom">
-                                <CreateRoomButton size="160" callout={true}/>
-                            </div>
-                            <hr />
-                            <span className="tc_HomePage_Element_Descr">Créer un salon<br />et inviter des utilisateurs<br />à le rejoindre</span>
-                        </div>
-                        <div className="tc_HomePage_Element">
-                            <div className="tc_HomePage_Element_Button tc_HomePage_Element_RoomDirectory">
-                                <RoomDirectoryButton size="160" callout={true}/>
-                            </div>
-                            <hr />
-                            <span className="tc_HomePage_Element_Descr">Consulter la liste<br />et rejoindre un salon public</span>
-                        </div>
-                    </div>
-                    <div className="tc_HomePage_GroupElement tc_HomePage_TwoGroupElement">
-                        <div className="tc_HomePage_Element">
-                            <div className="tc_HomePage_Element_Button tc_HomePage_Element_Settings">
-                                <SettingsButton size="120" callout={true}/>
-                            </div>
-                            <hr />
-                            <span className="tc_HomePage_Element_Descr">Personnaliser le compte,<br />changer le mot de passe,<br />gérer les notifications, se déconnecter,...</span>
-                        </div>
-                        <div className="tc_HomePage_Element">
-                            <a href={faqUrl} className="tc_HomePage_Element_Button tc_HomePage_Element_Faq" target="_blank"></a>
-                            <hr />
-                        </div>
-                    </div>
+                    {isUserExtern ? null : welcomePageRowOne}
+                    {isUserExtern ? null : welcomePageRowTwo}
                     <div className="tc_HomePage_Version">Version {version}</div>
                 </GeminiScrollbarWrapper>
             );

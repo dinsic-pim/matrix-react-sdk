@@ -1,6 +1,5 @@
 import MatrixClientPeg from "../MatrixClientPeg";
 import 'isomorphic-fetch';
-import {PkEncryption} from "olm";
 import Promise from "bluebird";
 import {decryptFile} from "./DecryptFile";
 
@@ -57,7 +56,7 @@ export async function scanContent(content) {
 		let body;
 		if (publicKey) {
 			// Setting up the encryption
-			const encryption = new PkEncryption();
+			const encryption = new global.Olm.PkEncryption();
 			encryption.set_recipient_key(publicKey);
 			body = {encrypted_body: encryption.encrypt(JSON.stringify({file: content.file}))};
 		} else {

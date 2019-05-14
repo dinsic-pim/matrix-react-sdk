@@ -379,16 +379,6 @@ export const CommandMap = {
         },
     }),
 
-    devtools: new Command({
-        name: 'devtools',
-        description: _td('Opens the Developer Tools dialog'),
-        runFn: function(roomId) {
-            const DevtoolsDialog = sdk.getComponent('dialogs.DevtoolsDialog');
-            Modal.createDialog(DevtoolsDialog, {roomId});
-            return success();
-        },
-    }),
-
     // Verify a user, device, and pubkey tuple
     verify: new Command({
         name: 'verify',

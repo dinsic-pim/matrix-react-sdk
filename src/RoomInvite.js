@@ -60,7 +60,7 @@ export function showStartChatInviteDialog() {
         validAddressTypes: ['mx-user-id'],
         button: _t("Start Chat"),
         invitationType: 'direct',
-        onFinished: _onStartChatFinished,
+        onFinished: onStartChatFinished,
     });
 }
 
@@ -266,7 +266,7 @@ function directRoomManager(addrs) {
 }
 
 
-function _onStartChatFinished(shouldInvite, addrs) {
+export function onStartChatFinished(shouldInvite, addrs) {
     if (!shouldInvite) return;
     const addrTexts = addrs.map((addr) => addr.address);
 

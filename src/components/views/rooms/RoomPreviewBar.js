@@ -79,16 +79,14 @@ module.exports = React.createClass({
             if (this.props.invitedEmail) {
                 MatrixClientPeg.get().lookupThreePid(
                     'email', this.props.invitedEmail,
-                ).finally(() => {
-                    this.setState({busy: false});
-                }).done((result) => {
+                ).done((result) => {
                     this.setState({invitedEmailMxid: result.mxid});
                 }, (err) => {
                     this.setState({threePidFetchError: err});
                 });
             }
             MatrixClientPeg.get().getProfileInfo(
-                this.props.inviterName
+                this.props.inviterName,
             ).finally(() => {
                 this.setState({busy: false});
             }).done((data) => {

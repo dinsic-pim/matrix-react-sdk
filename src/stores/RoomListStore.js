@@ -577,7 +577,6 @@ class RoomListStore extends Store {
                         lists[tagName].push({room, category: category});
                     }
                 } else if (dmUserId) {
-                    // "Direct Message" rooms (that we're still in and that aren't otherwise tagged)
                     if (!Email.looksValid(dmUserId)) {
                         lists["im.vector.fake.direct"].push({room, category: this._calculateCategory(room)});
                     }

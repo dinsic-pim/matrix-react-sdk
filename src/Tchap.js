@@ -12,7 +12,7 @@ class Tchap {
      * @returns {Object}
      */
     static lookupThreePid(medium, address) {
-        const hostBase = "https://matrix.";
+        const hostBase = "https://";
         const lookupUrl = "/_matrix/client/unstable/account/3pid/lookup";
         const homeserverUrl = MatrixClientPeg.get().getHomeserverUrl();
         const homeserverName = MatrixClientPeg.get().getIdentityServerUrl().split(hostBase)[1];
@@ -25,11 +25,17 @@ class Tchap {
             },
         };
 
-        return fetch(url, options).then(res => res.json())
-            .catch(err => {
+        return fetch(url, options).then(res => {
+            if (res.status && res.status !== 200) {
                 console.log("Lookup : Use the MatrixClientPeg lookup");
                 return MatrixClientPeg.get().lookupThreePid(medium, address);
-            });
+            } else {
+                return res.json();
+            }
+        }).catch(err => {
+            console.log("Lookup : Use the MatrixClientPeg lookup");
+            return MatrixClientPeg.get().lookupThreePid(medium, address);
+        });
     }
 }
 

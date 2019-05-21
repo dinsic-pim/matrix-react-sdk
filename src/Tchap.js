@@ -27,9 +27,8 @@ class Tchap {
 
         return fetch(url, options).then(res => res.json())
             .catch(err => {
-                if (err) {
-                    return MatrixClientPeg.get().lookupThreePid(medium, address);
-                }
+                console.log("Lookup : Use the MatrixClientPeg lookup");
+                return MatrixClientPeg.get().lookupThreePid(medium, address);
             });
     }
 }

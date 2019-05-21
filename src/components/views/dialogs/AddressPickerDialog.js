@@ -23,6 +23,7 @@ import MatrixClientPeg from '../../../MatrixClientPeg';
 import Promise from 'bluebird';
 import { addressTypes, getAddressType } from '../../../UserAddress.js';
 import GroupStore from '../../../stores/GroupStore';
+import Tchap from '../../../Tchap';
 
 const TRUNCATE_QUERY_LIST = 40;
 const QUERY_USER_DIRECTORY_DEBOUNCE_MS = 200;
@@ -494,7 +495,7 @@ module.exports = React.createClass({
         // wait a bit to let the user finish typing
         return Promise.delay(500).then(() => {
             if (cancelled) return null;
-            return MatrixClientPeg.get().lookupThreePid(medium, address);
+            return Tchap.lookupThreePid(medium, address);
         }).then((res) => {
             if (res === null || !res.mxid) return null;
             if (cancelled) return null;

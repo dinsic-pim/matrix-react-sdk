@@ -24,6 +24,7 @@ import sdk from './';
 import dis from './dispatcher';
 import DMRoomMap from './utils/DMRoomMap';
 import { _t } from './languageHandler';
+import Tchap from './Tchap'
 
 export function inviteToRoom(roomId, addr) {
     const addrType = getAddressType(addr);
@@ -178,7 +179,7 @@ function directRoomManager(addrs) {
     const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
 
     if (addrKnown === true) {
-        matrixClient.lookupThreePid(addrType, addrTexts).then(res => {
+        Tchap.lookupThreePid(addrType, addrTexts).then(res => {
             const invitedUserId = Object.entries(res).length === 0 ? addrTexts : res.mxid;
             const selectedRoom = selectRoom(invitedUserId);
             const roomStatus = selectedRoom ? selectedRoom.status : null;

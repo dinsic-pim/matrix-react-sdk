@@ -19,6 +19,7 @@ limitations under the License.
 
 const React = require('react');
 import PropTypes from 'prop-types';
+import Tchap from '../../../Tchap';
 const sdk = require('../../../index');
 const MatrixClientPeg = require('../../../MatrixClientPeg');
 
@@ -73,7 +74,7 @@ module.exports = React.createClass({
         if (this.props.inviterName) {
             if (this.props.invitedEmail) {
                 this.setState({busy: true});
-                MatrixClientPeg.get().lookupThreePid(
+                Tchap.lookupThreePid(
                     'email', this.props.invitedEmail,
                 ).finally(() => {
                     this.setState({busy: false});

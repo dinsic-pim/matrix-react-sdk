@@ -527,7 +527,7 @@ module.exports = withMatrixClient(React.createClass({
     },
 
     onNewDMClick: function() {
-        onStartChatFinished(true, this._buildAddrObject(this.props.member.userId));
+        onStartChatFinished(true, this._buildAddrObject());
     },
 
     onLeaveClick: function() {

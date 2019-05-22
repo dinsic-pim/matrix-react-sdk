@@ -673,7 +673,6 @@ module.exports = withMatrixClient(React.createClass({
 
         let ignoreButton = null;
         let insertPillButton = null;
-        let inviteUserButton = null;
         let readReceiptButton = null;
         let sendMessage = null;
 
@@ -719,27 +718,6 @@ module.exports = withMatrixClient(React.createClass({
                 );
             }
 
-            if (!member || !member.membership || member.membership === 'leave') {
-                const roomId = member && member.roomId ? member.roomId : RoomViewStore.getRoomId();
-                const onInviteUserButton = async () => {
-                    try {
-                        await cli.invite(roomId, member.userId);
-                    } catch (err) {
-                        const ErrorDialog = sdk.getComponent('dialogs.ErrorDialog');
-                        Modal.createTrackedDialog('Failed to invite', '', ErrorDialog, {
-                            title: _t('Failed to invite'),
-                            description: ((err && err.message) ? err.message : "Operation failed"),
-                        });
-                    }
-                };
-
-                inviteUserButton = (
-                    <AccessibleButton onClick={onInviteUserButton} className="mx_MemberInfo_field">
-                        { _t('Invite') }
-                    </AccessibleButton>
-                );
-            }
-
             if (!isDirect && !(userExtern && otherUserExtern)) {
                 sendMessage = (
                     <AccessibleButton onClick={this.onNewDMClick} className={"mx_MemberInfo_field"}>
@@ -756,7 +734,6 @@ module.exports = withMatrixClient(React.createClass({
                     { readReceiptButton }
                     { insertPillButton }
                     { ignoreButton }
-                    { inviteUserButton }
                     { sendMessage }
                 </div>
             </div>

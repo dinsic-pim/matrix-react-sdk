@@ -142,28 +142,6 @@ module.exports = React.createClass({
         });
     },
 
-    onEnableEmailNotificationsChange: function(address, event) {
-        let emailPusherPromise;
-        if (event.target.checked) {
-            const data = {}
-            data['brand'] = this.props.brand || 'Riot';
-            emailPusherPromise = UserSettingsStore.addEmailPusher(address, data);
-        } else {
-            const emailPusher = UserSettingsStore.getEmailPusher(this.state.pushers, address);
-            emailPusher.kind = null;
-            emailPusherPromise = MatrixClientPeg.get().setPusher(emailPusher);
-        }
-        emailPusherPromise.done(() => {
-            this._refreshFromServer();
-        }, (error) => {
-            const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
-            Modal.createTrackedDialog('Error saving email notification preferences', '', ErrorDialog, {
-                title: _t('Error saving email notification preferences'),
-                description: _t('An error occurred whilst saving your email notification preferences.'),
-            });
-        });
-    },
-
     onNotifStateButtonClicked: function(event) {
         // FIXME: use .bind() rather than className metadata here surely
         const vectorRuleId = event.target.className.split("-")[0];
@@ -697,24 +675,6 @@ module.exports = React.createClass({
         return rows;
     },
 
-    emailNotificationsRow: function(address, label) {
-        return (<div className="mx_UserNotifSettings_tableRow">
-            <div className="mx_UserNotifSettings_inputCell">
-                <input id="enableEmailNotifications_{address}"
-                    ref="enableEmailNotifications_{address}"
-                    type="checkbox"
-                    checked={ UserSettingsStore.hasEmailPusher(this.state.pushers, address) }
-                    onChange={ this.onEnableEmailNotificationsChange.bind(this, address) }
-                />
-            </div>
-            <div className="mx_UserNotifSettings_labelCell">
-                <label htmlFor="enableEmailNotifications_{address}">
-                    {label}
-                </label>
-            </div>
-        </div>);
-    },
-
     render: function() {
         const self = this;
 
@@ -756,20 +716,6 @@ module.exports = React.createClass({
                         { _t('All notifications are currently disabled for all targets.') }.
                     </div>
                 </div>
-            );
-        }
-
-        const emailThreepids = this.props.threepids.filter((tp) => tp.medium === "email");
-        let emailNotificationsRow;
-        if (emailThreepids.length === 0) {
-            emailNotificationsRow = <div>
-                { _t('Add an email address above to configure email notifications') }
-            </div>;
-        } else {
-            // This only supports the first email address in your profile for now
-            emailNotificationsRow = this.emailNotificationsRow(
-                emailThreepids[0].address,
-                `${_t('Enable email notifications')} (${emailThreepids[0].address})`
             );
         }
 
@@ -886,8 +832,6 @@ module.exports = React.createClass({
                             </label>
                         </div>
                     </div>
-
-                    { emailNotificationsRow }
 
                     <div className="mx_UserNotifSettings_pushRulesTableWrapper">
                         <table className="mx_UserNotifSettings_pushRulesTable">

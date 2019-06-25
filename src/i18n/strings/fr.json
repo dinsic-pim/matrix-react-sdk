@@ -1226,5 +1226,10 @@
     "Changing your password will reset any end-to-end encryption keys on all of your devices, making encrypted chat history unreadable. Export your room keys from another device before resetting your password.": "Changer le mot de passe va réinitialiser les clés de chiffrement sur tous les appareils, rendant l’historique des salons chiffrés illisible. Vous pouvez éventuellement exporter vos clés de chiffrement depuis un autre appareil avant de réinitialiser votre mot de passe.",
     "You have already sent an invitation to %(email)s.": "Vous avez déjà envoyé une invitation à %(email)s.",
     "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.": "Une invitation a été envoyée à %(email)s. Vous recevrez une notification lorsque votre invité rejoindra la communauté Tchap.",
-    "Send a message": "Envoyer un message"
+    "Send a message": "Envoyer un message",
+    "The validity period of your account has expired": "La durée de validité de votre compte a expiré",
+    "The validity period of your account has expired. An email has been sent to you in order to renew it. Once you’ve followed the link it contains, click below.": "La durée de validité de votre compte a expiré. Un email vous a été envoyé pour la renouveler. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.",
+    "An email has been sent to you. Once you’ve followed the link it contains, click below.": "Un e-mail vous a été envoyé. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.",
+    "I renewed the validity of my account": "J’ai renouvelé mon compte",
+    "Request a renewal email": "Demander l’envoi d’un nouvel email"
 }

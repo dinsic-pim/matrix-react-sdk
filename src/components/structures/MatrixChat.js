@@ -1225,6 +1225,8 @@ export default React.createClass({
         this.firstSyncComplete = false;
         this.firstSyncPromise = Promise.defer();
         const cli = MatrixClientPeg.get();
+        let expiredAccount = false;
+        let expiredAccountTest = false;
 
         // Allow the JS SDK to reap timeline events. This reduces the amount of
         // memory consumed as the JS SDK stores multiple distinct copies of room
@@ -1248,25 +1250,47 @@ export default React.createClass({
             return self._loggedInView.child.canResetTimelineInRoom(roomId);
         });
 
-        cli.on('sync', function(state, prevState) {
+        cli.on('sync', function(state, prevState, data) {
             // LifecycleStore and others cannot directly subscribe to matrix client for
             // events because flux only allows store state changes during flux dispatches.
             // So dispatch directly from here. Ideally we'd use a SyncStateStore that
             // would do this dispatch and expose the sync state itself (by listening to
             // its own dispatch).
-            dis.dispatch({action: 'sync_state', prevState, state});
-            self.updateStatusIndicator(state, prevState);
-            if (state === "SYNCING" && prevState === "SYNCING") {
-                return;
+
+            console.error("STATE-STATE-STATE-STATE-STATE-STATE-STATE-STATE-STATE-STATE-");
+            console.error(state);
+            console.error(data);
+
+            if (!expiredAccount) {
+                if (data.error && data.error.errcode === "ORG_MATRIX_EXPIRED_ACCOUNT") {
+                //if (!expiredAccountTest) {
+                    expiredAccount = true;
+                    MatrixClientPeg.get().stopClient();
+                    MatrixClientPeg.get().store.deleteAllData().done();
+                    const ExpiredAccountDialog = sdk.getComponent("dialogs.ExpiredAccountDialog");
+                    Modal.createTrackedDialog('Expired Account Dialog', '', ExpiredAccountDialog, {
+                        onFinished: () => {
+                            MatrixClientPeg.start();
+                            expiredAccount = false;
+                            expiredAccountTest = true
+                        },
+                    });
+                }
+
+                dis.dispatch({action: 'sync_state', prevState, state});
+                self.updateStatusIndicator(state, prevState);
+                if (state === "SYNCING" && prevState === "SYNCING") {
+                    return;
+                }
+                console.log("MatrixClient sync state => %s", state);
+                if (state !== "PREPARED") { return; }
+
+                self.firstSyncComplete = true;
+                self.firstSyncPromise.resolve();
+
+                dis.dispatch({action: 'focus_composer'});
+                self.setState({ready: true});
             }
-            console.log("MatrixClient sync state => %s", state);
-            if (state !== "PREPARED") { return; }
-
-            self.firstSyncComplete = true;
-            self.firstSyncPromise.resolve();
-
-            dis.dispatch({action: 'focus_composer'});
-            self.setState({ready: true});
         });
         cli.on('Call.incoming', function(call) {
             // we dispatch this synchronously to make sure that the event

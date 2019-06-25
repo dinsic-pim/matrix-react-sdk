@@ -49,9 +49,6 @@ class Tchap {
                 Authorization: `Bearer ${accessToken}`,
             },
         };
-
-        console.error("urlurlurlurlurlurlurlurlurlurlurlurlurl");
-        console.error(url);
         const res = await fetch(url, options);
         const json = await res.json();
     }

@@ -36,7 +36,9 @@ export default React.createClass({
             visibility: 'private',
             isPublic: false,
             federate: false,
-            domain: domain
+            domain: domain,
+            externAllowed: false,
+            externAllowedSwitchDisabled: false
         };
     },
 
@@ -57,7 +59,8 @@ export default React.createClass({
         let opts = {
           visibility: this.state.visibility,
           preset: this.state.visibility === 'public' ? 'public_chat' : 'private_chat',
-          noFederate: this.refs.checkbox ? this.refs.checkbox.checked : null
+          noFederate: this.refs.checkbox ? this.refs.checkbox.checked : null,
+          access_rules: this.state.externAllowed === true ? 'unrestricted' : 'restricted'
         };
         this.props.onFinished(true, this.refs.textinput.value, opts);
       }
@@ -68,10 +71,26 @@ export default React.createClass({
     },
 
     _onRoomVisibilityRadioToggle: function(ev) {
+        if (ev.target.value === "public") {
+            this.setState({
+                externAllowed: false,
+                externAllowedSwitchDisabled: true,
+                visibility: ev.target.value
+            });
+        } else {
+            this.setState({
+                externAllowedSwitchDisabled: false,
+                visibility: ev.target.value
+            });
+        }
+    },
+
+    _onExternAllowedCheckboxChange: function() {
         this.setState({
-            visibility: ev.target.value
+            externAllowed: this.refs.externOpen.checked
         });
     },
+
 
     render: function() {
         const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
@@ -120,9 +139,14 @@ export default React.createClass({
                         </label>
                         <br />
                         <br />
-
+                        <label htmlFor="externOpen"> { _t('Allow the externals to join this room') } : </label>
+                        <input type="checkbox" name="externOpen" ref="externOpen"
+                               onChange={this._onExternAllowedCheckboxChange}
+                               checked={this.state.externAllowed}
+                               disabled={this.state.externAllowedSwitchDisabled} />
+                        <br />
+                        <br />
                         { federationOption }
-
                     </div>
                 </form>
                 <DialogButtons primaryButton={_t('Create Room')}

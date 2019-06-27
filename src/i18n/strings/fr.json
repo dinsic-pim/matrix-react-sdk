@@ -1226,5 +1226,6 @@
     "Changing your password will reset any end-to-end encryption keys on all of your devices, making encrypted chat history unreadable. Export your room keys from another device before resetting your password.": "Changer le mot de passe va réinitialiser les clés de chiffrement sur tous les appareils, rendant l’historique des salons chiffrés illisible. Vous pouvez éventuellement exporter vos clés de chiffrement depuis un autre appareil avant de réinitialiser votre mot de passe.",
     "You have already sent an invitation to %(email)s.": "Vous avez déjà envoyé une invitation à %(email)s.",
     "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.": "Une invitation a été envoyée à %(email)s. Vous recevrez une notification lorsque votre invité rejoindra la communauté Tchap.",
-    "Send a message": "Envoyer un message"
+    "Send a message": "Envoyer un message",
+    "Allow the externals to join this room": "Autoriser l’accès aux externes à ce salon"
 }

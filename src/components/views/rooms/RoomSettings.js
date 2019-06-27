@@ -143,6 +143,8 @@ module.exports = React.createClass({
             // Default to false if it's undefined, otherwise react complains about changing
             // components from uncontrolled to controlled
             isRoomPublished: this._originalIsRoomPublished || false,
+            access_rules: this._yankValueFromEvent("im.vector.room.access_rules", "rule"),
+            externAllowed: false,
         };
     },
 
@@ -243,6 +245,14 @@ module.exports = React.createClass({
             promises.push(MatrixClientPeg.get().sendStateEvent(
                 roomId, "m.room.history_visibility",
                 { history_visibility: this.state.history_visibility },
+                "",
+            ));
+        }
+
+        if (this.state.access_rules !== originalState.access_rules) {
+            promises.push(MatrixClientPeg.get().sendStateEvent(
+                roomId, "im.vector.room.access_rules",
+                { rule: this.state.access_rules },
                 "",
             ));
         }
@@ -584,6 +594,27 @@ module.exports = React.createClass({
         }
     },
 
+    _onExternUserSettingChange: function() {
+        const self = this;
+        const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
+        Modal.createTrackedDialog('Reject invitation', '', QuestionDialog, {
+            title: _t('Reject invitation'),
+            description: _t('Are you sure you want to reject the invitation?'),
+            onFinished: (confirm) => {
+                if (confirm) {
+                    self.setState({
+                        access_rules: 'unrestricted'
+                    });
+                    MatrixClientPeg.get().sendStateEvent(
+                        self.props.room.roomId, "im.vector.room.access_rules",
+                        { rule: 'unrestricted' },
+                        "",
+                    )
+                }
+            },
+        });
+    },
+
     _renderEncryptionSection: function() {
         const SettingsFlag = sdk.getComponent("elements.SettingsFlag");
 
@@ -841,6 +872,19 @@ module.exports = React.createClass({
                 </div>;
         }
 
+        let externUserSection = null;
+        if (this.state.join_rule !== "public") {
+            externUserSection = (
+                <div>
+                    <label htmlFor="externOpen"> { _t('Allow the externals to join this room') } : </label>
+                    <input type="checkbox" name="externOpen" ref="externOpen"
+                           onChange={this._onExternUserSettingChange}
+                           checked={this.state.access_rules === 'unrestricted'}
+                           disabled={this.state.access_rules === 'unrestricted'} />
+                </div>
+            );
+        }
+
         // If there is no history_visibility, it is assumed to be 'shared'.
         // http://matrix.org/docs/spec/r0.0.0/client_server.html#id31
         const historyVisibility = this.state.history_visibility || "shared";
@@ -934,6 +978,8 @@ module.exports = React.createClass({
                 { leaveButton }
 
                 { tagsSection }
+
+                { externUserSection }
 
                 <div>
                     <h3>{ _t('Room Colour') }</h3>

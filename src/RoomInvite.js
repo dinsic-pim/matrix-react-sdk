@@ -73,6 +73,7 @@ export function showRoomInviteDialog(roomId) {
         button: _t('Send Invites'),
         placeholder: _t("Name"),
         invitationType: 'room',
+        roomId: roomId,
         onFinished: (shouldInvite, addrs) => {
             _onRoomInviteFinished(roomId, shouldInvite, addrs);
         },

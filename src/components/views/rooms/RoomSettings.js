@@ -143,7 +143,7 @@ module.exports = React.createClass({
             // Default to false if it's undefined, otherwise react complains about changing
             // components from uncontrolled to controlled
             isRoomPublished: this._originalIsRoomPublished || false,
-            access_rules: this._yankValueFromEvent("im.vector.room.access_rules", "rule"),
+            access_rules: this._yankValueFromEvent("im.vector.room.access_rules", "rule", "restricted"),
             externAllowed: false,
         };
     },
@@ -598,8 +598,8 @@ module.exports = React.createClass({
         const self = this;
         const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
         Modal.createTrackedDialog('Reject invitation', '', QuestionDialog, {
-            title: _t('Reject invitation'),
-            description: _t('Are you sure you want to reject the invitation?'),
+            title: _t('Allow the externals to join this room'),
+            description: ( _t('This action is irreversible.') + " " +_t('Are you sure you want to allow the externals to join this room ?')),
             onFinished: (confirm) => {
                 if (confirm) {
                     self.setState({

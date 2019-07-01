@@ -1198,5 +1198,7 @@
     "You have already sent an invitation to %(email)s.": "You have already sent an invitation to %(email)s.",
     "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.": "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.",
     "Send a message": "Send a message",
-    "Allow the externals to join this room": "Allow the externals to join this room"
+    "Allow the externals to join this room": "Allow the externals to join this room",
+    "This action is irreversible.": "This action is irreversible.",
+    "Are you sure you want to allow the externals to join this room ?": "Are you sure you want to allow the externals to join this room ?"
 }

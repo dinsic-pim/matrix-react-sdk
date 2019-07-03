@@ -1198,6 +1198,7 @@
     "You have already sent an invitation to %(email)s.": "You have already sent an invitation to %(email)s.",
     "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.": "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.",
     "Send a message": "Send a message",
+    "To disable this option, you must accept that your email address is visible to the other users.": "To disable this option, you must accept that your email address is visible to the other users.",
     "The validity period of your account has expired": "The validity period of your account has expired",
     "The validity period of your account has expired. An email has been sent to you in order to renew it. Once you’ve followed the link it contains, click below.": "The validity period of your account has expired. An email has been sent to you in order to renew it. Once you’ve followed the link it contains, click below.",
     "An email has been sent to you. Once you’ve followed the link it contains, click below.": "An email has been sent to you. Once you’ve followed the link it contains, click below.",

@@ -1264,8 +1264,8 @@ export default React.createClass({
                     const ExpiredAccountDialog = sdk.getComponent("dialogs.ExpiredAccountDialog");
                     Modal.createTrackedDialog('Expired Account Dialog', '', ExpiredAccountDialog, {
                         onFinished: () => {
-                            MatrixClientPeg.start();
                             expiredAccount = false;
+                            MatrixClientPeg.start();
                         },
                     });
                 }

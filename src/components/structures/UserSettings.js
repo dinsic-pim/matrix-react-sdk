@@ -1127,7 +1127,7 @@ module.exports = React.createClass({
     _onRedlistOptionChange: async function(e) {
         try {
             const redlistChecked = this.refs.redlistOption.checked;
-            if (isCurrentUserExtern() && redlistChecked) {
+            if (!isCurrentUserExtern() && !redlistChecked) {
                 const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
                 Modal.createTrackedDialog('Redlist disabled', '', QuestionDialog, {
                     title: _t("Register my account on the red list"),

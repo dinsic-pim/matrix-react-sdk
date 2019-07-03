@@ -1197,5 +1197,10 @@
     "Changing your password will reset any end-to-end encryption keys on all of your devices, making encrypted chat history unreadable. Export your room keys from another device before resetting your password.": "Changing your password will reset any end-to-end encryption keys on all of your devices, making encrypted chat history unreadable. Export your room keys from another device before resetting your password.",
     "You have already sent an invitation to %(email)s.": "You have already sent an invitation to %(email)s.",
     "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.": "An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.",
-    "Send a message": "Send a message"
+    "Send a message": "Send a message",
+    "The validity period of your account has expired": "The validity period of your account has expired",
+    "The validity period of your account has expired. An email has been sent to you in order to renew it. Once you’ve followed the link it contains, click below.": "The validity period of your account has expired. An email has been sent to you in order to renew it. Once you’ve followed the link it contains, click below.",
+    "An email has been sent to you. Once you’ve followed the link it contains, click below.": "An email has been sent to you. Once you’ve followed the link it contains, click below.",
+    "I renewed the validity of my account": "I renewed the validity of my account",
+    "Request a renewal email": "Request a renewal email"
 }

@@ -202,6 +202,19 @@ module.exports = React.createClass({
         return newTopic;
     },
 
+    _getAccessRules: function(roomId) {
+        const stateEventType = "im.vector.room.access_rules";
+        const keyName = "rule";
+        const defaultValue = "restricted";
+        const room = MatrixClientPeg.get().getRoom(roomId);
+        const event = room.currentState.getStateEvents(stateEventType, '');
+        if (!event) {
+            return defaultValue;
+        }
+        const content = event.getContent();
+        return keyName in content ? content[keyName] : defaultValue;
+    },
+
     render: function() {
         const RoomAvatar = sdk.getComponent("avatars.RoomAvatar");
         const ChangeAvatar = sdk.getComponent("settings.ChangeAvatar");
@@ -328,7 +341,7 @@ module.exports = React.createClass({
             );
         } else if (this.props.room || (this.props.oobData && this.props.oobData.name)) {
             roomAvatar = (
-                <RoomAvatar room={this.props.room} width={48} height={48} oobData={this.props.oobData}
+                <RoomAvatar room={this.props.room} width={30} height={30} oobData={this.props.oobData}
                     viewAvatarOnClick={true} />
             );
         }
@@ -420,7 +433,7 @@ module.exports = React.createClass({
 
         let mainAvatarClass = "mx_RoomHeader_avatar";
         if (!isDMRoom) {
-            mainAvatarClass += " mx_RoomHeader_avatar_room"
+            mainAvatarClass += ` mx_RoomHeader_avatar_room mx_RoomHeader_avatar_${this._getAccessRules(this.props.room.roomId)}`
         }
 
         return (

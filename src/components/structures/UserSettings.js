@@ -798,9 +798,6 @@ module.exports = React.createClass({
     },
 
     _renderBugReport: function() {
-        if (!SdkConfig.get().bug_report_endpoint_url) {
-            return <div />;
-        }
         return (
             <div>
                 <h3>{ _t("Debug Logs Submission") }</h3>
@@ -1357,6 +1354,8 @@ module.exports = React.createClass({
                         { _t("olm version:") } { olmVersionString }<br />
                     </div>
                 </div>
+
+                { this._renderBugReport() }
 
                 { this._renderCheckUpdate() }
 

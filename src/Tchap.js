@@ -55,7 +55,7 @@ class Tchap {
 
     static isUserLastAdmin(room) {
         const userId = MatrixClientPeg.get().getUserId();
-        const members = room.currentState.getMembers();
+        const members = room.getJoinedMembers();
         let adminNumber = 0;
         let isUserAdmin = false;
         members.forEach(m => {

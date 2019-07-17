@@ -37,6 +37,19 @@ class Tchap {
             return MatrixClientPeg.get().lookupThreePid(medium, address);
         });
     }
+
+    static getAccessRules(roomId) {
+        const stateEventType = "im.vector.room.access_rules";
+        const keyName = "rule";
+        const defaultValue = "";
+        const room = MatrixClientPeg.get().getRoom(roomId);
+        const event = room.currentState.getStateEvents(stateEventType, '');
+        if (!event) {
+            return defaultValue;
+        }
+        const content = event.getContent();
+        return keyName in content ? content[keyName] : defaultValue;
+    }
 }
 
 module.exports = Tchap;

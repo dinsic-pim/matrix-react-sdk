@@ -34,6 +34,7 @@ import ManageIntegsButton from '../elements/ManageIntegsButton';
 import {CancelButton} from './SimpleRoomHeader';
 import SettingsStore from "../../../settings/SettingsStore";
 import DMRoomMap from "../../../utils/DMRoomMap";
+import Tchap from '../../../Tchap';
 
 linkifyMatrix(linkify);
 
@@ -200,19 +201,6 @@ module.exports = React.createClass({
             newTopic = this.refs.topicEditor.getTopic();
         }
         return newTopic;
-    },
-
-    _getAccessRules: function(roomId) {
-        const stateEventType = "im.vector.room.access_rules";
-        const keyName = "rule";
-        const defaultValue = "restricted";
-        const room = MatrixClientPeg.get().getRoom(roomId);
-        const event = room.currentState.getStateEvents(stateEventType, '');
-        if (!event) {
-            return defaultValue;
-        }
-        const content = event.getContent();
-        return keyName in content ? content[keyName] : defaultValue;
     },
 
     render: function() {
@@ -433,7 +421,7 @@ module.exports = React.createClass({
 
         let mainAvatarClass = "mx_RoomHeader_avatar";
         if (!isDMRoom) {
-            mainAvatarClass += ` mx_RoomHeader_avatar_room mx_RoomHeader_avatar_${this._getAccessRules(this.props.room.roomId)}`
+            mainAvatarClass += ` mx_RoomHeader_avatar_room mx_RoomHeader_avatar_${Tchap.getAccessRules(this.props.room.roomId)}`
         }
 
         return (

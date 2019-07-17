@@ -368,19 +368,6 @@ module.exports = React.createClass({
         });
     },
 
-    _getAccessRules: function(roomId) {
-        const stateEventType = "im.vector.room.access_rules";
-        const keyName = "rule";
-        const defaultValue = "restricted";
-        const room = MatrixClientPeg.get().getRoom(roomId);
-        const event = room.currentState.getStateEvents(stateEventType, '');
-        if (!event) {
-            return defaultValue;
-        }
-        const content = event.getContent();
-        return keyName in content ? content[keyName] : defaultValue;
-    },
-
     _doLocalSearch: function(query) {
         this.setState({
             query,
@@ -410,7 +397,7 @@ module.exports = React.createClass({
         const suggestedList = [];
         results.forEach((result) => {
             if (this.props.roomId) {
-                const access_rules = this._getAccessRules(this.props.roomId);
+                const access_rules = Tchap.getAccessRules(this.props.roomId);
                 if (access_rules === "restricted" && Users.isUserExtern(result.user_id)) {
                     return;
                 }
@@ -513,7 +500,7 @@ module.exports = React.createClass({
     },
 
     _lookupThreepid: function(medium, address) {
-        const access_rules = this._getAccessRules(this.props.roomId);
+        const access_rules = Tchap.getAccessRules(this.props.roomId);
         let cancelled = false;
         // Note that we can't safely remove this after we're done
         // because we don't know that it's the same one, so we just

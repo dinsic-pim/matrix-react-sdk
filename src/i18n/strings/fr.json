@@ -1232,5 +1232,7 @@
     "The validity period of your account has expired. An email has been sent to you in order to renew it. Once you’ve followed the link it contains, click below.": "La durée de validité de votre compte a expiré. Un email vous a été envoyé pour la renouveler. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.",
     "An email has been sent to you. Once you’ve followed the link it contains, click below.": "Un e-mail vous a été envoyé. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.",
     "I renewed the validity of my account": "J’ai renouvelé mon compte",
-    "Request a renewal email": "Demander l’envoi d’un nouvel email"
+    "Request a renewal email": "Demander l’envoi d’un nouvel email",
+    "Are you sure you want to leave the room? The room will no longer be administered, and you may not be able to join it again.": "Voulez-vous vraiment quitter cette conversation ? Elle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.",
+    "You are the last administrator": "Vous êtes le dernier administrateur"
 }

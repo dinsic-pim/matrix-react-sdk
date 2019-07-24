@@ -1203,5 +1203,7 @@
     "The validity period of your account has expired. An email has been sent to you in order to renew it. Once you’ve followed the link it contains, click below.": "The validity period of your account has expired. An email has been sent to you in order to renew it. Once you’ve followed the link it contains, click below.",
     "An email has been sent to you. Once you’ve followed the link it contains, click below.": "An email has been sent to you. Once you’ve followed the link it contains, click below.",
     "I renewed the validity of my account": "I renewed the validity of my account",
-    "Request a renewal email": "Request a renewal email"
+    "Request a renewal email": "Request a renewal email",
+    "Are you sure you want to leave the room? The room will no longer be administered, and you may not be able to join it again.": "Are you sure you want to leave the room? The room will no longer be administered, and you may not be able to join it again.",
+    "You are the last administrator": "You are the last administrator"
 }

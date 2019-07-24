@@ -26,6 +26,7 @@ import ObjectUtils from '../../../ObjectUtils';
 import dis from '../../../dispatcher';
 import AccessibleButton from '../elements/AccessibleButton';
 import SettingsStore, {SettingLevel} from "../../../settings/SettingsStore";
+import Tchap from '../../../Tchap';
 
 
 // parse a string as an integer; if the input is undefined, or cannot be parsed
@@ -528,10 +529,28 @@ module.exports = React.createClass({
     },
 
     onLeaveClick() {
-        dis.dispatch({
-            action: 'leave_room',
-            room_id: this.props.room.roomId,
-        });
+        const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
+        if (Tchap.isUserLastAdmin(this.props.room)) {
+            Modal.createTrackedDialog('Last admin leave', '', QuestionDialog, {
+                title: _t("You are the last administrator"),
+                description: _t("Are you sure you want to leave the room? The room will no longer be administered, and you may not be able to join it again."),
+                button: _t("Leave"),
+                onFinished: (proceed) => {
+                    if (proceed) {
+                        // Leave rooms
+                        dis.dispatch({
+                            action: 'leave_room',
+                            room_id: this.props.room.roomId,
+                        });
+                    }
+                },
+            });
+        } else {
+            dis.dispatch({
+                action: 'leave_room',
+                room_id: this.props.room.roomId,
+            });
+        }
     },
 
     onForgetClick() {

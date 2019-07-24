@@ -52,6 +52,22 @@ class Tchap {
         const res = await fetch(url, options);
         const json = await res.json();
     }
+
+    static isUserLastAdmin(room) {
+        const userId = MatrixClientPeg.get().getUserId();
+        const members = room.getJoinedMembers();
+        let adminNumber = 0;
+        let isUserAdmin = false;
+        members.forEach(m => {
+            if (m.powerLevelNorm >= 100) {
+                if (m.userId === userId) {
+                    isUserAdmin = true;
+                }
+                adminNumber++;
+            }
+        });
+        return isUserAdmin && adminNumber <= 1;
+    }
 }
 
 module.exports = Tchap;

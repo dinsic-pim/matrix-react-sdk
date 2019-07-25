@@ -249,14 +249,6 @@ module.exports = React.createClass({
             ));
         }
 
-        if (this.state.access_rules !== originalState.access_rules) {
-            promises.push(MatrixClientPeg.get().sendStateEvent(
-                roomId, "im.vector.room.access_rules",
-                { rule: this.state.access_rules },
-                "",
-            ));
-        }
-
         if (this.state.isRoomPublished !== originalState.isRoomPublished) {
             promises.push(MatrixClientPeg.get().setRoomDirectoryVisibility(
                 roomId,
@@ -597,7 +589,7 @@ module.exports = React.createClass({
     _onExternUserSettingChange: function() {
         const self = this;
         const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
-        Modal.createTrackedDialog('Reject invitation', '', QuestionDialog, {
+        Modal.createTrackedDialog('Allow externals to join', '', QuestionDialog, {
             title: _t('Allow the externals to join this room'),
             description: ( _t('This action is irreversible.') + " " +_t('Are you sure you want to allow the externals to join this room ?')),
             onFinished: (confirm) => {
@@ -671,10 +663,13 @@ module.exports = React.createClass({
         const cli = MatrixClientPeg.get();
         const roomState = this.props.room.currentState;
         const myUserId = cli.credentials.userId;
+        const roomMembers = this.props.room.getJoinedMembers();
 
         const powerLevels = this.state.powerLevels;
         const eventsLevels = powerLevels.events || {};
         const userLevels = powerLevels.users || {};
+
+        let isCurrentUserAdmin = false;
 
         const powerLevelDescriptors = {
             users_default: {
@@ -727,6 +722,14 @@ module.exports = React.createClass({
         if (currentUserLevel === undefined) {
             currentUserLevel = defaultUserLevel;
         }
+
+        roomMembers.forEach(m => {
+            if (m.userId === myUserId) {
+                if (m.powerLevelNorm >= 100) {
+                    isCurrentUserAdmin = true;
+                }
+            }
+        });
 
         const canChangeLevels = roomState.mayClientSendStateEvent("m.room.power_levels", cli);
 
@@ -873,7 +876,7 @@ module.exports = React.createClass({
         }
 
         let externUserSection = null;
-        if (this.state.join_rule !== "public") {
+        if (isCurrentUserAdmin && this.state.join_rule !== "public") {
             externUserSection = (
                 <div>
                     <label htmlFor="externOpen"> { _t('Allow the externals to join this room') } : </label>

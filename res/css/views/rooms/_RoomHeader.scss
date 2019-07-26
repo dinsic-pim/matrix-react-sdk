@@ -187,6 +187,22 @@ limitations under the License.
     vertical-align: middle;
 }
 
+.mx_RoomHeader_avatar_restricted {
+    background-image: url('../../img/162d58.png');
+    -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    flex: unset;
+    padding: 0 8px 0 8px;
+}
+
+.mx_RoomHeader_avatar_unrestricted {
+    background-image: url('../../img/cccccc.png');
+    -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    flex: unset;
+    padding: 0 8px 0 8px;
+}
+
 .mx_RoomHeader_avatar_room .mx_BaseAvatar .mx_BaseAvatar_image,
 .mx_RoomHeader_avatar_room .mx_BaseAvatar_image {
     -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);

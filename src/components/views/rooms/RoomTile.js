@@ -30,6 +30,7 @@ import * as FormattingUtils from '../../../utils/FormattingUtils';
 import AccessibleButton from '../elements/AccessibleButton';
 import ActiveRoomObserver from '../../../ActiveRoomObserver';
 import RoomViewStore from '../../../stores/RoomViewStore';
+import Tchap from '../../../Tchap';
 
 module.exports = React.createClass({
     displayName: 'RoomTile',
@@ -329,6 +330,8 @@ module.exports = React.createClass({
             mainAvatarClass += " mx_RoomTile_avatar_room";
         }
 
+        mainAvatarClass += ` mx_RoomTile_avatar_${Tchap.getAccessRules(this.props.room.roomId)}`;
+
         if (isEncrypted) {
             encryptedIndicator = <img src="img/padlock-encrypted_room.svg" className="mx_RoomTile_dm" width="10" height="12" alt="encrypted" />;
         }
@@ -343,9 +346,9 @@ module.exports = React.createClass({
             <div className={mainAvatarClass}>
                 <div className="mx_RoomTile_avatar_container">
                     <RoomAvatar room={this.props.room} width={24} height={24} />
-                    { encryptedIndicator }
                 </div>
             </div>
+            { encryptedIndicator }
             <div className="mx_RoomTile_nameContainer">
                 { label }
                 { badge }

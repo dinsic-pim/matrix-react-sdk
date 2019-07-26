@@ -34,6 +34,7 @@ import ManageIntegsButton from '../elements/ManageIntegsButton';
 import {CancelButton} from './SimpleRoomHeader';
 import SettingsStore from "../../../settings/SettingsStore";
 import DMRoomMap from "../../../utils/DMRoomMap";
+import Tchap from '../../../Tchap';
 
 linkifyMatrix(linkify);
 
@@ -328,7 +329,7 @@ module.exports = React.createClass({
             );
         } else if (this.props.room || (this.props.oobData && this.props.oobData.name)) {
             roomAvatar = (
-                <RoomAvatar room={this.props.room} width={48} height={48} oobData={this.props.oobData}
+                <RoomAvatar room={this.props.room} width={30} height={30} oobData={this.props.oobData}
                     viewAvatarOnClick={true} />
             );
         }
@@ -420,7 +421,7 @@ module.exports = React.createClass({
 
         let mainAvatarClass = "mx_RoomHeader_avatar";
         if (!isDMRoom) {
-            mainAvatarClass += " mx_RoomHeader_avatar_room"
+            mainAvatarClass += ` mx_RoomHeader_avatar_room mx_RoomHeader_avatar_${Tchap.getAccessRules(this.props.room.roomId)}`
         }
 
         return (

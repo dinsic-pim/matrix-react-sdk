@@ -24,6 +24,7 @@ import Promise from 'bluebird';
 import { addressTypes, getAddressType } from '../../../UserAddress.js';
 import GroupStore from '../../../stores/GroupStore';
 import Tchap from '../../../Tchap';
+import * as Users from '../../../Users';
 
 const TRUNCATE_QUERY_LIST = 40;
 const QUERY_USER_DIRECTORY_DEBOUNCE_MS = 200;
@@ -392,8 +393,15 @@ module.exports = React.createClass({
     },
 
     _processResults: function(results, query) {
+        const self = this;
         const suggestedList = [];
         results.forEach((result) => {
+            if (this.props.roomId) {
+                const access_rules = Tchap.getAccessRules(this.props.roomId);
+                if (access_rules === "restricted" && Users.isUserExtern(result.user_id)) {
+                    return;
+                }
+            }
             if (result.room_id) {
                 suggestedList.push({
                     addressType: 'mx-room-id',
@@ -426,14 +434,23 @@ module.exports = React.createClass({
         // a perfectly valid address if there are close matches.
         const addrType = getAddressType(query);
         if (this.props.validAddressTypes.includes(addrType)) {
-            suggestedList.unshift({
-                addressType: addrType,
-                address: query,
-                isKnown: false,
-            });
             if (this._cancelThreepidLookup) this._cancelThreepidLookup();
             if (addrType === 'email') {
-                this._lookupThreepid(addrType, query).done();
+                this._lookupThreepid(addrType, query).then(val => {
+                    if (val !== false) {
+                        suggestedList.unshift({
+                            addressType: addrType,
+                            address: query,
+                            isKnown: false,
+                        });
+                    }
+                    self.setState({
+                        suggestedList,
+                        error: false,
+                    }, () => {
+                        if (self.addressSelector) self.addressSelector.moveSelectionTop();
+                    });
+                });
             }
         }
         this.setState({
@@ -483,6 +500,7 @@ module.exports = React.createClass({
     },
 
     _lookupThreepid: function(medium, address) {
+        const access_rules = Tchap.getAccessRules(this.props.roomId);
         let cancelled = false;
         // Note that we can't safely remove this after we're done
         // because we don't know that it's the same one, so we just
@@ -497,12 +515,18 @@ module.exports = React.createClass({
             if (cancelled) return null;
             return Tchap.lookupThreePid(medium, address);
         }).then((res) => {
+            if (access_rules !== "unrestricted") {
+                if (Object.keys(res).length === 0 || Users.isUserExtern(res.mxid)) {
+                    return false;
+                }
+            }
             if (res === null || !res.mxid) return null;
             if (cancelled) return null;
 
-            return MatrixClientPeg.get().getProfileInfo(res.mxid);
+            return MatrixClientPeg.get().getProfileInfo(res.mxid).catch(err => {return null});
         }).then((res) => {
             if (res === null) return null;
+            if (res === false) return false;
             if (cancelled) return null;
             this.setState({
                 suggestedList: [{

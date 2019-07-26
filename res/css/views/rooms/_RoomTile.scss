@@ -44,20 +44,34 @@ limitations under the License.
 
 .mx_RoomTile_avatar {
     display: inline-block;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 16px;
-    padding-right: 6px;
+    padding: 5px 6px 5px 7px;
     width: 24px;
     height: 24px;
+    margin-left: 10px;
     vertical-align: middle;
+}
+
+.mx_RoomTile_avatar_restricted {
+    background-image: url("../../img/162d58.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.mx_RoomTile_avatar_unrestricted {
+    background-image: url("../../img/cccccc.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
 .mx_RoomTile_dm {
     display: block;
     position: absolute;
     bottom: 0;
-    right: -5px;
+    left: 38px;
     z-index: 2;
 }
 

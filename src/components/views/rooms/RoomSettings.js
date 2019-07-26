@@ -144,6 +144,7 @@ module.exports = React.createClass({
             // Default to false if it's undefined, otherwise react complains about changing
             // components from uncontrolled to controlled
             isRoomPublished: this._originalIsRoomPublished || false,
+            access_rules: this._yankValueFromEvent("im.vector.room.access_rules", "rule", "restricted"),
         };
     },
 
@@ -603,6 +604,27 @@ module.exports = React.createClass({
         }
     },
 
+    _onExternUserSettingChange: function() {
+        const self = this;
+        const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
+        Modal.createTrackedDialog('Allow externals to join', '', QuestionDialog, {
+            title: _t('Allow the externals to join this room'),
+            description: ( _t('This action is irreversible.') + " " +_t('Are you sure you want to allow the externals to join this room ?')),
+            onFinished: (confirm) => {
+                if (confirm) {
+                    self.setState({
+                        access_rules: 'unrestricted'
+                    });
+                    MatrixClientPeg.get().sendStateEvent(
+                        self.props.room.roomId, "im.vector.room.access_rules",
+                        { rule: 'unrestricted' },
+                        "",
+                    )
+                }
+            },
+        });
+    },
+
     _renderEncryptionSection: function() {
         const SettingsFlag = sdk.getComponent("elements.SettingsFlag");
 
@@ -663,6 +685,8 @@ module.exports = React.createClass({
         const powerLevels = this.state.powerLevels;
         const eventsLevels = powerLevels.events || {};
         const userLevels = powerLevels.users || {};
+
+        const isCurrentUserAdmin = this.props.room.getMember(myUserId).powerLevelNorm >= 100;
 
         const powerLevelDescriptors = {
             users_default: {
@@ -860,6 +884,19 @@ module.exports = React.createClass({
                 </div>;
         }
 
+        let externUserSection = null;
+        if (isCurrentUserAdmin && this.state.join_rule !== "public") {
+            externUserSection = (
+                <div>
+                    <label htmlFor="externOpen"> { _t('Allow the externals to join this room') } : </label>
+                    <input type="checkbox" name="externOpen" ref="externOpen"
+                           onChange={this._onExternUserSettingChange}
+                           checked={this.state.access_rules === 'unrestricted'}
+                           disabled={this.state.access_rules === 'unrestricted'} />
+                </div>
+            );
+        }
+
         // If there is no history_visibility, it is assumed to be 'shared'.
         // http://matrix.org/docs/spec/r0.0.0/client_server.html#id31
         const historyVisibility = this.state.history_visibility || "shared";
@@ -953,6 +990,8 @@ module.exports = React.createClass({
                 { leaveButton }
 
                 { tagsSection }
+
+                { externUserSection }
 
                 <div>
                     <h3>{ _t('Room Colour') }</h3>

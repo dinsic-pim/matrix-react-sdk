@@ -144,7 +144,6 @@ module.exports = React.createClass({
             // components from uncontrolled to controlled
             isRoomPublished: this._originalIsRoomPublished || false,
             access_rules: this._yankValueFromEvent("im.vector.room.access_rules", "rule", "restricted"),
-            externAllowed: false,
         };
     },
 

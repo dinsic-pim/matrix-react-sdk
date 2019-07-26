@@ -663,13 +663,12 @@ module.exports = React.createClass({
         const cli = MatrixClientPeg.get();
         const roomState = this.props.room.currentState;
         const myUserId = cli.credentials.userId;
-        const roomMembers = this.props.room.getJoinedMembers();
 
         const powerLevels = this.state.powerLevels;
         const eventsLevels = powerLevels.events || {};
         const userLevels = powerLevels.users || {};
 
-        let isCurrentUserAdmin = false;
+        const isCurrentUserAdmin = this.props.room.getMember(myUserId).powerLevelNorm >= 100;
 
         const powerLevelDescriptors = {
             users_default: {
@@ -722,14 +721,6 @@ module.exports = React.createClass({
         if (currentUserLevel === undefined) {
             currentUserLevel = defaultUserLevel;
         }
-
-        roomMembers.forEach(m => {
-            if (m.userId === myUserId) {
-                if (m.powerLevelNorm >= 100) {
-                    isCurrentUserAdmin = true;
-                }
-            }
-        });
 
         const canChangeLevels = roomState.mayClientSendStateEvent("m.room.power_levels", cli);
 

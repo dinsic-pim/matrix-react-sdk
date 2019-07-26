@@ -50,6 +50,37 @@ class Tchap {
         const content = event.getContent();
         return keyName in content ? content[keyName] : defaultValue;
     }
+
+    static async requestNewExpiredAccountEmail() {
+        const sendEmailUrl = "/_matrix/client/unstable/account_validity/send_mail";
+        const homeserverUrl = MatrixClientPeg.get().getHomeserverUrl();
+        const accessToken = MatrixClientPeg.get().getAccessToken();
+        const url = `${homeserverUrl}${sendEmailUrl}`;
+        const options = {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        };
+        const res = await fetch(url, options);
+        const json = await res.json();
+    }
+
+    static isUserLastAdmin(room) {
+        const userId = MatrixClientPeg.get().getUserId();
+        const members = room.getJoinedMembers();
+        let adminNumber = 0;
+        let isUserAdmin = false;
+        members.forEach(m => {
+            if (m.powerLevelNorm >= 100) {
+                if (m.userId === userId) {
+                    isUserAdmin = true;
+                }
+                adminNumber++;
+            }
+        });
+        return isUserAdmin && adminNumber <= 1;
+    }
 }
 
 module.exports = Tchap;

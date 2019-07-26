@@ -316,9 +316,10 @@ export default class MessageComposer extends React.Component {
                     onInputStateChanged={this.onInputStateChanged} />,
                 formattingButton,
                 uploadButton,
-                hangupButton,
-                callButton,
-                videoCallButton,
+                // VOIP and Video have been disabled for the moment.
+                //hangupButton,
+                //callButton,
+                //videoCallButton,
             );
         } else {
             controls.push(

@@ -798,9 +798,6 @@ module.exports = React.createClass({
     },
 
     _renderBugReport: function() {
-        if (!SdkConfig.get().bug_report_endpoint_url) {
-            return <div />;
-        }
         return (
             <div>
                 <h3>{ _t("Debug Logs Submission") }</h3>
@@ -1127,8 +1124,23 @@ module.exports = React.createClass({
     _onRedlistOptionChange: async function(e) {
         try {
             const redlistChecked = this.refs.redlistOption.checked;
-            await MatrixClientPeg.get().setAccountData('im.vector.hide_profile', {hide_profile: redlistChecked});
-            this.setState({redList: redlistChecked});
+            if (isCurrentUserExtern() && !redlistChecked) {
+                const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
+                Modal.createTrackedDialog('Redlist disabled', '', QuestionDialog, {
+                    title: _t("Register my account on the red list"),
+                    description: _t("To disable this option, you must accept that your email address is visible to the other users."),
+                    button: _t("Accept"),
+                    onFinished: async (proceed) => {
+                        if (proceed) {
+                            await MatrixClientPeg.get().setAccountData('im.vector.hide_profile', {hide_profile: redlistChecked});
+                            this.setState({redList: redlistChecked});
+                        }
+                    },
+                });
+            } else {
+                await MatrixClientPeg.get().setAccountData('im.vector.hide_profile', {hide_profile: redlistChecked});
+                this.setState({redList: redlistChecked});
+            }
         } catch (err) {
             console.error("Error setting AccountData 'im.vector.hide_profile': " + err);
         }
@@ -1342,6 +1354,8 @@ module.exports = React.createClass({
                         { _t("olm version:") } { olmVersionString }<br />
                     </div>
                 </div>
+
+                { this._renderBugReport() }
 
                 { this._renderCheckUpdate() }
 

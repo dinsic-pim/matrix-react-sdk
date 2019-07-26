@@ -1229,5 +1229,13 @@
     "Send a message": "Envoyer un message",
     "Allow the externals to join this room": "Autoriser l’accès aux externes à ce salon",
     "This action is irreversible.": "Cette action est irréversible.",
-    "Are you sure you want to allow the externals to join this room ?": "Voulez-vous vraiment autoriser l’accès aux externes à ce salon ?"
+    "Are you sure you want to allow the externals to join this room ?": "Voulez-vous vraiment autoriser l’accès aux externes à ce salon ?",
+    "To disable this option, you must accept that your email address is visible to the other users.": "Pour désactiver cette option, vous devez accepter que votre adresse email soit visible des autres utilisateurs lors de leurs recherches.",
+    "The validity period of your account has expired": "La durée de validité de votre compte a expiré",
+    "The validity period of your account has expired. An email has been sent to you in order to renew it. Once you’ve followed the link it contains, click below.": "La durée de validité de votre compte a expiré. Un email vous a été envoyé pour la renouveler. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.",
+    "An email has been sent to you. Once you’ve followed the link it contains, click below.": "Un e-mail vous a été envoyé. Une fois que vous aurez suivi le lien qu'il contient, cliquez ci-dessous.",
+    "I renewed the validity of my account": "J’ai renouvelé mon compte",
+    "Request a renewal email": "Demander l’envoi d’un nouvel email",
+    "Are you sure you want to leave the room? The room will no longer be administered, and you may not be able to join it again.": "Voulez-vous vraiment quitter cette conversation ? Elle ne sera plus administrée, et vous risquez de ne plus pouvoir la joindre de nouveau.",
+    "You are the last administrator": "Vous êtes le dernier administrateur"
 }

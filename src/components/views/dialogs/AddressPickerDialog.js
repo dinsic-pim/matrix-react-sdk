@@ -114,8 +114,8 @@ module.exports = React.createClass({
             if (access_rules !== "unrestricted") {
                 selectedList.forEach(u => {
                     if (u.addressType === "email") {
-                        this._lookupThreepid("email", u.address).then(data => {
-                            if (data === null) {
+                        Tchap.lookupThreePid("email", u.address).then(data => {
+                            if (data === null || Object.entries(data).length === 0 || (data.mxid && Tchap.getHSFromMxid(data.mxid) === "externe")) {
                                 const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
                                 Modal.createTrackedDialog(
                                     "Externals aren't allowed to join this room",

@@ -81,6 +81,12 @@ class Tchap {
         });
         return isUserAdmin && adminNumber <= 1;
     }
+
+    static getHSFromMxid(id) {
+        const hs = id.split(':').reverse()[0].split('.tchap.gouv.fr')[0].split('.').filter(Boolean).reverse()[0];
+
+        return hs || 'tchap';
+    }
 }
 
 module.exports = Tchap;

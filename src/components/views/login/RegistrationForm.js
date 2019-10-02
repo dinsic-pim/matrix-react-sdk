@@ -116,10 +116,14 @@ module.exports = React.createClass({
 
     _doSubmit: function(ev) {
         const username = this.refs.email.value.trim().split('@')[0];
+
+        let email = this.refs.email.value.trim();
+        email = email.toLowerCase();
+
         const promise = this.props.onRegisterClick({
             username: username,
             password: this.refs.password.value.trim(),
-            email: this.refs.email.value.trim(),
+            email: email,
             phoneCountry: this.state.phoneCountry,
             phoneNumber: this.refs.phoneNumber ? this.refs.phoneNumber.value.trim() : '',
         });

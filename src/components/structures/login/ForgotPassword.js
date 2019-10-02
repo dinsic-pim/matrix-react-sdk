@@ -53,7 +53,8 @@ module.exports = React.createClass({
             progress: "sending_email",
         });
         this.reset = new PasswordReset(hsUrl, identityUrl);
-        this.reset.resetPassword(email, password).done(() => {
+        let lowercaseEmail = email.toLowerCase();
+        this.reset.resetPassword(lowercaseEmail, password).done(() => {
             this.setState({
                 progress: "sent_email",
             });

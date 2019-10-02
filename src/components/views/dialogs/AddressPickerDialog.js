@@ -131,6 +131,8 @@ module.exports = React.createClass({
                         }).catch(err => {
                             this.props.onFinished(true, selectedList);
                         });
+                    } else {
+                        this.props.onFinished(true, selectedList);
                     }
                 })
             } else {

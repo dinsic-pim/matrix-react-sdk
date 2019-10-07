@@ -1,4 +1,5 @@
 import MatrixClientPeg from './MatrixClientPeg';
+import SdkConfig from "./SdkConfig";
 
 /**
  * Tchap utils.
@@ -35,6 +36,32 @@ class Tchap {
         }).catch(err => {
             console.log("Lookup : Use the MatrixClientPeg lookup");
             return MatrixClientPeg.get().lookupThreePid(medium, address);
+        });
+    }
+
+    static discoverTchapPlatform(username) {
+        const TCHAP_API_URL = '/_matrix/identity/api/v1/info?medium=email&address=';
+        const TCHAP_HOSTS_BASE = 'https://matrix.';
+        return new Promise((resolve, reject) => {
+            const tchapHostsList = SdkConfig.get()['hs_main_list'];
+            if (tchapHostsList) {
+                const selectedUrl = tchapHostsList[(Math.floor(Math.random() * (tchapHostsList.length)) + 1) - 1];
+                fetch(TCHAP_HOSTS_BASE + selectedUrl + TCHAP_API_URL + username)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.hs) {
+                            resolve(TCHAP_HOSTS_BASE + data.hs);
+                        } else {
+                            reject("ERR_UNAUTHORIZED_EMAIL");
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        reject("ERR_UNREACHABLE_HOMESERVER");
+                    });
+            } else {
+                reject("ERR_EMPTY_HOMESERVER_CONFIG");
+            }
         });
     }
 

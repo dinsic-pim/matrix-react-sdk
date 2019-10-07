@@ -114,8 +114,8 @@ module.exports = React.createClass({
             if (access_rules !== "unrestricted") {
                 selectedList.forEach(u => {
                     if (u.addressType === "email") {
-                        Tchap.lookupThreePid("email", u.address).then(data => {
-                            if (data === null || Object.entries(data).length === 0 || (data.mxid && Tchap.getHSFromMxid(data.mxid) === "externe")) {
+                        Tchap.discoverTchapPlatform(u.address).then(data => {
+                            if (Tchap.getHSFromMxid(data) === "externe") {
                                 const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
                                 Modal.createTrackedDialog(
                                     "Externals aren't allowed to join this room",
@@ -129,7 +129,7 @@ module.exports = React.createClass({
                                 this.props.onFinished(true, selectedList);
                             }
                         }).catch(err => {
-                            this.props.onFinished(true, selectedList);
+                            console.error(`Error : ${err}`);
                         });
                     } else {
                         this.props.onFinished(true, selectedList);

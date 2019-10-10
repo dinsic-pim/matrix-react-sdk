@@ -7,7 +7,7 @@
     "Download %(text)s": "Télécharger %(text)s",
     "Drop here to tag %(section)s": "Déposer ici pour étiqueter comme %(section)s",
     "Ed25519 fingerprint": "Empreinte Ed25519",
-    "Email, name or matrix ID": "E-mail, nom ou identifiant Matrix",
+    "Email, name or tchap ID": "E-mail, nom ou identifiant Tchap",
     "Emoji": "Émojis",
     "Enable encryption": "Activer le chiffrement",
     "Encrypted messages will not be visible on clients that do not yet implement encryption": "Les messages chiffrés ne seront pas visibles dans les clients qui n’implémentent pas encore le chiffrement",

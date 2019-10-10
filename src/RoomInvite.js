@@ -58,7 +58,7 @@ export function showStartChatInviteDialog() {
     Modal.createTrackedDialog('Start a chat', '', AddressPickerDialog, {
         title: _t('Start a chat'),
         description: _t("Who would you like to communicate with?"),
-        placeholder: _t("Email, name or matrix ID"),
+        placeholder: _t("Email, name or tchap ID"),
         validAddressTypes: ['mx-user-id', 'email'],
         button: _t("Start Chat"),
         invitationType: 'direct',
@@ -73,7 +73,7 @@ export function showRoomInviteDialog(roomId) {
     MatrixClientPeg.get().getRoomDirectoryVisibility(roomId).then((result => {
         if (result.visibility !== "public") {
             validAddressTypes.push('email');
-            placeholder = "Email, name or matrix ID";
+            placeholder = "Email, name or tchap ID";
         }
 
         const AddressPickerDialog = sdk.getComponent("dialogs.AddressPickerDialog");

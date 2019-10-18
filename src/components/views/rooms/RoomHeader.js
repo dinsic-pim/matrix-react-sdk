@@ -147,6 +147,9 @@ module.exports = React.createClass({
         let settingsButton = null;
         let pinnedEventsButton = null;
 
+        const retentionEvent = this.props.room.currentState.getStateEvents("m.room.retention", '');
+        const maxLifetime = retentionEvent ? retentionEvent.event.content.max_lifetime : 31536000000;
+
         const e2eIcon = this.props.e2eStatus ?
             <E2EIcon status={this.props.e2eStatus} /> :
             undefined;
@@ -287,9 +290,22 @@ module.exports = React.createClass({
         if (!isDMRoom) {
             mainAvatarClass += ` mx_RoomHeader_avatar_room mx_RoomHeader_avatar_${Tchap.getAccessRules(this.props.room.roomId)}`;
             if (Tchap.getAccessRules(this.props.room.roomId) !== "restricted") {
-                roomAccessibility = (<div className="mx_RoomHeader_accessibility" ref="accessibility" title={ _t("Room open to external users") } dir="auto">{ _t("Room open to external users") }</div>);
+                roomAccessibility = (
+                    <div className="mx_RoomHeader_accessibility" ref="accessibility"
+                         title={ _t("Room open to external users") } dir="auto">
+                        <span className={"mx_RoomHeader_dash"}>-</span>
+                        { _t("Room open to external users") }
+                    </div>
+                );
             }
         }
+
+        let historyRetention = (
+            <div className="mx_RoomHeader_retention" ref="accessibility"
+                 title={ _t("History kept for %(lifetime)sd",{lifetime: Tchap.msToDay(maxLifetime)}) } dir="auto">
+                { _t("History kept for %(lifetime)sd",{lifetime: Tchap.msToDay(maxLifetime)}) }
+            </div>
+        );
 
         return (
             <div className="mx_RoomHeader light-panel">
@@ -299,6 +315,7 @@ module.exports = React.createClass({
                     { name }
                     { topicElement }
                     { cancelButton }
+                    { historyRetention }
                     { roomAccessibility }
                     { rightRow }
                     <RoomHeaderButtons collapsedRhs={this.props.collapsedRhs} />

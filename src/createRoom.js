@@ -113,6 +113,14 @@ function createRoom(opts) {
             type: 'im.vector.room.access_rules',
             state_key: '',
         },
+        {
+            content: {
+                max_lifetime: createOpts.room_retention ? createOpts.room_retention : 31557600000,
+                expire_on_clients: true,
+            },
+            type: 'm.room.retention',
+            state_key: '',
+        },
     ];
 
     if (createOpts.visibility !== 'private') {

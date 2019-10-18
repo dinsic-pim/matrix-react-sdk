@@ -21,6 +21,7 @@ import SdkConfig from '../../../SdkConfig';
 import { _t } from '../../../languageHandler';
 import Tchap from '../../../Tchap';
 import LabelledToggleSwitch from "../elements/LabelledToggleSwitch";
+import Field from "../elements/Field";
 
 export default React.createClass({
     displayName: 'CreateRoomDialog',
@@ -37,7 +38,8 @@ export default React.createClass({
             federate: false,
             domain: domain,
             externAllowed: false,
-            externAllowedSwitchDisabled: false
+            externAllowedSwitchDisabled: false,
+            room_retention: 365
         };
     },
 
@@ -51,7 +53,8 @@ export default React.createClass({
                 visibility: this.state.visibility,
                 preset: this.state.visibility === 'public' ? 'public_chat' : 'private_chat',
                 noFederate: this.state.federate,
-                access_rules: this.state.externAllowed === true ? 'unrestricted' : 'restricted'
+                access_rules: this.state.externAllowed === true ? 'unrestricted' : 'restricted',
+                room_retention: parseInt(Tchap.dayToMs(this.state.room_retention))
             };
             this.props.onFinished(true, this.refs.textinput.value, opts);
         }
@@ -74,6 +77,15 @@ export default React.createClass({
                 visibility: ev.target.value
             });
         }
+    },
+
+    _onRoomRetentionChange: function(e) {
+        let retentionValue = e.target.value;
+        retentionValue = retentionValue < 1 ? 1 : retentionValue;
+        retentionValue = retentionValue > 365 ? 365 : retentionValue;
+        this.setState({
+            room_retention: retentionValue
+        })
     },
 
     _onFederateSwitchChange: function(ev) {
@@ -135,6 +147,12 @@ export default React.createClass({
                         </div>
                         {errorTextSection}
                         <br />
+                        <div className={"mx_CreateRoomDialog_retention"}>
+                            <span>{_t("History duration (in days)") + " : " }</span>
+                            <Field id={"roomRetentionTime"} label={ _t("History duration (in days)") } type='number'
+                                   value={this.state.room_retention}
+                                   onChange={this._onRoomRetentionChange}/>
+                        </div>
 
                         <label htmlFor="roomVis"> { _t('Room type') } : </label>
                         <label>

@@ -25,6 +25,7 @@ import LabelledToggleSwitch from "../elements/LabelledToggleSwitch";
 const sdk = require("../../../index");
 import Modal from '../../../Modal';
 import Tchap from '../../../Tchap';
+import SettingsStore, {SettingLevel} from "../../../settings/SettingsStore";
 
 // TODO: Merge with ProfileSettings?
 export default class RoomProfileSettings extends React.Component {
@@ -49,6 +50,9 @@ export default class RoomProfileSettings extends React.Component {
         const nameEvent = room.currentState.getStateEvents('m.room.name', '');
         const name = nameEvent && nameEvent.getContent() ? nameEvent.getContent()['name'] : '';
 
+        const retentionEvent = room.currentState.getStateEvents("m.room.retention", '');
+        const maxLifetime = retentionEvent ? retentionEvent.event.content.max_lifetime : 31536000000;
+
         this.state = {
             originalDisplayName: name,
             displayName: name,
@@ -63,6 +67,8 @@ export default class RoomProfileSettings extends React.Component {
             canSetAvatar: room.currentState.maySendStateEvent('m.room.avatar', client.getUserId()),
             access_rules: Tchap.getAccessRules(props.roomId),
             join_rules: this._getJoinRules(props.roomId),
+            originalRetentionTime: Tchap.msToDay(maxLifetime),
+            retentionTime: Tchap.msToDay(maxLifetime),
         };
     }
 
@@ -101,6 +107,11 @@ export default class RoomProfileSettings extends React.Component {
         if (this.state.originalTopic !== this.state.topic) {
             await client.setRoomTopic(this.props.roomId, this.state.topic);
             newState.originalTopic = this.state.topic;
+        }
+
+        if (this.state.originalRetentionTime !== this.state.retentionTime) {
+            await client.sendStateEvent(this.props.roomId, 'm.room.retention', {max_lifetime: Tchap.dayToMs(this.state.retentionTime), expire_on_clients: true}, '');
+            newState.originalRetentionTime = newState.retentionTime;
         }
 
         this.setState(newState);
@@ -153,6 +164,16 @@ export default class RoomProfileSettings extends React.Component {
         }
         const content = event.getContent();
         return keyName in content ? content[keyName] : defaultValue;
+    };
+
+    _onRetentionChange = (e) => {
+        let retentionValue = e.target.value;
+        retentionValue = retentionValue < 1 ? 1 : retentionValue;
+        retentionValue = retentionValue > 365 ? 365 : retentionValue;
+        this.setState({
+            retentionTime: retentionValue,
+            enableProfileSave: true
+        })
     };
 
     _onExternAllowedSwitchChange = () => {
@@ -233,6 +254,18 @@ export default class RoomProfileSettings extends React.Component {
             );
         }
 
+        // For the moment, we only allow administrators to change this (disabled={!isCurrentUserAdmin}).
+        let roomRetention = null;
+        roomRetention = (
+            <div className={"mx_SettingsFlag mx_ProfileSettings_retention"}>
+                <span className={"mx_SettingsFlag_label"}>{_t("History duration (in days)") + " : " }</span>
+                <Field id={"roomRetentionTime"} label={ _t("History duration (in days)") } type='number'
+                       value={this.state.retentionTime}
+                       onChange={this._onRetentionChange}
+                       disabled={!isCurrentUserAdmin}/>
+            </div>
+        );
+
         return (
             <form onSubmit={this._saveProfile} autoComplete={false} noValidate={true}>
                 <input type="file" ref="avatarUpload" className="mx_ProfileSettings_avatarUpload"
@@ -252,6 +285,7 @@ export default class RoomProfileSettings extends React.Component {
                     </div>
                 </div>
                 { accessRule }
+                { roomRetention }
                 <AccessibleButton onClick={this._saveProfile} kind="primary"
                                   disabled={!this.state.enableProfileSave}>
                     {_t("Save")}

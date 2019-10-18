@@ -978,6 +978,7 @@ export default React.createClass({
                     if (opts.visibility) createOpts.visibility = opts.visibility;
                     if (opts.preset) createOpts.preset = opts.preset;
                     if (opts.access_rules) createOpts.access_rules = opts.access_rules;
+                    if (opts.room_retention) createOpts.room_retention = opts.room_retention;
                     createRoom({createOpts}).done();
                 }
             },

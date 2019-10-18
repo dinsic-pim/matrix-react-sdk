@@ -148,7 +148,6 @@ export default React.createClass({
                         {errorTextSection}
                         <br />
                         <div className={"mx_CreateRoomDialog_retention"}>
-                            <span>{_t("History duration (in days)") + " : " }</span>
                             <Field id={"roomRetentionTime"} label={ _t("History duration (in days)") } type='number'
                                    value={this.state.room_retention}
                                    onChange={this._onRoomRetentionChange}/>

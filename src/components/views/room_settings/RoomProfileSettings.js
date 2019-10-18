@@ -258,7 +258,6 @@ export default class RoomProfileSettings extends React.Component {
         let roomRetention = null;
         roomRetention = (
             <div className={"mx_SettingsFlag mx_ProfileSettings_retention"}>
-                <span className={"mx_SettingsFlag_label"}>{_t("History duration (in days)") + " : " }</span>
                 <Field id={"roomRetentionTime"} label={ _t("History duration (in days)") } type='number'
                        value={this.state.retentionTime}
                        onChange={this._onRetentionChange}

@@ -1923,5 +1923,6 @@
     "Please describe the error encountered. What have you done ? What was the expected behavior ? What really happened ?": "Veuillez décrire l’erreur rencontrée. Qu’avez vous fait ? Quel était le comportement attendu ? Que s’est-il réellement passé ?",
     "The field note is required.": "Le champ note est requis.",
     "History kept for %(lifetime)sd": "Historique conservé pendant %(lifetime)sj",
-    "History duration (in days)": "Durée de l'historique (en jours)"
+    "History duration (in days)": "Durée de l'historique (en jours)",
+    "Error : Externals aren't allowed to join this room": "Erreur : Les externes ne sont pas autorisés à rejoindre ce salon"
 }

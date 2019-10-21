@@ -1661,5 +1661,6 @@
     "Please describe the error encountered. What have you done ? What was the expected behavior ? What really happened ?": "Please describe the error encountered. What have you done ? What was the expected behavior ? What really happened ?",
     "The field note is required.": "The field note is required.",
     "History kept for %(lifetime)sd": "History kept for %(lifetime)sd",
-    "History duration (in days)": "History duration (in days)"
+    "History duration (in days)": "History duration (in days)",
+    "Error : Externals aren't allowed to join this room": "Error : Externals aren't allowed to join this room"
 }

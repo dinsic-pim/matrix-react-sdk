@@ -215,7 +215,7 @@ class Tchap {
     }
 
     /**
-     * A static function tranformig a day to ms.
+     * A static function transforming a duration from ms to days.
      * @param {number} mss The time in ms to convert in days.
      * @returns {number} The number of days.
      */
@@ -224,7 +224,7 @@ class Tchap {
     }
 
     /**
-     * A static function tranformig a time in ms to days.
+     * A static function transforming a duration from days to ms.
      * @param {number} days The time in days to convert in mss.
      * @returns {number} The number of mss.
      */

@@ -133,11 +133,14 @@ export default React.createClass({
                 <p>{ text }</p>
 
                 <div className="mx_Dialog_buttons">
-                    <button onClick={this._onShareClicked} autoFocus="true">
-                        { _t('Accept') }
+                    <button onClick={this._onVerifyClicked} autoFocus="true">
+                        { _t('Start verification') }
+                    </button>
+                    <button onClick={this._onShareClicked}>
+                        { _t('Share without verifying') }
                     </button>
                     <button onClick={this._onIgnoreClicked}>
-                        { _t('Decline') }
+                        { _t('Ignore request') }
                     </button>
                 </div>
             </div>

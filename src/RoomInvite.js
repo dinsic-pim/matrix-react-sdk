@@ -66,6 +66,19 @@ export function showStartChatInviteDialog() {
     });
 }
 
+export function showRoomInviteDialogFromFile(roomId) {
+    const InviteFromFileDialog = sdk.getComponent("tchap.views.dialogs.InviteFromFileDialog");
+    Modal.createTrackedDialog('Room Invite From File', '', InviteFromFileDialog, {
+        title: _t('Invite new room members'),
+        description: _t('Who would you like to add to this room?'),
+        roomId: roomId,
+        onFinished: (shouldInvite, addrs) => {
+            if (!shouldInvite) return;
+            _onRoomInviteFromFileFinished(roomId, addrs)
+        }
+    });
+}
+
 export function showRoomInviteDialog(roomId) {
     const validAddressTypes = ['mx-user-id'];
     let placeholder = "Name or matrix ID";
@@ -221,6 +234,32 @@ function _onRoomInviteFinished(roomId, shouldInvite, addrs) {
 
     // Invite new users to a room
     inviteMultipleToRoom(roomId, addrTexts).then((result) => {
+        const room = MatrixClientPeg.get().getRoom(roomId);
+        return _showAnyInviteErrors(result.states, room, result.inviter);
+    }).catch((err) => {
+        console.error(err.stack);
+        const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
+        Modal.createTrackedDialog('Failed to invite', '', ErrorDialog, {
+            title: _t("Failed to invite"),
+            description: ((err && err.message) ? err.message : _t("Operation failed")),
+        });
+    });
+}
+
+function _onRoomInviteFromFileFinished(roomId, addrs) {
+    if (!addrs || addrs.length <= 0) {
+        const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
+        Modal.createTrackedDialog('Failed to invite users to the room', '', ErrorDialog, {
+            title: _t("Failed to invite users to the room:", {roomName: ""}),
+            description: _t("Invalid Email Address"),
+        });
+        return;
+    }
+    console.error("roomId");
+    console.error(roomId);
+    console.error("addrs");
+    console.error(addrs);
+    inviteMultipleToRoom(roomId, addrs).then((result) => {
         const room = MatrixClientPeg.get().getRoom(roomId);
         return _showAnyInviteErrors(result.states, room, result.inviter);
     }).catch((err) => {

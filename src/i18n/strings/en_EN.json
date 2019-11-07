@@ -114,6 +114,7 @@
     "Invite new room members": "Invite new room members",
     "Who would you like to add to this room?": "Who would you like to add to this room?",
     "Send Invites": "Send Invites",
+    "Send %(number)s invites": "Send %(number)s invites",
     "Failed to invite user": "Failed to invite user",
     "Operation failed": "Operation failed",
     "Failed to invite": "Failed to invite",

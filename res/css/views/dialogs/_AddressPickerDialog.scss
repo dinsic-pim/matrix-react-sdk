@@ -57,6 +57,11 @@ limitations under the License.
     color: $warning-color;
 }
 
+.mx_AddressPickerDialog_warning {
+    margin-top: 10px;
+    color: $warning-soft-color;
+}
+
 .mx_AddressPickerDialog_cancel {
     position: absolute;
     right: 11px;

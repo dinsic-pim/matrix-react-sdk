@@ -26,6 +26,7 @@ import GroupStore from '../../../stores/GroupStore';
 import * as Email from "../../../email";
 import Tchap from '../../../Tchap';
 import Modal from "../../../Modal";
+import dis from "../../../dispatcher";
 
 const TRUNCATE_QUERY_LIST = 40;
 const QUERY_USER_DIRECTORY_DEBOUNCE_MS = 200;
@@ -581,6 +582,11 @@ module.exports = React.createClass({
         });
     },
 
+    _btnTestDialog: function() {
+        this.props.onFinished(false);
+        dis.dispatch({action: 'view_invite_file', roomId: this.props.roomId,});
+    },
+
     render: function() {
         const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
         const DialogButtons = sdk.getComponent('views.elements.DialogButtons');
@@ -685,6 +691,13 @@ module.exports = React.createClass({
                 <DialogButtons primaryButton={this.props.button}
                     onPrimaryButtonClick={this.onButtonClick}
                     onCancel={this.onCancel} />
+
+                <details>
+                    <summary>{_t("Advanced")}</summary>
+                    <p><button onClick={this._btnTestDialog}>
+                        { "Inviter des utilisateurs depuis un fichier" }
+                    </button></p>
+                </details>
             </BaseDialog>
         );
     },

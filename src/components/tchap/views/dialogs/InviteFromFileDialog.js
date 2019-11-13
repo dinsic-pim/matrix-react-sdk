@@ -25,7 +25,7 @@ import * as Email from "../../../../email";
 
 
 module.exports = React.createClass({
-    displayName: "InviteByFileDialog",
+    displayName: "InviteFromFileDialog",
 
     propTypes: {
         title: PropTypes.string.isRequired,
@@ -115,7 +115,7 @@ module.exports = React.createClass({
                 } else {
                     let idx = this.state.processingIndex + 1;
                     this.setState({
-                        error: <div className="mx_AddressPickerDialog_error">{ "Error : This file contains some invalid email address" }</div>,
+                        error: <div className="mx_AddressPickerDialog_error">{ _t("Error : This file contains some invalid email address.") }</div>,
                         list: [],
                         processingIndex: idx
                     });
@@ -135,7 +135,7 @@ module.exports = React.createClass({
         console.error(`Size : ${file.size}`);
         if (file.size > 25000) {
             this.setState({
-                error: <div className="mx_AddressPickerDialog_error">{ "Error : File too large" }</div>
+                error: <div className="mx_AddressPickerDialog_error">{ _t("Error : File too large.") }</div>
             });
         } else {
             const fileReader = this.state.fileReader;
@@ -163,7 +163,11 @@ module.exports = React.createClass({
 
         let errorRestricted = null;
         if (this.state.errorRestricted && !error) {
-            errorRestricted = <div className="mx_AddressPickerDialog_warning">{ "Some users are extern. This room is restricted. They will not be invited." }</div>
+            errorRestricted = (
+                <div className="mx_AddressPickerDialog_warning">
+                    { _t("Some users are extern. This room is restricted. They will not be invited.") }
+                </div>
+            );
         }
 
         return (

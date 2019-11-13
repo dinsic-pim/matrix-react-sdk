@@ -582,7 +582,7 @@ module.exports = React.createClass({
         });
     },
 
-    _btnTestDialog: function() {
+    _onInviteFromFileClick: function() {
         this.props.onFinished(false);
         dis.dispatch({action: 'view_invite_file', roomId: this.props.roomId,});
     },
@@ -674,6 +674,18 @@ module.exports = React.createClass({
             roomParams = (<label>{ar}</label>);
         }
 
+        let inviteFromFile = null;
+        if (this.props.invitationType === "room") {
+            inviteFromFile = (
+                <details>
+                    <summary>{_t("Advanced")}</summary>
+                    <p><button onClick={this._onInviteFromFileClick}>
+                        { _t("Invite users from a file") }
+                    </button></p>
+                </details>
+            );
+        }
+
         return (
             <BaseDialog className="mx_AddressPickerDialog" onKeyDown={this.onKeyDown}
                 onFinished={this.props.onFinished} title={this.props.title}>
@@ -691,13 +703,7 @@ module.exports = React.createClass({
                 <DialogButtons primaryButton={this.props.button}
                     onPrimaryButtonClick={this.onButtonClick}
                     onCancel={this.onCancel} />
-
-                <details>
-                    <summary>{_t("Advanced")}</summary>
-                    <p><button onClick={this._btnTestDialog}>
-                        { "Inviter des utilisateurs depuis un fichier" }
-                    </button></p>
-                </details>
+                { inviteFromFile }
             </BaseDialog>
         );
     },

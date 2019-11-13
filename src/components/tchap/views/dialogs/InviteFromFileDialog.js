@@ -37,11 +37,12 @@ module.exports = React.createClass({
 
     getInitialState: function() {
         return {
-            error: false,
-            warning: false,
+            error: null,
             errorRestricted: false,
-            list: null,
+            list: [],
+            listSize: 0,
             fileReader: new FileReader(),
+            processingIndex: 1
         };
     },
 
@@ -53,95 +54,88 @@ module.exports = React.createClass({
         this.props.onFinished(true, this.state.list);
     },
 
-    isUserInRoom: function() {
-
-    },
-
     _handleFileRead: function() {
         const fileReader = this.state.fileReader;
         const room = MatrixClientPeg.get().getRoom(this.props.roomId);
-        console.error("room.getMember");
-        Tchap.lookupThreePid("email", "jerome.ploquin4@developpement-durable.gouv.fr").then(r => {
-            console.error("RRRRRRRRRRRRR");
-            console.dir(r);
-            console.dir(room.getMember(r.mxid));
-        });
-        Tchap.lookupThreePid("email", "test.yoshin@gmail.com").then(r => {
-            console.error("22222222222222");
-            console.dir(r);
-            console.dir(room.getMember(r.mxid));
-        });
-        Tchap.lookupThreePid("email", "test.test@gmail.com").then(r => {
-            console.error("33333333");
-            console.dir(r);
-            console.dir(room.getMember(r.mxid));
-        });
-        Tchap.lookupThreePid("email", "jerome.ploquin3@developpement-durable.gouv.fr").then(r => {
-            console.error("RRRRRRRRRRRRR");
-            console.dir(r);
-            console.dir(room.getMember(r.mxid));
-        });
-        Tchap.lookupThreePid("email", "leo.mora@intradef.gouv.fr").then(r => {
-            console.error("IIIIIIIIIIIIIIIIIII");
-            console.dir(r);
-            console.dir(room.getMember(r.mxid));
-        });
-        console.dir(room.getMember("jerome.ploquin4@developpement-durable.gouv.fr"));
-        console.error("this.props.roomId");
-        console.error(this.props.roomId);
         const accessRules = Tchap.getAccessRules(this.props.roomId);
 
         let list = fileReader.result;
         list = list.replace(/(\r\n|\n|\r)/gm, "");
         list = list.replace(/\s/gm, "");
-        let arr = list.split(";");
-        let finalList = [];
+        let addresses = list.split(";");
 
-        console.error("accessRules");
-        console.error(accessRules);
+        this.setState({
+            listSize: addresses.length
+        });
 
-        for (let address of arr) {
+        for (let address of addresses) {
             if (address) {
                 if (Email.looksValid(address)) {
                     if (accessRules === "restricted") {
                         Tchap.getInfo(address).then(res => {
                             if (!Tchap.isUserExternFromServerHostname(res.hs)) {
-                                finalList.push(address);
+                                Tchap.lookupThreePid("email", address).then(r => {
+                                    let member = room.getMember(r.mxid);
+                                    let idx = this.state.processingIndex + 1;
+                                    if (member === null || !member.membership) {
+                                        let tmpList = this.state.list;
+                                        tmpList.push(address);
+                                        this.setState({
+                                            list: tmpList
+                                        });
+                                    }
+                                    this.setState({
+                                        processingIndex: idx
+                                    });
+                                });
                             } else {
+                                let idx = this.state.processingIndex + 1;
                                 this.setState({
-                                    errorRestricted: true
+                                    errorRestricted: true,
+                                    processingIndex: idx
                                 });
                             }
                         });
                     } else {
-                        finalList.push(address);
+                        Tchap.lookupThreePid("email", address).then(r => {
+                            let member = room.getMember(r.mxid);
+                            let idx = this.state.processingIndex + 1;
+                            if (member === null || !member.membership) {
+                                let tmpList = this.state.list;
+                                tmpList.push(address);
+                                this.setState({
+                                    list: tmpList
+                                });
+                            }
+                            this.setState({
+                                processingIndex: idx
+                            });
+                        });
                     }
                 } else {
+                    let idx = this.state.processingIndex + 1;
                     this.setState({
                         error: <div className="mx_AddressPickerDialog_error">{ "Error : This file contains some invalid email address" }</div>,
-                        list: null
+                        list: [],
+                        processingIndex: idx
                     });
                     return;
                 }
-                console.error(address)
             }
         }
-
-        this.setState({
-            list: finalList
-        });
     },
 
     _parseFile: function(file) {
         this.setState({
             error: null,
-            warning: null,
-            list: null
+            errorRestricted: false,
+            list: [],
+            processingIndex: 1
         });
         console.error(`Size : ${file.size}`);
         if (file.size > 25000) {
             this.setState({
-               error: <div className="mx_AddressPickerDialog_error">{ "File too large" }</div>
+                error: <div className="mx_AddressPickerDialog_error">{ "Error : File too large" }</div>
             });
         } else {
             const fileReader = this.state.fileReader;
@@ -164,11 +158,12 @@ module.exports = React.createClass({
 
         const inviteNumber = this.state.list ? this.state.list.length : 0;
         const error = this.state.error;
-        const warning = this.state.warning;
+        const totalProcess = this.state.processingIndex;
+        const totalSize = this.state.listSize;
 
         let errorRestricted = null;
-        if (this.state.errorRestricted) {
-            errorRestricted = <div className="mx_AddressPickerDialog_error">{ "Some users are extern. This room is restricted. They will not be invited." }</div>
+        if (this.state.errorRestricted && !error) {
+            errorRestricted = <div className="mx_AddressPickerDialog_warning">{ "Some users are extern. This room is restricted. They will not be invited." }</div>
         }
 
         return (
@@ -176,13 +171,12 @@ module.exports = React.createClass({
                 onFinished={this.props.onFinished}
                 title={this.props.title}>
                 <div className="mx_AddressPickerDialog_label">
-                    <label htmlFor="textinput">{ this.props.description }</label>
+                    <label htmlFor="import-file">{ this.props.description }</label>
                     <br />
                     { roomParams }
                 </div>
                 <div className="mx_Dialog_content">
                     { error }
-                    { warning }
                     { errorRestricted }
                     <br />
                     <input type="file"
@@ -193,7 +187,7 @@ module.exports = React.createClass({
                 </div>
                 <DialogButtons primaryButton={_t("Send %(number)s invites", {number: inviteNumber})}
                     onPrimaryButtonClick={this.onInvite}
-                    primaryDisabled={!!error || !this.state.list}
+                    primaryDisabled={!!error || totalProcess !== totalSize}
                     onCancel={this.onCancel}
                 />
             </BaseDialog>

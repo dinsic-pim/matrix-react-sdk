@@ -147,6 +147,7 @@
     "Invalid Email Address": "Adresse e-mail non valide",
     "%(senderName)s invited %(targetName)s.": "%(senderName)s a invité %(targetName)s.",
     "Invite new room members": "Inviter de nouveaux membres",
+    "Invite new room members from a file": "Inviter de nouveaux membres depuis un fichier",
     "Invited": "Invités",
     "Invites": "Invitations",
     "Invites user with given id to current room": "Invite un utilisateur dans le salon actuel à partir de son identifiant",
@@ -1926,6 +1927,7 @@
     "Error : Externals aren't allowed to join this room": "Erreur : Les externes ne sont pas autorisés à rejoindre ce salon",
     "Invite users from a file": "Inviter des utilisateurs depuis un fichier",
     "Error : This file contains some invalid email address.": "Erreur: Le fichier contient des adresses email non valide.",
-    "Error : File too large.": "Erreur: Fichier trop gros.",
-    "Some users are extern. This room is restricted. They will not be invited.": "Certains utilisateurs de la liste sont externes. Ce salon est restreint. Ils ne seront donc pas invités."
+    "Error : File too large (max 25 kB).": "Erreur: Fichier trop gros (max 25 kB).",
+    "Some users are extern. This room is restricted. They will not be invited.": "Certains utilisateurs de la liste sont externes. Ce salon est restreint. Ils ne seront donc pas invités.",
+    "The file must be in '.txt' format and the email addresses must be separated by ';'.": "Le fichier doit être au format \".txt\" et les adresses email doivent être séparés par des \";\"."
 }

@@ -69,8 +69,7 @@ export function showStartChatInviteDialog() {
 export function showRoomInviteDialogFromFile(roomId) {
     const InviteFromFileDialog = sdk.getComponent("tchap.views.dialogs.InviteFromFileDialog");
     Modal.createTrackedDialog('Room Invite From File', '', InviteFromFileDialog, {
-        title: _t('Invite new room members'),
-        description: _t('Who would you like to add to this room?'),
+        title: _t('Invite new room members from a file'),
         roomId: roomId,
         onFinished: (shouldInvite, addrs) => {
             if (!shouldInvite) return;

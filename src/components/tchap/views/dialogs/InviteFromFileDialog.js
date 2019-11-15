@@ -29,7 +29,6 @@ module.exports = React.createClass({
 
     propTypes: {
         title: PropTypes.string.isRequired,
-        description: PropTypes.node,
         roomId: PropTypes.string,
         button: PropTypes.string,
         onFinished: PropTypes.func.isRequired,
@@ -42,7 +41,7 @@ module.exports = React.createClass({
             list: [],
             listSize: 0,
             fileReader: new FileReader(),
-            processingIndex: 1
+            processingIndex: 0
         };
     },
 
@@ -62,7 +61,7 @@ module.exports = React.createClass({
         let list = fileReader.result;
         list = list.replace(/(\r\n|\n|\r)/gm, "");
         list = list.replace(/\s/gm, "");
-        let addresses = list.split(";");
+        let addresses = list.split(";").filter(Boolean);
 
         this.setState({
             listSize: addresses.length
@@ -130,12 +129,12 @@ module.exports = React.createClass({
             error: null,
             errorRestricted: false,
             list: [],
-            processingIndex: 1
+            processingIndex: 0
         });
         console.error(`Size : ${file.size}`);
         if (file.size > 25000) {
             this.setState({
-                error: <div className="mx_AddressPickerDialog_error">{ _t("Error : File too large.") }</div>
+                error: <div className="mx_AddressPickerDialog_error">{ _t("Error : File too large (max 25 kB).") }</div>
             });
         } else {
             const fileReader = this.state.fileReader;
@@ -175,7 +174,7 @@ module.exports = React.createClass({
                 onFinished={this.props.onFinished}
                 title={this.props.title}>
                 <div className="mx_AddressPickerDialog_label">
-                    <label htmlFor="import-file">{ this.props.description }</label>
+                    <label htmlFor="import-file">{ _t("The file must be in '.txt' format and the email addresses must be separated by ';'.") }</label>
                     <br />
                     { roomParams }
                 </div>
@@ -191,7 +190,7 @@ module.exports = React.createClass({
                 </div>
                 <DialogButtons primaryButton={_t("Send %(number)s invites", {number: inviteNumber})}
                     onPrimaryButtonClick={this.onInvite}
-                    primaryDisabled={!!error || totalProcess !== totalSize}
+                    primaryDisabled={!!error || totalProcess === 0 || totalProcess !== totalSize}
                     onCancel={this.onCancel}
                 />
             </BaseDialog>

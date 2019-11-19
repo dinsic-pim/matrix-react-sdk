@@ -396,9 +396,8 @@ module.exports = React.createClass({
         let mainAvatarClass = avatarClasses;
         if (!this._isDirectMessageRoom(this.props.room.roomId)) {
             mainAvatarClass += " mx_RoomTile_avatar_room";
+            mainAvatarClass += ` mx_RoomTile_avatar_${Tchap.getAccessRules(this.props.room.roomId)}`;
         }
-
-        mainAvatarClass += ` mx_RoomTile_avatar_${Tchap.getAccessRules(this.props.room.roomId)}`;
 
         return <AccessibleButton tabIndex="0"
                                  className={classes}

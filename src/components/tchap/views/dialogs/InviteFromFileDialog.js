@@ -131,7 +131,6 @@ module.exports = React.createClass({
             list: [],
             processingIndex: 0
         });
-        console.error(`Size : ${file.size}`);
         if (file.size > 25000) {
             this.setState({
                 error: <div className="mx_AddressPickerDialog_error">{ _t("Error : File too large (max 25 kB).") }</div>

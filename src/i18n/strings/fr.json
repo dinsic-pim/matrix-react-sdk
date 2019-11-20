@@ -1926,8 +1926,8 @@
     "The field note is required.": "Le champ note est requis.",
     "Error : Externals aren't allowed to join this room": "Erreur : Les externes ne sont pas autorisés à rejoindre ce salon",
     "Invite users from a file": "Inviter des utilisateurs depuis un fichier",
-    "Error : This file contains some invalid email address.": "Erreur: Le fichier contient des adresses email non valide.",
+    "Error : This file contains some invalid email address.": "Erreur: Le fichier contient des adresses email non valides.",
     "Error : File too large (max 25 kB).": "Erreur: Fichier trop gros (max 25 kB).",
     "Some users are extern. This room is restricted. They will not be invited.": "Certains utilisateurs de la liste sont externes. Ce salon est restreint. Ils ne seront donc pas invités.",
-    "The file must be in '.txt' format and the email addresses must be separated by ';'.": "Le fichier doit être au format \".txt\" et les adresses email doivent être séparés par des \";\"."
+    "The file must be in '.txt' format and the email addresses must be separated by ';'.": "Le fichier doit être au format \".txt\" et les adresses email doivent être séparées par des \";\"."
 }

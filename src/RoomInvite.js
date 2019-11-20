@@ -232,17 +232,7 @@ function _onRoomInviteFinished(roomId, shouldInvite, addrs) {
     const addrTexts = addrs.map((addr) => addr.address);
 
     // Invite new users to a room
-    inviteMultipleToRoom(roomId, addrTexts).then((result) => {
-        const room = MatrixClientPeg.get().getRoom(roomId);
-        return _showAnyInviteErrors(result.states, room, result.inviter);
-    }).catch((err) => {
-        console.error(err.stack);
-        const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
-        Modal.createTrackedDialog('Failed to invite', '', ErrorDialog, {
-            title: _t("Failed to invite"),
-            description: ((err && err.message) ? err.message : _t("Operation failed")),
-        });
-    });
+    _multipleInvite(roomId, addrTexts);
 }
 
 function _onRoomInviteFromFileFinished(roomId, addrs) {
@@ -254,10 +244,10 @@ function _onRoomInviteFromFileFinished(roomId, addrs) {
         });
         return;
     }
-    console.error("roomId");
-    console.error(roomId);
-    console.error("addrs");
-    console.error(addrs);
+    _multipleInvite(roomId, addrs);
+}
+
+function _multipleInvite(roomId, addrs) {
     inviteMultipleToRoom(roomId, addrs).then((result) => {
         const room = MatrixClientPeg.get().getRoom(roomId);
         return _showAnyInviteErrors(result.states, room, result.inviter);

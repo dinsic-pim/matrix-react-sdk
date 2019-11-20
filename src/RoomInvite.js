@@ -230,8 +230,6 @@ function _onRoomInviteFinished(roomId, shouldInvite, addrs) {
     if (!shouldInvite) return;
 
     const addrTexts = addrs.map((addr) => addr.address);
-
-    // Invite new users to a room
     _multipleInvite(roomId, addrTexts);
 }
 

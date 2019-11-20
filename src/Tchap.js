@@ -204,7 +204,7 @@ class Tchap {
     static getAccessRules(roomId) {
         const stateEventType = "im.vector.room.access_rules";
         const keyName = "rule";
-        const defaultValue = "";
+        const defaultValue = "restricted";
         const room = MatrixClientPeg.get().getRoom(roomId);
         const event = room.currentState.getStateEvents(stateEventType, '');
         if (!event) {

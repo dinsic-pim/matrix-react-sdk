@@ -66,7 +66,7 @@ $droptarget-bg-color: rgba(255,255,255,0.5);
 $selected-color: $accent-color;
 
 // selected for hoverover & selected event tiles
-$event-selected-color: #f7f7f7;
+$event-selected-color: #edeff1;
 
 // used for the hairline dividers in RoomView
 $primary-hairline-color: #e5e5e5;
@@ -165,8 +165,8 @@ $header-divider-color: #91A1C0;
 $roomtile-name-color: #61708b;
 $roomtile-selected-color: #212121;
 $roomtile-notified-color: #212121;
-$roomtile-selected-bg-color: #fff;
-$roomtile-focused-bg-color: #fff;
+$roomtile-selected-bg-color: #e9ebec;
+$roomtile-focused-bg-color: #edeff1;
 
 $username-variant1-color: #368bd6;
 $username-variant2-color: #ac3ba8;
@@ -205,6 +205,7 @@ $event-redacted-border-color: #cccccc;
 $event-timestamp-color: #acacac;
 
 $edit-button-url: "$(res)/img/icon_context_message.svg";
+$edit-button-border: #9b9b9b;
 $copy-button-url: "$(res)/img/icon_copy_message.svg";
 
 // e2e

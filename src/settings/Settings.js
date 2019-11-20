@@ -182,7 +182,7 @@ export const SETTINGS = {
     "showRoomRecoveryReminder": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
         displayName: _td('Show a reminder to enable Secure Message Recovery in encrypted rooms'),
-        default: true,
+        default: false, // Key Backup are temporarily disabled.
     },
     "enableSyntaxHighlightLanguageDetection": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,

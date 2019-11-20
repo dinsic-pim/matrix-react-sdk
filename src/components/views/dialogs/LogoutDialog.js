@@ -118,7 +118,7 @@ export default class LogoutDialog extends React.Component {
             <p>{_t("Back up your keys before signing out to avoid losing them.")}</p>
         </div>;
 
-        if (!MatrixClientPeg.get().getKeyBackupEnabled()) {
+/*        if (!MatrixClientPeg.get().getKeyBackupEnabled()) {
             const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
 
             let dialogContent;
@@ -180,6 +180,40 @@ export default class LogoutDialog extends React.Component {
                 button={_t("Sign out")}
                 onFinished={this._onFinished}
             />);
+        }*/
+        const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
+
+        let dialogContent;
+        if (this.state.loading) {
+            const Spinner = sdk.getComponent('views.elements.Spinner');
+
+            dialogContent = <Spinner />;
+        } else {
+            const DialogButtons = sdk.getComponent('views.elements.DialogButtons');
+
+            dialogContent = <div>
+                <div className="mx_Dialog_content" id='mx_Dialog_content'>
+                    { description }
+                </div>
+                <DialogButtons primaryButton={_t("Sign out")}
+                               hasCancel={false}
+                               onPrimaryButtonClick={this._onLogoutConfirm}
+                               focus={true}
+                >
+                    <button onClick={this._onExportE2eKeysClicked}>
+                        {_t("Manually export keys")}
+                    </button>
+                </DialogButtons>
+
+            </div>;
         }
+        return (<BaseDialog
+            title={_t("You'll lose access to your encrypted messages")}
+            contentId='mx_Dialog_content'
+            hasCancel={true}
+            onFinished={this._onFinished}
+        >
+            {dialogContent}
+        </BaseDialog>);
     }
 }

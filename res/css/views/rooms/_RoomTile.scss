@@ -196,6 +196,11 @@ limitations under the License.
     background-color: $roomtile-focused-bg-color;
 }
 
+.mx_RoomTile:hover {
+    border-radius: 4px;
+    background-color: $roomtile-focused-bg-color;
+}
+
 .mx_RoomTile_arrow {
     position: absolute;
     right: 0px;

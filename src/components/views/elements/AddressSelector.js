@@ -122,18 +122,19 @@ export default React.createClass({
 
     sortByDomain: function(addressList) {
         const myDomain = Tchap.getShortDomain().toLowerCase();
-        let finalList = [];
+        let myDomainList = [];
+        let otherDomainList = [];
 
         for (let i = 0; i < addressList.length; i++) {
             const domain = Tchap.getDomainFromId(addressList[i].address).toLowerCase();
             if (domain === myDomain) {
-                finalList.unshift(addressList[i])
+                myDomainList.push(addressList[i])
             } else {
-                finalList.push(addressList[i])
+                otherDomainList.push(addressList[i])
             }
         }
 
-        return finalList;
+        return myDomainList.concat(otherDomainList);
     },
 
     createAddressListTiles: function() {

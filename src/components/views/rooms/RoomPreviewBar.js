@@ -373,12 +373,8 @@ module.exports = React.createClass({
                 title = _t("%(roomName)s is not accessible at this time.", {roomName: this._roomName(true)});
                 subTitle = [
                     _t("Try again later, or ask a room admin to check if you have access."),
-                    _t("%(errcode)s was returned while trying to access the room. If you think you're seeing this message in error, please <issueLink>submit a bug report</issueLink>.",
-                        { errcode: this.props.error.errcode },
-                        { issueLink: label => <a href="https://github.com/vector-im/riot-web/issues/new/choose"
-                            target="_blank" rel="noopener">{ label }</a> },
-                    ),
                 ];
+                console.error(this.props.error.errcode);
                 break;
             }
         }

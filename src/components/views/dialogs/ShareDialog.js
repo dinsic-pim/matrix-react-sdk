@@ -178,7 +178,23 @@ export default class ShareDialog extends React.Component {
                     </a>
                 </div>
                 { checkbox }
-
+                <br />
+                <details>
+                    <summary>{_t("Share")}</summary>
+                    <p>
+                        <div className="mx_ShareDialog_qrcode_container">
+                            <QRCode value={matrixToUrl} size={256} logoWidth={48} logo={require("../../../../res/img/matrix-m.svg")} />
+                        </div>
+                        <div className="mx_ShareDialog_social_container">
+                            <a rel="noopener" target="_blank" key="email"
+                               name="email"
+                               href={`mailto:?body=${encodedUrl}`}
+                               className="mx_ShareDialog_social_icon">
+                                <img src={require("../../../../res/img/social/email-1.png")} alt="email" height={64} width={64} />
+                            </a>
+                        </div>
+                    </p>
+                </details>
             </div>
         </BaseDialog>;
     }

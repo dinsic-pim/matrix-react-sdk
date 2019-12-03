@@ -76,7 +76,7 @@ export class RoomPermalinkCreator {
         this._allowedHostsRegexps = null;
         this._serverCandidates = null;
         this._started = false;
-        this.base_host = SdkConfig.get().base_host;
+        this.base_host_url = SdkConfig.get().base_host_url;
 
         this.onMembership = this.onMembership.bind(this);
         this.onRoomState = this.onRoomState.bind(this);
@@ -116,13 +116,13 @@ export class RoomPermalinkCreator {
 
     forEvent(eventId) {
         const roomId = this._room.roomId;
-        const permalinkBase = `${this.base_host}/#/room/${roomId}/${eventId}`;
+        const permalinkBase = `${this.base_host_url}/#/room/${roomId}/${eventId}`;
         return permalinkBase;
     }
 
     forRoom() {
         const roomId = this._room.roomId;
-        const permalinkBase = `${this.base_host}/#/room/${roomId}`;
+        const permalinkBase = `${this.base_host_url}/#/room/${roomId}`;
         return permalinkBase;
     }
 
@@ -247,12 +247,12 @@ export class RoomPermalinkCreator {
 
 
 export function makeUserPermalink(userId) {
-    const baseUrl = SdkConfig.get().base_host;
+    const baseUrl = SdkConfig.get().base_host_url;
     return `${baseUrl}/#/${userId}`;
 }
 
 export function makeRoomPermalink(roomId) {
-    const baseUrl = SdkConfig.get().base_host;
+    const baseUrl = SdkConfig.get().base_host_url;
     const permalinkBase = `${baseUrl}/#/room/${roomId}`;
 
     if (!roomId) {

@@ -208,6 +208,33 @@ class Tchap {
     }
 
     /**
+     *
+     * @param {string} userId
+     * @returns {Promise}
+     */
+    static getUserExpiredInfo(userId) {
+        const infoUrl = TchapApi.expiredInfoUrl;
+        const homeserverUrl = MatrixClientPeg.get().getHomeserverUrl();
+        const accessToken = MatrixClientPeg.get().getAccessToken();
+        const url = `${homeserverUrl}${infoUrl}${userId}/info`;
+
+        const options = {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        };
+/*        return fetch(hostBase + tchapHostsList[0] + infoUrl + userId + '/info').then(res => {
+            return res.json();
+        });*/
+        return fetch(url, options).then(res => {
+            return res.json();
+        }).then(data => {
+            return data.expired;
+        });
+    }
+
+    /**
      * A fetch with a timeout option and an always resolver.
      * @param {string} url The url to fetch.
      * @param {object} opts init object from fetch() api plus a timeout option.

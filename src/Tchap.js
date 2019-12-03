@@ -38,7 +38,7 @@ class Tchap {
     static getHSInfoFromEmail(email) {
         const tchapHostsList = this._shuffle(SdkConfig.get()['hs_url_list']);
         const hostBase = TchapApi.hostBase;
-        const infoUrl = TchapApi.info;
+        const infoUrl = TchapApi.infoFromEmailUrl;
         return fetch(hostBase + tchapHostsList[0] + infoUrl + email).then(res => {
             return res.json();
         });
@@ -130,7 +130,7 @@ class Tchap {
         const homeserverUrl = MatrixClientPeg.get().getHomeserverUrl();
         const homeserverName = MatrixClientPeg.get().getIdentityServerUrl().split("https://")[1];
         const accessToken = MatrixClientPeg.get().getAccessToken();
-        const url = `${homeserverUrl}${TchapApi.lookup}?medium=${medium}&address=${address}&id_server=${homeserverName}`;
+        const url = `${homeserverUrl}${TchapApi.lookupUrl}?medium=${medium}&address=${address}&id_server=${homeserverName}`;
         const options = {
             method: 'GET',
             headers: {

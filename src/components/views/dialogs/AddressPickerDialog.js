@@ -119,7 +119,7 @@ module.exports = React.createClass({
                 Promise.delay(0).then(() => {
                     selectedList.forEach(u => {
                         if (u.addressType === "email") {
-                            Tchap.getHSInfoFromEmail(u.address).then(a => {
+                            Tchap.getInfo(u.address).then(a => {
                                 if (Tchap.isUserExternFromServerHostname(a.hs)) {
                                     self.setState({
                                         isExternInList: true,

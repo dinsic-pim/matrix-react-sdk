@@ -100,7 +100,6 @@ const EntityTile = React.createClass({
 
     updateExpired: function() {
         Tchap.getUserExpiredInfo(this.props.member.userId).then(data => {
-            console.dir(data);
             if (data === true) {
                 this.setState({
                     entityTileNameClass: this.state.entityTileNameClass + " mx_EntityTile_name_expired"

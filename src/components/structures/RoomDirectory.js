@@ -196,7 +196,7 @@ module.exports = React.createClass({
                 return;
             }
 
-            if (err && err.errcode === "M_FORBIDDEN") {
+            if (err && (err.errcode === "M_FORBIDDEN" || err.errcode === "M_UNKNOWN")) {
                 // We don't care about federation denied error.
                 // Just go to the next server.
                 return;

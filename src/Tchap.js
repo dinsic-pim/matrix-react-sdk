@@ -51,7 +51,7 @@ class Tchap {
      */
     static discoverPlatform(email) {
         const hostBase = TchapApi.hostBase;
-        const infoUrl = TchapApi.info;
+        const infoUrl = TchapApi.infoFromEmailUrl;
         return new Promise((resolve, reject) => {
             const tchapHostsList = this._shuffle(SdkConfig.get()['hs_url_list']);
             if (tchapHostsList) {

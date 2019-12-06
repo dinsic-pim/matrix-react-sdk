@@ -1662,5 +1662,7 @@
     "Please describe the error encountered. What have you done ? What was the expected behavior ? What really happened ?": "Please describe the error encountered. What have you done ? What was the expected behavior ? What really happened ?",
     "The field note is required.": "The field note is required.",
     "Error : Externals aren't allowed to join this room": "Error : Externals aren't allowed to join this room",
-    "Share": "Share"
+    "Share": "Share",
+    "Are you sure you want to remove this room from the rooms directory?": "Are you sure you want to remove this room from the rooms directory?",
+    "Remove this room from the rooms directory": "Remove this room from the rooms directory"
 }

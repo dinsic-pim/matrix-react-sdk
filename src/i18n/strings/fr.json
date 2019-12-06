@@ -1924,6 +1924,7 @@
     "Please describe the error encountered. What have you done ? What was the expected behavior ? What really happened ?": "Veuillez décrire l’erreur rencontrée. Qu’avez vous fait ? Quel était le comportement attendu ? Que s’est-il réellement passé ?",
     "The field note is required.": "Le champ note est requis.",
     "Error : Externals aren't allowed to join this room": "Erreur : Les externes ne sont pas autorisés à rejoindre ce salon",
+    "Try again later, or ask a room admin to check if you have access.": "Réessayez plus tard ou demandez à un administrateur du salon si vous y avez accès.",
     "Are you sure you want to remove this room from the rooms directory?": "Voulez-vous vraiment retirer ce salon des salons publics ?",
     "Remove this room from the rooms directory": "Retirer ce salon de la liste des salons publics"
 }

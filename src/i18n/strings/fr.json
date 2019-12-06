@@ -1916,7 +1916,7 @@
     "Warning: The domain of your email address is not declared in Tchap. If you have received an invitation, you will be able to create a \"guest\" account, allowing only to participate in private exchanges to which you are invited.": "Attention : Le domaine de votre adresse email n'est pas déclaré dans Tchap. Si vous avez reçu une invitation, vous allez pouvoir créer un compte Tchap \"invité\", permettant uniquement de participer aux échanges privés auxquels vous êtes convié.",
     "Room open to external users": "Salon accessible aux externes",
     "Unreachable Homeserver": "Homeserver inaccessible",
-    "Error : Too many requests": "Erreur : Trop de requêtes ont été envoyées",
+    "Your last three login attempts have failed. Please try again in 30 minutes.": "Vos trois dernières tentatives de connexion ont échoué. Veuillez réessayer dans 30 minutes.",
     "You have encountered an error and you want to help us ? Please describe the error encountered. There will be no direct answer, but your report will help us to improve Tchap. What have you done ? What was the expected behavior ? What really happened ?": "Vous avez rencontré une erreur et vous voulez nous aider ? Veuillez décrire l’erreur rencontrée. Il ne sera pas apporté de réponse directe mais votre rapport nous aidera à améliorer Tchap. Qu’avez-vous fait ? Quel était le comportement attendu ? Que s’est-il réellement passé ?",
     "Report an error": "Rapporter une erreur",
     "Describe your problem here.": "Décrivez votre problème ici.",

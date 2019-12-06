@@ -23,7 +23,6 @@ import sdk from "../../../../..";
 import AccessibleButton from "../../../elements/AccessibleButton";
 import {MatrixClient} from "matrix-js-sdk";
 import dis from "../../../../../dispatcher";
-import LabelledToggleSwitch from "../../../elements/LabelledToggleSwitch";
 import Tchap from '../../../../../Tchap';
 import Modal from '../../../../../Modal';
 
@@ -56,17 +55,24 @@ export default class GeneralRoomSettingsTab extends React.Component {
         }));
     }
 
-    onRoomPublishChange = (e) => {
-        const valueBefore = this.state.isRoomPublished;
-        const newValue = !valueBefore;
-        this.setState({isRoomPublished: newValue});
+    _onRoomPublishChange = () => {
+        const client = MatrixClientPeg.get();
+        const room = client.getRoom(this.props.roomId);
+        const self = this;
+        const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
 
-        MatrixClientPeg.get().setRoomDirectoryVisibility(
-            this.props.roomId,
-            newValue ? 'public' : 'private',
-        ).catch(() => {
-            // Roll back the local echo on the change
-            this.setState({isRoomPublished: valueBefore});
+        Modal.createTrackedDialog('Remove this room from the rooms directory', '', QuestionDialog, {
+            title: _t('Remove this room from the rooms directory'),
+            description: ( _t('This action is irreversible.') + " " + _t('Are you sure you want to remove this room from the rooms directory?')),
+            onFinished: (confirm) => {
+                if (confirm) {
+                    client.sendStateEvent(room.roomId, "m.room.encryption", { algorithm: "m.megolm.v1.aes-sha2" });
+                    client.sendStateEvent(room.roomId, "m.room.join_rules", {join_rule: "invite"}, "");
+                    client.sendStateEvent(room.roomId, "m.room.history_visibility", {history_visibility: "invited"}, "");
+                    client.setRoomDirectoryVisibility(room.roomId, 'private').done();
+                    self.setState({isRoomPublished: false});
+                }
+            },
         });
     };
 
@@ -101,6 +107,21 @@ export default class GeneralRoomSettingsTab extends React.Component {
 
         const client = MatrixClientPeg.get();
         const room = client.getRoom(this.props.roomId);
+        const isCurrentUserAdmin = room.getMember(client.getUserId()).powerLevelNorm >= 100;
+
+        let roomPublishChange = null;
+        if (isCurrentUserAdmin && this.state.isRoomPublished) {
+            roomPublishChange = (
+                <div>
+                    <span className='mx_SettingsTab_subheading'>{_t('Remove this room from the rooms directory')}</span>
+                    <div className='mx_SettingsTab_section'>
+                        <AccessibleButton kind='primary' onClick={this._onRoomPublishChange}>
+                            {_t('Remove this room from the rooms directory')}
+                        </AccessibleButton>
+                    </div>
+                </div>
+            );
+        }
 
         return (
             <div className="mx_SettingsTab mx_GeneralRoomSettingsTab">
@@ -108,6 +129,9 @@ export default class GeneralRoomSettingsTab extends React.Component {
                 <div className='mx_SettingsTab_section mx_GeneralRoomSettingsTab_profileSection'>
                     <RoomProfileSettings roomId={this.props.roomId} />
                 </div>
+
+                <br />
+                { roomPublishChange }
 
                 <span className='mx_SettingsTab_subheading'>{_t("URL Previews")}</span>
                 <div className='mx_SettingsTab_section'>

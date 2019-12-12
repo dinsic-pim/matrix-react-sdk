@@ -22,7 +22,6 @@ import PropTypes from 'prop-types';
 import sdk from '../../../index';
 import classNames from 'classnames';
 import { UserAddressType } from '../../../UserAddress';
-import Tchap from '../../../Tchap';
 
 export default React.createClass({
     displayName: 'AddressSelector',
@@ -120,33 +119,14 @@ export default React.createClass({
         }
     },
 
-    sortByDomain: function(addressList) {
-        const myDomain = Tchap.getShortDomain().toLowerCase();
-        let myDomainList = [];
-        let otherDomainList = [];
-
-        for (let i = 0; i < addressList.length; i++) {
-            const domain = Tchap.getDomainFromId(addressList[i].address).toLowerCase();
-            if (domain === myDomain) {
-                myDomainList.push(addressList[i])
-            } else {
-                otherDomainList.push(addressList[i])
-            }
-        }
-
-        return myDomainList.concat(otherDomainList);
-    },
-
     createAddressListTiles: function() {
         const self = this;
         const AddressTile = sdk.getComponent("elements.AddressTile");
         const maxSelected = this._maxSelected(this.props.addressList);
         const addressList = [];
-        const addressListBase = this.props.addressList;
-        const addressListSorted = this.sortByDomain(addressListBase);
 
         // Only create the address elements if there are address
-        if (addressListSorted.length > 0) {
+        if (this.props.addressList.length > 0) {
             for (let i = 0; i <= maxSelected; i++) {
                 const classes = classNames({
                     "mx_AddressSelector_addressListElement": true,
@@ -162,11 +142,11 @@ export default React.createClass({
                         onClick={this.onClick.bind(this, i)}
                         onMouseEnter={this.onMouseEnter.bind(this, i)}
                         onMouseLeave={this.onMouseLeave}
-                        key={addressListSorted[i].addressType + "/" + addressListSorted[i].address}
+                        key={this.props.addressList[i].addressType + "/" + this.props.addressList[i].address}
                         ref={(ref) => { this.addressListElement = ref; }}
                     >
                         <AddressTile
-                            address={addressListSorted[i]}
+                            address={this.props.addressList[i]}
                             showAddress={this.props.showAddress}
                             justified={false}
                             networkName="vector"

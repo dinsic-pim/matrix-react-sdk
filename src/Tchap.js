@@ -224,9 +224,7 @@ class Tchap {
                 Authorization: `Bearer ${accessToken}`,
             },
         };
-/*        return fetch(hostBase + tchapHostsList[0] + infoUrl + userId + '/info').then(res => {
-            return res.json();
-        });*/
+
         return fetch(url, options).then(res => {
             return res.json();
         }).then(data => {

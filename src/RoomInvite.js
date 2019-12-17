@@ -68,7 +68,7 @@ export function showStartChatInviteDialog() {
 
 export function showRoomInviteDialog(roomId) {
     const validAddressTypes = ['mx-user-id'];
-    let placeholder = "Name or matrix ID";
+    let placeholder = "Name or Tchap ID";
 
     MatrixClientPeg.get().getRoomDirectoryVisibility(roomId).then((result => {
         if (result.visibility !== "public") {

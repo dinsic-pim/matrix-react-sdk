@@ -336,7 +336,7 @@ export const SETTINGS = {
     },
     "promptBeforeInviteUnknownUsers": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
-        displayName: _td('Prompt before sending invites to potentially invalid matrix IDs'),
+        displayName: _td('Prompt before sending invites to potentially invalid Tchap IDs'),
         default: true,
     },
     "showDeveloperTools": {

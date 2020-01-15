@@ -385,16 +385,17 @@ export const EmailIdentityAuthEntry = React.createClass({
             });
             this.setState({
                 matrixClient: _matrixClient
-            })
+            });
+            if (this.props.stageState.emailSid === null) {
+                this.setState({requestingToken: true});
+                this._requestEmailToken().catch((e) => {
+                    this.props.fail(e);
+                }).finally(() => {
+                    this.setState({requestingToken: false});
+                }).done();
+            }
         });
-        if (this.props.stageState.emailSid === null) {
-            this.setState({requestingToken: true});
-            this._requestEmailToken().catch((e) => {
-                this.props.fail(e);
-            }).finally(() => {
-                this.setState({requestingToken: false});
-            }).done();
-        }
+
     },
 
     /*

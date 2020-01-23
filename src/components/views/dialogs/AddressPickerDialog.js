@@ -31,8 +31,8 @@ const TRUNCATE_QUERY_LIST = 40;
 const QUERY_USER_DIRECTORY_DEBOUNCE_MS = 200;
 
 const addressTypeName = {
-    'mx-user-id': _td("Matrix ID"),
-    'mx-room-id': _td("Matrix Room ID"),
+    'mx-user-id': _td("Tchap ID"),
+    'mx-room-id': _td("Tchap Room ID"),
     'email': _td("email address"),
 };
 

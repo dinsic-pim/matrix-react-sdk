@@ -58,7 +58,7 @@ export default React.createClass({
                 contentId='mx_Dialog_content'
             >
                 <div id='mx_Dialog_content'>
-                    <p>{_t("Unable to find profiles for the Matrix IDs listed below - would you like to invite them anyway?")}</p>
+                    <p>{_t("Unable to find profiles for the Tchap IDs listed below - would you like to invite them anyway?")}</p>
                     <ul>
                         { errorList }
                     </ul>

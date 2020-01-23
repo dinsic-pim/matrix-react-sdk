@@ -248,7 +248,7 @@ export class RoomPermalinkCreator {
 
 export function makeUserPermalink(userId) {
     const baseUrl = SdkConfig.get().base_host_url;
-    return `${baseUrl}/#/${userId}`;
+    return `${baseUrl}/#/user/${userId}`;
 }
 
 export function makeRoomPermalink(roomId) {
@@ -271,15 +271,6 @@ export function makeRoomPermalink(roomId) {
     const permalinkCreator = new RoomPermalinkCreator(room);
     permalinkCreator.load();
     return permalinkCreator.forRoom();
-}
-
-export function makeGroupPermalink(groupId) {
-    return `${baseUrl}/#/${groupId}`;
-}
-
-export function encodeServerCandidates(candidates) {
-    if (!candidates || candidates.length === 0) return '';
-    return `?via=${candidates.map(c => encodeURIComponent(c)).join("&via=")}`;
 }
 
 function getServerName(userId) {

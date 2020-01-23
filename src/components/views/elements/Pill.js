@@ -21,23 +21,22 @@ import classNames from 'classnames';
 import { Room, RoomMember, MatrixClient } from 'matrix-js-sdk';
 import PropTypes from 'prop-types';
 import MatrixClientPeg from '../../../MatrixClientPeg';
-import { MATRIXTO_URL_PATTERN } from '../../../linkify-matrix';
 import { getDisplayAliasForRoom } from '../../../Rooms';
 import FlairStore from "../../../stores/FlairStore";
 
-const REGEX_MATRIXTO = new RegExp(MATRIXTO_URL_PATTERN);
+const REGEX_TCHAP = new RegExp("^(?:https?://)?(?:www\.)?tchap\.gouv\.fr/#/(?:user|room)/(([#@!+]).*)");
 
 // For URLs of matrix.to links in the timeline which have been reformatted by
 // HttpUtils transformTags to relative links. This excludes event URLs (with `[^\/]*`)
-const REGEX_LOCAL_MATRIXTO = /^#\/(?:user|room|group)\/(([#!@+])[^/]*)$/;
+const REGEX_LOCAL_TCHAP = /^#\/(?:user|room)\/(([#!@+])[^/]*)$/;
 
 const Pill = React.createClass({
     statics: {
         isPillUrl: (url) => {
-            return !!REGEX_MATRIXTO.exec(url);
+            return !!REGEX_TCHAP.exec(url);
         },
         isMessagePillUrl: (url) => {
-            return !!REGEX_LOCAL_MATRIXTO.exec(url);
+            return !!REGEX_LOCAL_TCHAP.exec(url);
         },
         roomNotifPos: (text) => {
             return text.indexOf("@room");
@@ -94,9 +93,9 @@ const Pill = React.createClass({
     },
 
     async componentWillReceiveProps(nextProps) {
-        let regex = REGEX_MATRIXTO;
+        let regex = REGEX_TCHAP;
         if (nextProps.inMessage) {
-            regex = REGEX_LOCAL_MATRIXTO;
+            regex = REGEX_LOCAL_TCHAP;
         }
 
         let matrixToMatch;
@@ -277,7 +276,7 @@ const Pill = React.createClass({
         });
 
         const member = this.state.member
-        const displayName = member.rawDisplayName || '';
+        const displayName = member ? member.rawDisplayName : '';
 
         if (this.state.pillType) {
             return this.props.inMessage ?

@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import {baseUrl} from "./matrix-to";
-
 function matrixLinkify(linkify) {
     // Text tokens
     const TT = linkify.scanner.TOKENS;
@@ -177,17 +175,11 @@ const escapeRegExp = function(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 };
 
-// Recognise URLs from both our local vector and official vector as vector.
-// anyone else really should be using matrix.to.
-matrixLinkify.VECTOR_URL_PATTERN = "^(?:https?:\/\/)?(?:"
+// Recognise URLs from both our local tchap and official tchap as tchap.
+matrixLinkify.TCHAP_URL_PATTERN = "^(?:https?:\/\/)?(?:"
     + escapeRegExp(window.location.host + window.location.pathname) + "|"
     + "(?:www\\.)?tchap\\.gouv\\.fr/"
-    + ")(#.*)";
-
-matrixLinkify.MATRIXTO_URL_PATTERN = "^(?:https?:\/\/)?(?:www\\.)?tchap\\.gouv\\.fr/#/(([#@!+]).*)";
-matrixLinkify.MATRIXTO_MD_LINK_PATTERN =
-    '\\[([^\\]]*)\\]\\((?:https?:\/\/)?(?:www\\.)?tchap\\.gouv\\.fr/#/([#@!+][^\\)]*)\\)';
-matrixLinkify.MATRIXTO_BASE_URL= baseUrl;
+    + ")(#/(?:user|room)/(([#@!+]).*))";
 
 const matrixToEntityMap = {
     '@': '#/user/',
@@ -224,15 +216,12 @@ matrixLinkify.options = {
         switch (type) {
             case 'roomalias':
             case 'userid':
-            case 'groupid':
-                return matrixLinkify.MATRIXTO_BASE_URL + '/#/' + href;
             default: {
                 // FIXME: horrible duplication with HtmlUtils' transform tags
-                let m = href.match(matrixLinkify.VECTOR_URL_PATTERN);
+                let m = href.match(matrixLinkify.TCHAP_URL_PATTERN);
                 if (m) {
                     return m[1];
                 }
-                m = href.match(matrixLinkify.MATRIXTO_URL_PATTERN);
                 if (m) {
                     const entity = m[1];
                     if (matrixToEntityMap[entity[0]]) return matrixToEntityMap[entity[0]] + entity;
@@ -249,8 +238,7 @@ matrixLinkify.options = {
 
     target: function(href, type) {
         if (type === 'url') {
-            if (href.match(matrixLinkify.VECTOR_URL_PATTERN) ||
-                href.match(matrixLinkify.MATRIXTO_URL_PATTERN)) {
+            if (href.match(matrixLinkify.TCHAP_URL_PATTERN)) {
                 return null;
             } else {
                 return '_blank';

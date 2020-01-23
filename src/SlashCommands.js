@@ -24,7 +24,7 @@ import sdk from './index';
 import {_t, _td} from './languageHandler';
 import Modal from './Modal';
 import SettingsStore, {SettingLevel} from './settings/SettingsStore';
-import {MATRIXTO_URL_PATTERN} from "./linkify-matrix";
+import {TCHAP_URL_PATTERN} from "./linkify-matrix";
 import * as querystring from "querystring";
 import MultiInviter from './utils/MultiInviter';
 import { linkifyAndSanitizeHtml } from './HtmlUtils';
@@ -184,7 +184,7 @@ export const CommandMap = {
                 const params = args.split(' ');
                 if (params.length < 1) return reject(this.getUsage());
 
-                const matrixToMatches = params[0].match(MATRIXTO_URL_PATTERN);
+                const matrixToMatches = params[0].match(TCHAP_URL_PATTERN);
                 if (params[0][0] === '#') {
                     let roomAlias = params[0];
                     if (!roomAlias.includes(':')) {

@@ -23,6 +23,7 @@ const sdk = require('../../../index');
 import AccessibleButton from '../elements/AccessibleButton';
 import { _t } from '../../../languageHandler';
 import classNames from "classnames";
+import Tchap from '../../../Tchap'
 
 
 const PRESENCE_CLASS = {
@@ -88,6 +89,7 @@ const EntityTile = React.createClass({
     getInitialState: function() {
         return {
             hover: false,
+            entityTileNameClass: "mx_EntityTile_name"
         };
     },
 
@@ -96,11 +98,23 @@ const EntityTile = React.createClass({
         return this.props.shouldComponentUpdate(nextProps, nextState);
     },
 
+    updateExpired: function() {
+        Tchap.getUserExpiredInfo(this.props.member.userId).then(data => {
+            if (data === true) {
+                this.setState({
+                    entityTileNameClass: this.state.entityTileNameClass + " mx_EntityTile_name_expired"
+                });
+            }
+        });
+    },
+
     render: function() {
         const mainClassNames = {
             "mx_EntityTile": true,
             "mx_EntityTile_noHover": this.props.suppressOnHover,
         };
+        this.updateExpired();
+        const entityTileNameClass = this.state.entityTileNameClass;
         if (this.props.className) mainClassNames[this.props.className] = true;
 
         // For the moment, we always consider as "online" all members in order to disable "faded" effect on username
@@ -132,7 +146,7 @@ const EntityTile = React.createClass({
             }
             nameEl = (
                 <div className="mx_EntityTile_details">
-                    <EmojiText element="div" className="mx_EntityTile_name" dir="auto">
+                    <EmojiText element="div" className={entityTileNameClass} dir="auto">
                         { name }
                     </EmojiText>
                     {presenceLabel}
@@ -141,7 +155,7 @@ const EntityTile = React.createClass({
         } else if (this.props.subtextLabel) {
             nameEl = (
                 <div className="mx_EntityTile_details">
-                    <EmojiText element="div" className="mx_EntityTile_name" dir="auto">
+                    <EmojiText element="div" className={entityTileNameClass} dir="auto">
                         {name}
                     </EmojiText>
                     <span className="mx_EntityTile_subtext">{this.props.subtextLabel}</span>
@@ -149,7 +163,7 @@ const EntityTile = React.createClass({
             );
         } else {
             nameEl = (
-                <EmojiText element="div" className="mx_EntityTile_name" dir="auto">{ name }</EmojiText>
+                <EmojiText element="div" className={entityTileNameClass} dir="auto">{ name }</EmojiText>
             );
         }
 

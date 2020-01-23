@@ -844,10 +844,11 @@ module.exports = withMatrixClient(React.createClass({
 
         const enablePresenceByHsUrl = SdkConfig.get()["enable_presence_by_hs_url"];
         const hsUrl = this.props.matrixClient.baseUrl;
-        let showPresence = true;
-        if (enablePresenceByHsUrl && enablePresenceByHsUrl[hsUrl] !== undefined) {
+        let showPresence = false;
+        // We dont want to use presence for the moment.
+        /*if (enablePresenceByHsUrl && enablePresenceByHsUrl[hsUrl] !== undefined) {
             showPresence = enablePresenceByHsUrl[hsUrl];
-        }
+        }*/
 
         let presenceLabel = null;
         if (showPresence) {

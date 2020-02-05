@@ -195,12 +195,7 @@ const transformTags = { // custom to matrix
             // FIXME: horrible duplication with linkify-matrix
             m = attribs.href.match(linkifyMatrix.TCHAP_URL_PATTERN);
             if (m) {
-                console.error("attribs.href");
-                console.error(attribs.href);
                 attribs.href = m[1];
-
-                console.error("m[1]");
-                console.error(m[1]);
                 delete attribs.target;
             }
         }

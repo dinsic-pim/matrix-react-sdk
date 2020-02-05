@@ -181,13 +181,6 @@ matrixLinkify.TCHAP_URL_PATTERN = "^(?:https?:\/\/)?(?:"
     + "(?:www\\.)?tchap\\.gouv\\.fr/"
     + ")(#/(?:user|room)/(([#@!+]).*))";
 
-const matrixToEntityMap = {
-    '@': '#/user/',
-    '#': '#/room/',
-    '!': '#/room/',
-    '+': '#/group/',
-};
-
 matrixLinkify.options = {
     events: function(href, type) {
         switch (type) {
@@ -221,10 +214,6 @@ matrixLinkify.options = {
                 let m = href.match(matrixLinkify.TCHAP_URL_PATTERN);
                 if (m) {
                     return m[1];
-                }
-                if (m) {
-                    const entity = m[1];
-                    if (matrixToEntityMap[entity[0]]) return matrixToEntityMap[entity[0]] + entity;
                 }
 
                 return href;

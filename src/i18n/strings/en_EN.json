@@ -1651,7 +1651,7 @@
     "Password too weak !": "Password too weak !",
     "Unable to decrypt: The sender's device has not sent us the keys for this message.": "Unable to decrypt: The sender's device has not sent us the keys for this message.",
     "** Unable to decrypt: The sender's device has not sent us the keys for this message. **": "Unable to decrypt: The sender's device has not sent us the keys for this message.",
-    "Warning: The domain of your email address is not declared in Tchap. If you have received an invitation, you will be able to create a \"guest\" account, allowing only to participate in private exchanges to which you are invited.": "Warning: The domain of your email address is not declared in Tchap. If you have received an invitation, you will be able to create a \"guest\" account, allowing only to participate in private exchanges to which you are invited.",
+    "Information: The domain of your email address is not declared in Tchap. If you have received an invitation, you will be able to create a \"guest\" account, allowing only to participate in private exchanges to which you are invited.": "Information: The domain of your email address is not declared in Tchap. If you have received an invitation, you will be able to create a \"guest\" account, allowing only to participate in private exchanges to which you are invited.",
     "Room open to external users": "Room open to external users",
     "Unreachable Homeserver": "Unreachable Homeserver",
     "Your last three login attempts have failed. Please try again in 30 minutes.": "Your last three login attempts have failed. Please try again in 30 minutes.",

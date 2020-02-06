@@ -258,7 +258,7 @@ module.exports = React.createClass({
         let warnExternMessage;
         if (this.state.isExtern === true) {
             warnExternMessage = (<div className="mx_AuthBody_fieldRow">{
-                _t("Warning: The domain of your email address is not " +
+                _t("Information: The domain of your email address is not " +
                     "declared in Tchap. If you have received an invitation, " +
                     "you will be able to create a \"guest\" account, allowing " +
                     "only to participate in private exchanges to which you are invited.")

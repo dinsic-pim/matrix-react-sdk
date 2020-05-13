@@ -104,7 +104,7 @@ class Tchap {
      * @returns {boolean}
      */
     static isUserExternFromServerHostname(hs) {
-        return hs.includes('e.') || hs.includes('externe.');
+        return hs.startsWith('e.') || hs.startsWith('agent.externe.');
     }
 
     /**

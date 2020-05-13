@@ -166,7 +166,7 @@ export function onStartChatFinished(shouldInvite, addrs) {
 
                 default:
                     // Create a new room.
-                    createRoom({dmUserId: addrText}).catch((err) => {
+                    createRoom({dmUserId: invitedUserId}).catch((err) => {
                         Modal.createTrackedDialog('Failed to invite user', '', ErrorDialog, {
                             title: _t("Failed to invite user"),
                             description: ((err && err.message) ? err.message : _t("Operation failed")),

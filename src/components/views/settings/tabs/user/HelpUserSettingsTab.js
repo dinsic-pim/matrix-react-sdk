@@ -120,7 +120,7 @@ export default class HelpUserSettingsTab extends React.Component {
 
     render() {
         let faqText = _t('For help with using Tchap, click <a>here</a>.', {}, {
-            'a': (sub) => <a href="https://www.tchap.gouv.fr/faq/" rel='noreferrer nofollow noopener' target='_blank'>{sub}</a>,
+            'a': (sub) => <a href={SdkConfig.get().base_host_url + SdkConfig.get().generic_endpoints.faq} rel='noreferrer nofollow noopener' target='_blank'>{sub}</a>,
         });
 
         const reactSdkVersion = REACT_SDK_VERSION !== '<local>'

@@ -558,6 +558,9 @@ textarea {
     color: $username-variant8-color;
 }
 
+
+// Custom Tchap elements
+
 .tc_RepFr_welcome_logo {
     height: 50px;
     padding-left: 15px;
@@ -588,4 +591,54 @@ textarea {
     position: relative;
     top: 7px;
     left: 5px;
+}
+
+// Warning modal about loosing keys
+.tc_ThreeColumn_block {
+    margin-top: 50px;
+    margin-bottom: -20px;
+}
+
+.tc_ThreeColumn_block_image {
+    width: 100px;
+    height: 100px;
+    display: inline-flex;
+}
+
+.tc_ThreeColumn_block_image img {
+    margin: 0 auto;
+}
+
+.tc_ThreeColumn_block_content {
+    padding: 10px 30px 0 30px;
+    margin-bottom: 20px;
+}
+
+.tc_ThreeColumn_block_content p {
+    margin-bottom: 20px;
+}
+
+.tc_ThreeColumn_block_bordered {
+    width: calc(33% - 1px);
+    border-right: 1px solid $input-darker-fg-color;
+    height: 100%;
+    position: relative;
+    text-align: center;
+    display: inline-flex;
+}
+
+.tc_ThreeColumn_block_last {
+    width: calc(33% - 1px);
+    position: relative;
+    text-align: center;
+    display: inline-flex;
+}
+
+.tc_ThreeColumn_block_separator {
+    position: absolute;
+    right: 0;
+    top: 38%;
+    margin-right: -10px;
+    background: white;
+    color: $input-darker-fg-color;
 }

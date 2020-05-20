@@ -48,7 +48,6 @@ export default React.createClass({
                         <p>{_t('All exchanges are end-to-end encrypted and accessible only using digital keys saved on your devices (<a>find out more</a>).', {}, {
                             'a': (sub) => <a href={SdkConfig.get().base_host_url + SdkConfig.get().generic_endpoints.encryption_info} rel='noreferrer nofollow noopener' target='_blank'>{sub}</a>,
                         })}</p>
-                        <br />
                         <p>{_t("<b>Warning</b>: for an optimal experience, it's recommended to always stay connected.", {}, {
                             'b': (sub) => <b>{sub}</b>,
                         })}</p>

@@ -67,29 +67,19 @@ export function showStartChatInviteDialog() {
 }
 
 export function showRoomInviteDialog(roomId) {
-    const validAddressTypes = ['mx-user-id'];
-    let placeholder = "Name or Tchap ID";
-
-    MatrixClientPeg.get().getRoomDirectoryVisibility(roomId).then((result => {
-        if (result.visibility !== "public") {
-            validAddressTypes.push('email');
-            placeholder = "Email, name or tchap ID";
-        }
-
-        const AddressPickerDialog = sdk.getComponent("dialogs.AddressPickerDialog");
-        Modal.createTrackedDialog('Chat Invite', '', AddressPickerDialog, {
-            title: _t('Invite new room members'),
-            description: _t('Who would you like to add to this room?'),
-            button: _t('Send Invites'),
-            placeholder: _t(placeholder),
-            validAddressTypes: validAddressTypes,
-            invitationType: 'room',
-            roomId: roomId,
-            onFinished: (shouldInvite, addrs) => {
-                _onRoomInviteFinished(roomId, shouldInvite, addrs);
-            },
-        });
-    }));
+    const AddressPickerDialog = sdk.getComponent("dialogs.AddressPickerDialog");
+    Modal.createTrackedDialog('Chat Invite', '', AddressPickerDialog, {
+        title: _t('Invite new room members'),
+        description: _t('Who would you like to add to this room?'),
+        button: _t('Send Invites'),
+        placeholder: _t("Email, name or tchap ID"),
+        validAddressTypes: ['mx-user-id', 'email'],
+        invitationType: 'room',
+        roomId: roomId,
+        onFinished: (shouldInvite, addrs) => {
+            _onRoomInviteFinished(roomId, shouldInvite, addrs);
+        },
+    });
 }
 
 /**

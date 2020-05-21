@@ -113,7 +113,7 @@ const EntityTile = React.createClass({
             "mx_EntityTile": true,
             "mx_EntityTile_noHover": this.props.suppressOnHover,
         };
-        this.updateExpired();
+        //this.updateExpired();
         const entityTileNameClass = this.state.entityTileNameClass;
         if (this.props.className) mainClassNames[this.props.className] = true;
 

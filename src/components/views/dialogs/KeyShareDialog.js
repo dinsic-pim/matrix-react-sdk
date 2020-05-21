@@ -20,6 +20,7 @@ import PropTypes from 'prop-types';
 import sdk from '../../../index';
 
 import { _t, _td } from '../../../languageHandler';
+import AccessibleButton from "../elements/AccessibleButton";
 
 /**
  * Dialog which asks the user whether they want to share their keys with
@@ -133,12 +134,12 @@ export default React.createClass({
                 <p>{ text }</p>
 
                 <div className="mx_Dialog_buttons">
-                    <button onClick={this._onShareClicked} autoFocus="true">
-                        { _t('Accept') }
-                    </button>
                     <button onClick={this._onIgnoreClicked}>
-                        { _t('Decline') }
+                        { _t('Ignore request') }
                     </button>
+                    <AccessibleButton kind="primary" onClick={this._onVerifyClicked} autoFocus="true">
+                        { _t('Start verification') }
+                    </AccessibleButton>
                 </div>
             </div>
         );

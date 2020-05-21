@@ -55,7 +55,7 @@ export default class VerificationShowSas extends React.Component {
                 {emojiBlocks}
             </div>;
             sasCaption = _t(
-                "Verify this user by confirming the following emoji appear on their screen.",
+                "Verify the device by confirming that the following emoji also appear on their screen.",
             );
         } else if (this.props.sas.decimal) {
             const numberBlocks = this.props.sas.decimal.map((num, i) => <span key={i}>
@@ -65,7 +65,7 @@ export default class VerificationShowSas extends React.Component {
                 {numberBlocks}
             </div>;
             sasCaption = _t(
-                "Verify this user by confirming the following number appears on their screen.",
+                "Verify the device by confirming that the following number also appear on their screen.",
             );
         } else {
             return <div>
@@ -80,10 +80,6 @@ export default class VerificationShowSas extends React.Component {
 
         return <div className="mx_VerificationShowSas">
             <p>{sasCaption}</p>
-            <p>{_t(
-                "For maximum security, we recommend you do this in person or use another " +
-                "trusted means of communication.",
-            )}</p>
             {sasDisplay}
             <DialogButtons onPrimaryButtonClick={this.props.onDone}
                 primaryButton={_t("Continue")}

@@ -146,15 +146,9 @@ export default class IncomingSasDialog extends React.Component {
             <div>
                 {profile}
                 <p>{_t(
-                    "Verify this user to mark them as trusted. " +
-                    "Trusting users gives you extra peace of mind when using " +
-                    "end-to-end encrypted messages.",
-                )}</p>
-                <p>{_t(
-                    // NB. Below wording adjusted to singular 'device' until we have
-                    // cross-signing
-                    "Verifying this user will mark their device as trusted, and " +
-                    "also mark your device as trusted to them.",
+                    "One of your devices wants to check your current device. " +
+                  "By performing this verification, a link of trust will be established " +
+                  "between your two devices to facilitate the sharing of encryption keys.",
                 )}</p>
                 <DialogButtons
                     primaryButton={_t('Continue')}
@@ -181,7 +175,7 @@ export default class IncomingSasDialog extends React.Component {
         return (
             <div>
                 <Spinner />
-                <p>{_t("Waiting for partner to confirm...")}</p>
+                <p>{_t("Waiting for confirmation from other device...")}</p>
             </div>
         );
     }

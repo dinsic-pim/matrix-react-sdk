@@ -159,7 +159,10 @@ export default class DeviceVerifyDialog extends React.Component {
     }
 
     _renderSasVerificationPhaseStart() {
-        const AccessibleButton = sdk.getComponent('views.elements.AccessibleButton');
+        this._onSasRequestClick();
+        // This will automatically render the next phase well configured.
+        // The code is kept if one day we wanted to revert this.
+        /*const AccessibleButton = sdk.getComponent('views.elements.AccessibleButton');
         const DialogButtons = sdk.getComponent('views.elements.DialogButtons');
         return (
             <div>
@@ -184,7 +187,7 @@ export default class DeviceVerifyDialog extends React.Component {
                     onCancel={this._onCancelClick}
                 />
             </div>
-        );
+        );*/
     }
 
     _renderSasVerificationPhaseWaitAccept() {
@@ -194,10 +197,11 @@ export default class DeviceVerifyDialog extends React.Component {
         return (
             <div>
                 <Spinner />
-                <p>{_t("Waiting for partner to accept...")}</p>
+                <p>{_t("Please accept the request on the device to be verified...")}</p>
                 <p>{_t(
-                    "Nothing appearing? Not all clients support interactive verification yet. " +
-                    "<button>Use legacy verification</button>.",
+                    "The request may not be displayed on this device, as some versions of the application " +
+                  "do not support interactive verification. We invite you to " +
+                  "<button>use legacy verification</button>.",
                     {}, {button: sub => <AccessibleButton element='span' className="mx_linkButton"
                         onClick={this._onSwitchToLegacyClick}
                     >
@@ -222,7 +226,7 @@ export default class DeviceVerifyDialog extends React.Component {
         return <div>
             <Spinner />
             <p>{_t(
-                "Waiting for %(userId)s to confirm...", {userId: this.props.userId},
+                "Waiting for confirmation on device %(deviceDisplayName)s...", {deviceDisplayName: this.props.device.getDisplayName()},
             )}</p>
         </div>;
     }
@@ -244,16 +248,10 @@ export default class DeviceVerifyDialog extends React.Component {
         const key = FormattingUtils.formatCryptoKey(this.props.device.getFingerprint());
         const body = (
             <div>
-                <AccessibleButton
-                    element="span" className="mx_linkButton" onClick={this._onSwitchToSasClick}
-                >
-                    {_t("Use two-way text verification")}
-                </AccessibleButton>
                 <p>
-                    { _t("To verify that this device can be trusted, please contact its " +
-                        "owner using some other means (e.g. in person or a phone call) " +
-                        "and ask them whether the key they see in their User Settings " +
-                        "for this device matches the key below:") }
+                    { _t("To validate that you can trust this device, " +
+                      "please check that the key that you see in the User Settings " +
+                      "of this device corresponds to the key below:") }
                 </p>
                 <div className="mx_DeviceVerifyDialog_cryptoSection">
                     <ul>
@@ -263,9 +261,8 @@ export default class DeviceVerifyDialog extends React.Component {
                     </ul>
                 </div>
                 <p>
-                    { _t("If it matches, press the verify button below. " +
-                        "If it doesn't, then someone else is intercepting this device " +
-                        "and you probably want to press the blacklist button instead.") }
+                    { _t("If the keys match, click on the button " +
+                      "\"I verify that the keys match\".") }
                 </p>
             </div>
         );

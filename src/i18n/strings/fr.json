@@ -872,7 +872,7 @@
     "Dark theme": "Thème sombre",
     "Tchap theme": "Thème Tchap",
     "Ignored Users": "Utilisateurs ignorés",
-    "An email with further instructions will be sent to %(emailAddress)s if a Tchap account is associated with it.": "Un e-mail contenant d'autres instructions sera envoyé à l'adresse %(emailAddress)s si un compte Tchap est associé à celle-ci.",
+    "If a Tchap account exists, an email has been sent to the address: %(emailAddress)s. Once you've followed the link it contains, click below.": "Si un compte Tchap existe, un e-mail a été envoyé à l’adresse : %(emailAddress)s. Une fois que vous aurez suivi le lien qu’il contient, cliquez ci-dessous.",
     "Ignores a user, hiding their messages from you": "Ignore un utilisateur, en masquant ses messages",
     "Stops ignoring a user, showing their messages going forward": "N'ignore plus un utilisateur, en affichant ses messages à partir de maintenant",
     "The visibility of '%(roomName)s' in %(groupId)s could not be updated.": "La visibilité de \"%(roomName)s\" dans %(groupId)s n'a pas pu être mise à jour.",

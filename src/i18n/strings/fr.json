@@ -750,7 +750,7 @@
     "New community ID (e.g. +foo:%(localDomain)s)": "Nouvel identifiant de communauté (par ex. +foo:%(localDomain)s)",
     "Message removed by %(userId)s": "Message supprimé par %(userId)s",
     "Message removed": "Message supprimé",
-    "An email has been sent to %(emailAddress)s, unless a Tchap account is already associated with it": "Un e-mail a été envoyé à %(emailAddress)s, sauf si un compte Tchap lui est déjà associé",
+    "An email has been sent to %(emailAddress)s, unless a Tchap account is already associated with it": "Un e-mail a été envoyé à %(emailAddress)s, sauf si un compte Tchap lui a déjà été associé",
     "A text message has been sent to %(msisdn)s": "Un message a été envoyé à %(msisdn)s",
     "Remove from community": "Supprimer de la communauté",
     "Disinvite this user from community?": "Désinviter cet utilisateur de la communauté ?",

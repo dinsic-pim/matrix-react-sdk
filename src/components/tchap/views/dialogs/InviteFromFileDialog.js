@@ -114,7 +114,7 @@ module.exports = React.createClass({
                 } else {
                     let idx = this.state.processingIndex + 1;
                     this.setState({
-                        error: <div className="mx_AddressPickerDialog_error">{ _t("Error : This file contains some invalid email address.") }</div>,
+                        error: <div className="mx_AddressPickerDialog_error">{ _t("This file contains at least one invalid email address : %(address)s.", {address}) }</div>,
                         list: [],
                         processingIndex: idx
                     });

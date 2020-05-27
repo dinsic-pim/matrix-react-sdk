@@ -1664,7 +1664,7 @@
     "The field note is required.": "The field note is required.",
     "Error : Externals aren't allowed to join this room": "Error : Externals aren't allowed to join this room",
     "Invite users from a file": "Invite users from a file",
-    "Error : This file contains some invalid email address.": "Error : This file contains some invalid email address.",
+    "This file contains at least one invalid email address : %(address)s.": "This file contains at least one invalid email address : %(address)s.",
     "Error : File too large (max 25 kB).": "Error : File too large (max 25 kB).",
     "Some users are extern. This room is restricted. They will not be invited.": "Some users are extern. This room is restricted. They will not be invited.",
     "The file must be in '.txt' format and the email addresses must be separated by ';'.": "The file must be in \".txt\" format and the email addresses must be separated by \";\"."

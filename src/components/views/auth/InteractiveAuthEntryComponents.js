@@ -426,7 +426,7 @@ export const EmailIdentityAuthEntry = React.createClass({
         } else {
             return (
                 <div>
-                    <p>{ _t("An email has been sent to %(emailAddress)s",
+                    <p>{ _t("An email has been sent to %(emailAddress)s, unless a Tchap account is already associated with it",
                         { emailAddress: (sub) => <i>{ this.props.inputs.emailAddress }</i> },
                     ) }
                     </p>

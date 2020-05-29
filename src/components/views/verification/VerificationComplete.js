@@ -29,10 +29,6 @@ export default class VerificationComplete extends React.Component {
         return <div>
             <h2>{_t("Verified!")}</h2>
             <p>{_t("You've successfully verified this device.")}</p>
-            <p>{_t(
-                "Secure messages with this user are end-to-end encrypted and not able to be " +
-                "read by third parties.",
-            )}</p>
             <DialogButtons onPrimaryButtonClick={this.props.onDone}
                 primaryButton={_t("Got It")}
                 hasCancel={false}

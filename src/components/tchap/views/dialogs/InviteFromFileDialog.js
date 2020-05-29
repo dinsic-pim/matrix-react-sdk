@@ -35,13 +35,17 @@ module.exports = React.createClass({
     },
 
     getInitialState: function() {
+        const authorizedType = [[]]
         return {
             error: null,
             errorRestricted: false,
             list: [],
             listSize: 0,
             fileReader: new FileReader(),
-            processingIndex: 0
+            processingIndex: 0,
+            fileType: null,
+            authorizedTypeTxt: ['text/plain'],
+            authorizedTypeCsv: ['text/csv', 'text/x-csv', 'application/vnd.ms-excel', 'application/csv', 'application/x-csv']
         };
     },
 
@@ -55,13 +59,42 @@ module.exports = React.createClass({
 
     _handleFileRead: function() {
         const fileReader = this.state.fileReader;
+        const fileType = this.state.fileType;
+        const authorizedTypeTxt = this.state.authorizedTypeTxt;
+        const authorizedTypeCsv = this.state.authorizedTypeCsv;
         const room = MatrixClientPeg.get().getRoom(this.props.roomId);
         const accessRules = Tchap.getAccessRules(this.props.roomId);
 
         let list = fileReader.result;
+        let addresses = null;
+
+        console.error(fileReader);
+        console.error(list);
+        console.error(this.state.fileType);
+
+        if (authorizedTypeTxt.includes(fileType)) {
+            list = list.replace(/(\r\n|\n|\r)/gm, "");
+            list = list.replace(/\s/gm, "");
+            addresses = list.split(";").filter(Boolean);
+
+            console.error("[TXT] after")
+            console.error(addresses)
+        } else if (authorizedTypeCsv.includes(fileType)) {
+            list = list.replace(/(\r)/gm, "");
+            list = list.replace(/(\r\n|\n)/gm, ";");
+            list = list.replace(/\s/gm, "");
+            console.error(list)
+            addresses = list.split(";").filter(Boolean);
+
+            console.error("[CSV] after")
+            console.error(addresses)
+        }
+/*
+        return;
+
         list = list.replace(/(\r\n|\n|\r)/gm, "");
         list = list.replace(/\s/gm, "");
-        let addresses = list.split(";").filter(Boolean);
+        list.split(";").filter(Boolean);*/
 
         this.setState({
             listSize: addresses.length
@@ -125,18 +158,26 @@ module.exports = React.createClass({
     },
 
     _parseFile: function(file) {
+        const authorizedType = (this.state.authorizedTypeTxt).concat(this.state.authorizedTypeCsv);
         this.setState({
             error: null,
             errorRestricted: false,
             list: [],
-            processingIndex: 0
+            processingIndex: 0,
+            fileType: null
         });
-        if (file.size > 25000) {
+        console.error(file)
+        if (!authorizedType.includes(file.type)) {
+            this.setState({
+                error: <div className="mx_AddressPickerDialog_error">{ 'BAD FILE TYPE' }</div>
+            });
+        } else if (file.size > 25000) {
             this.setState({
                 error: <div className="mx_AddressPickerDialog_error">{ _t("Error : File too large (max 25 kB).") }</div>
             });
         } else {
             const fileReader = this.state.fileReader;
+            this.setState({ fileType: file.type})
             fileReader.onloadend = this._handleFileRead;
             fileReader.readAsText(file);
         }
@@ -158,6 +199,7 @@ module.exports = React.createClass({
         const error = this.state.error;
         const totalProcess = this.state.processingIndex;
         const totalSize = this.state.listSize;
+        const authorizedType = (this.state.authorizedTypeTxt).concat(this.state.authorizedTypeCsv).join(',')
 
         let errorRestricted = null;
         if (this.state.errorRestricted && !error) {
@@ -173,7 +215,13 @@ module.exports = React.createClass({
                 onFinished={this.props.onFinished}
                 title={this.props.title}>
                 <div className="mx_AddressPickerDialog_label">
-                    <label htmlFor="import-file">{ _t("The file must be in '.txt' format and the email addresses must be separated by ';'.") }</label>
+                    <label htmlFor="import-file">
+                        { _t("Supported formats :") }
+                        <ul>
+                            <li>{_t(".txt with email addresses separated by ';'")}</li>
+                            <li>{_t(".csv with email addresses separated by lines break")}</li>
+                        </ul>
+                    </label>
                     <br />
                     { roomParams }
                 </div>
@@ -183,7 +231,7 @@ module.exports = React.createClass({
                     <br />
                     <input type="file"
                         id="import-file"
-                        accept=".txt"
+                        accept={authorizedType}
                         onChange={e => this._parseFile(e.target.files[0])}
                     />
                 </div>

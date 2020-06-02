@@ -632,9 +632,9 @@ module.exports = withMatrixClient(React.createClass({
                 </p>
             </div>;
         const keyRequestInfoContent = this.state.previouslyRequestedKeys ?
-            _t('Key request sent.') :
+            _t('Request in progress...') :
             _t(
-                '<requestLink>Re-request encryption keys</requestLink> from your other devices.',
+                'Request sent. <requestLink>Resend</requestLink>.',
                 {},
                 {'requestLink': (sub) => <a onClick={this.onRequestKeysClick}>{ sub }</a>},
             );

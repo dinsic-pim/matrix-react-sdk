@@ -233,7 +233,9 @@ export default class DeviceVerifyDialog extends React.Component {
 
     _renderSasVerificationPhaseVerified() {
         const VerificationComplete = sdk.getComponent('views.verification.VerificationComplete');
-        return <VerificationComplete onDone={this._onVerifiedDoneClick} />;
+        const text = _t("The key sharing will be done gradually. " +
+            "The messages will decipher as you go. This may take a few minutes.")
+        return <VerificationComplete onDone={this._onVerifiedDoneClick} text={text} />;
     }
 
     _renderSasVerificationPhaseCancelled() {

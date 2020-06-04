@@ -1494,7 +1494,7 @@
     "Messages containing my username": "Messages contenant mon nom d'utilisateur",
     "The other party cancelled the verification.": "L'autre personne a annulé la vérification.",
     "Verified!": "Vérifié !",
-    "You've successfully verified this device.": "Vous avez vérifié cet appareil avec succès.",
+    "You've successfully verified this device.": "Vous avez bien vérifié cet appareil.",
     "Secure messages with this user are end-to-end encrypted and not able to be read by third parties.": "Les messages sécurisés avec cet utilisateur sont chiffrés de bout en bout et ne peuvent être lus par personne d'autre.",
     "Got It": "Compris",
     "Verify the device by confirming that the following number also appear on their screen.": "Vérifier l’appareil en confirmant que le nombre suivants apparait également sur son écran.",
@@ -1928,5 +1928,6 @@
     "Share": "Partager",
     "Try again later, or ask a room admin to check if you have access.": "Réessayez plus tard ou demandez à un administrateur du salon si vous y avez accès.",
     "Are you sure you want to remove this room from the rooms directory?": "Voulez-vous vraiment retirer ce salon des salons publics ?",
-    "Remove this room from the rooms directory": "Retirer ce salon de la liste des salons publics"
+    "Remove this room from the rooms directory": "Retirer ce salon de la liste des salons publics",
+    "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes.": "Le partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes."
 }

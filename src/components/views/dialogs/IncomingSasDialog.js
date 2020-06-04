@@ -182,7 +182,7 @@ export default class IncomingSasDialog extends React.Component {
 
     _renderPhaseVerified() {
         const VerificationComplete = sdk.getComponent('views.verification.VerificationComplete');
-        return <VerificationComplete onDone={this._onVerifiedDoneClick} />;
+        return <VerificationComplete onDone={this._onVerifiedDoneClick} text={null} />;
     }
 
     _renderPhaseCancelled() {

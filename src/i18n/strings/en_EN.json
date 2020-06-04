@@ -1663,5 +1663,6 @@
     "Error : Externals aren't allowed to join this room": "Error : Externals aren't allowed to join this room",
     "Share": "Share",
     "Are you sure you want to remove this room from the rooms directory?": "Are you sure you want to remove this room from the rooms directory?",
-    "Remove this room from the rooms directory": "Remove this room from the rooms directory"
+    "Remove this room from the rooms directory": "Remove this room from the rooms directory",
+    "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes.": "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes."
 }

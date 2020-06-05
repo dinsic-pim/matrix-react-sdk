@@ -415,7 +415,8 @@ module.exports = React.createClass({
 
             // If the attachment is encryped then put the link inside an iframe.
             let renderer_url = MatrixClientPeg.get().getHomeserverUrl() + "/v1.html";
-            renderer_url += "?origin=" + encodeURIComponent(window.location.origin);
+            // Temporary remove the origin param for thumbnails.
+            // renderer_url += "?origin=" + encodeURIComponent(window.location.origin);
             return (
                 <span className="mx_MFileBody">
                     <div className="mx_MFileBody_download">

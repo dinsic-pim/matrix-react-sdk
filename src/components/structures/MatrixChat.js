@@ -34,7 +34,7 @@ import Notifier from '../../Notifier';
 import Modal from "../../Modal";
 import Tinter from "../../Tinter";
 import sdk from '../../index';
-import { showStartChatInviteDialog, showRoomInviteDialog } from '../../RoomInvite';
+import { showStartChatInviteDialog, showRoomInviteDialog, showRoomInviteDialogFromFile } from '../../RoomInvite';
 import * as Rooms from '../../Rooms';
 import linkifyMatrix from "../../linkify-matrix";
 import * as Lifecycle from '../../Lifecycle';
@@ -636,6 +636,9 @@ export default React.createClass({
                 break;
             case 'view_invite':
                 showRoomInviteDialog(payload.roomId);
+                break;
+            case 'view_invite_file':
+                showRoomInviteDialogFromFile(payload.roomId);
                 break;
             case 'notifier_enabled': {
                     this.setState({showNotifierToolbar: Notifier.shouldShowToolbar()});

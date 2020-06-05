@@ -354,6 +354,6 @@ export const SETTINGS = {
     "RoomList.orderByImportance": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
         displayName: _td('Order rooms in the room list by most important first instead of most recent'),
-        default: true,
+        default: false,
     },
 };

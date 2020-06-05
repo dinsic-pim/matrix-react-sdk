@@ -28,6 +28,7 @@ import TagPanelButtons from './TagPanelButtons';
 import SettingsStore from '../../settings/SettingsStore';
 import {_t} from "../../languageHandler";
 import Analytics from "../../Analytics";
+import SdkConfig from "../../SdkConfig";
 
 
 const LeftPanel = React.createClass({
@@ -271,9 +272,9 @@ const LeftPanel = React.createClass({
                         <img src={require('../../../res/img/tchap/logo_rep_fr_black.svg')} alt="logo_rep_fr" />
                     </div>
                     <div className={"tc_Bottom_Links"}>
-                        <a href={"https://www.tchap.gouv.fr/faq/"} rel='noreferrer nofollow noopener' target='_blank'>{_t('FAQ')}</a>&nbsp;·&nbsp;
-                        <a href={"https://www.tchap.gouv.fr/cgu/"} rel='noreferrer nofollow noopener' target='_blank'>{_t('TAC')}</a>&nbsp;·&nbsp;
-                        <a href={"https://www.tchap.gouv.fr/tchap-prise-en-main.pdf"} rel='noreferrer nofollow noopener' target='_blank'>{_t('User Guide')}</a>
+                        <a href={SdkConfig.get().base_host_url + SdkConfig.get().generic_endpoints.faq} rel='noreferrer nofollow noopener' target='_blank'>{_t('FAQ')}</a>&nbsp;·&nbsp;
+                        <a href={SdkConfig.get().base_host_url + SdkConfig.get().generic_endpoints.tac} rel='noreferrer nofollow noopener' target='_blank'>{_t('TAC')}</a>&nbsp;·&nbsp;
+                        <a href={SdkConfig.get().base_host_url + SdkConfig.get().generic_endpoints.user_guide} rel='noreferrer nofollow noopener' target='_blank'>{_t('User Guide')}</a>
                     </div>
                 </aside>
             </div>

@@ -20,6 +20,7 @@ import sdk from '../../../index';
 import dis from '../../../dispatcher';
 import { _t } from '../../../languageHandler';
 import MatrixClientPeg from '../../../MatrixClientPeg';
+import SdkConfig from "../../../SdkConfig";
 
 export default class LogoutDialog extends React.Component {
     defaultProps = {
@@ -110,13 +111,6 @@ export default class LogoutDialog extends React.Component {
     }
 
     render() {
-        const description = <div>
-            <p>{_t(
-                "Encrypted messages are secured with end-to-end encryption. " +
-                "Only you and the recipient(s) have the keys to read these messages.",
-            )}</p>
-            <p>{_t("Back up your keys before signing out to avoid losing them.")}</p>
-        </div>;
 
 /*        if (!MatrixClientPeg.get().getKeyBackupEnabled()) {
             const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
@@ -193,22 +187,62 @@ export default class LogoutDialog extends React.Component {
 
             dialogContent = <div>
                 <div className="mx_Dialog_content" id='mx_Dialog_content'>
-                    { description }
+                    <div>
+                        <p>{_t('By logging-out you can lose the encryption keys necessary to access your encrypted messages (<a>learn more</a>).', {}, {
+                            'a': (sub) => <a href={SdkConfig.get().base_host_url + SdkConfig.get().generic_endpoints.encryption_info} rel='noreferrer nofollow noopener' target='_blank'>{sub}</a>,
+                        })}</p>
+                        <p>{_t("To avoid this it's strongly recommended to:")}</p>
+                    </div>
+                    <div className="tc_ThreeColumn_block">
+                        <div className="tc_ThreeColumn_block_bordered">
+                            <div className="tc_ThreeColumn_block_content">
+                                <div className="tc_ThreeColumn_block_image">
+                                    <img src={require('../../../../res/img/tchap/login-logo.svg')} alt="Login logo" width="50"/>
+                                </div>
+                                <p>{_t("Stay connected from at least one other device")}</p>
+                                <p>&nbsp;</p>
+                            </div>
+                            <p className="tc_ThreeColumn_block_separator">
+                                {_t("OR")}
+                            </p>
+                        </div>
+                        <div className="tc_ThreeColumn_block_bordered">
+                            <div className="tc_ThreeColumn_block_content">
+                                <div className="tc_ThreeColumn_block_image">
+                                    <img src={require('../../../../res/img/tchap/tchap-logo.svg')} alt="Tchap logo" width="60"/>
+                                </div>
+                                <p>{_t("Connect also with the mobile app")}</p>
+                                <p><a href={SdkConfig.get().base_host_url + SdkConfig.get().generic_endpoints.mobile_download} rel='noreferrer nofollow noopener' target='_blank'>{_t("Download")}</a></p>
+                            </div>
+                            <p className="tc_ThreeColumn_block_separator">
+                                {_t("OR")}
+                            </p>
+                        </div>
+                        <div className="tc_ThreeColumn_block_last">
+                            <div className="tc_ThreeColumn_block_content">
+                                <div className="tc_ThreeColumn_block_image">
+                                    <img src={require('../../../../res/img/tchap/export-logo.svg')} alt="Export logo" width="70"/>
+                                </div>
+                                <p>{_t("Export your encryption keys")}</p>
+                                <p><a href={SdkConfig.get().base_host_url + SdkConfig.get().generic_endpoints.export_info} rel='noreferrer nofollow noopener' target='_blank'>{_t("Find out more")}</a></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <DialogButtons primaryButton={_t("Sign out")}
+                <DialogButtons primaryButton={_t("Export keys and log-out")}
                                hasCancel={false}
-                               onPrimaryButtonClick={this._onLogoutConfirm}
+                               onPrimaryButtonClick={this._onExportE2eKeysClicked}
                                focus={true}
                 >
-                    <button onClick={this._onExportE2eKeysClicked}>
-                        {_t("Manually export keys")}
+                    <button onClick={this._onLogoutConfirm}>
+                        {_t("Sign out")}
                     </button>
                 </DialogButtons>
 
             </div>;
         }
         return (<BaseDialog
-            title={_t("You'll lose access to your encrypted messages")}
+            title={_t("Before log-out")}
             contentId='mx_Dialog_content'
             hasCancel={true}
             onFinished={this._onFinished}

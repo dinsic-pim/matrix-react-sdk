@@ -36,6 +36,8 @@ import TagOrderActions from '../../actions/TagOrderActions';
 import RoomListActions from '../../actions/RoomListActions';
 import ResizeHandle from '../views/elements/ResizeHandle';
 import {Resizer, CollapseDistributor} from '../../resizer';
+import Modal from "../../Modal";
+import InfoEncryptionDialog from "../views/dialogs/InfoEncryptionDialog";
 // We need to fetch each pinned message individually (if we don't already have it)
 // so each pinned message may trigger a request. Limit the number per room for sanity.
 // NB. this is just for server notices rather than pinned messages in general.
@@ -118,6 +120,7 @@ const LoggedInView = React.createClass({
         this._matrixClient.on("accountData", this.onAccountData);
         this._matrixClient.on("sync", this.onSync);
         this._matrixClient.on("RoomState.events", this.onRoomStateEvents);
+        Modal.createTrackedDialog('', '', InfoEncryptionDialog);
     },
 
     componentDidUpdate(prevProps) {

@@ -1932,7 +1932,7 @@
     "Remove this room from the rooms directory": "Retirer ce salon de la liste des salons publics",
     "Welcome to Tchap!": "Bienvenue sur Tchap !",
     "Tchap is the secure instant messaging service of the French State.": "Tchap est la messagerie instantanée sécurisée de l'État français.",
-    "All exchanges are end-to-end encrypted and accessible only using digital keys saved on your devices (<a>find out more</a>).": "Tous les échanges sont chiffrés de bout en bout et accessible uniquement à l'aide de clés numériques sauvegardées sur vos appareils (<a>en savoir plus</a>).",
+    "All exchanges are end-to-end encrypted and accessible only using digital keys saved on your devices (<a>find out more</a>).": "Tous les échanges sont chiffrés de bout en bout et accessibles uniquement à l'aide de clés numériques sauvegardées sur vos appareils (<a>en savoir plus</a>).",
     "<b>Warning</b>: for an optimal experience, it's recommended to always stay connected.": "<b>Attention</b> : pour une expérience optimale, il est conseillé de toujours rester connecté.",
     "Stay connected from at least one device": "Restez connecté depuis au moins un appareil",
     "Why?": "Pourquoi ?",
@@ -1944,7 +1944,7 @@
     "Before log-out": "Avant de vous déconnecter",
     "By logging-out you can lose the encryption keys necessary to access your encrypted messages (<a>learn more</a>).": "En vous déconnectant vous pouvez perdre les clés de chiffrement nécessaires pour accéder à vos messages chiffrés (<a>en savoir plus</a>).",
     "To avoid this it's strongly recommended to:": "Pour éviter cela il est fortement conseillé de :",
-    "Stay connected from at least one other device": "Rester connecté depuis au moins un autre appareil",
+    "Stay connected from at least one other device": "Restez connecté depuis au moins un autre appareil",
     "Export your encryption keys": "Exporter vos clés de chiffrement",
     "Find out more": "En savoir plus",
     "Export keys and log-out": "Exporter les clés et se déconnecter"

@@ -1666,6 +1666,7 @@
     "Invite users from a file": "Invite users from a file",
     "This file contains at least one invalid email address : %(address)s.": "This file contains at least one invalid email address : %(address)s.",
     "Error : File too large (max 25 kB).": "Error : File too large (max 25 kB).",
+    "Error : Invalid file format.": "Error : Invalid file format.",
     "Some users are extern. This room is restricted. They will not be invited.": "Some users are extern. This room is restricted. They will not be invited.",
     "Supported formats :": "Supported formats :",
     ".txt with email addresses separated by ';'": ".txt with email addresses separated by ';'",

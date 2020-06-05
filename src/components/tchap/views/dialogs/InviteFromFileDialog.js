@@ -68,33 +68,18 @@ module.exports = React.createClass({
         let list = fileReader.result;
         let addresses = null;
 
-        console.error(fileReader);
-        console.error(list);
-        console.error(this.state.fileType);
-
         if (authorizedTypeTxt.includes(fileType)) {
             list = list.replace(/(\r\n|\n|\r)/gm, "");
             list = list.replace(/\s/gm, "");
             addresses = list.split(";").filter(Boolean);
-
-            console.error("[TXT] after")
-            console.error(addresses)
         } else if (authorizedTypeCsv.includes(fileType)) {
             list = list.replace(/(\r)/gm, "");
             list = list.replace(/(\r\n|\n)/gm, ";");
             list = list.replace(/\s/gm, "");
-            console.error(list)
             addresses = list.split(";").filter(Boolean);
-
-            console.error("[CSV] after")
-            console.error(addresses)
+        } else {
+            return;
         }
-/*
-        return;
-
-        list = list.replace(/(\r\n|\n|\r)/gm, "");
-        list = list.replace(/\s/gm, "");
-        list.split(";").filter(Boolean);*/
 
         this.setState({
             listSize: addresses.length
@@ -166,10 +151,9 @@ module.exports = React.createClass({
             processingIndex: 0,
             fileType: null
         });
-        console.error(file)
         if (!authorizedType.includes(file.type)) {
             this.setState({
-                error: <div className="mx_AddressPickerDialog_error">{ 'BAD FILE TYPE' }</div>
+                error: <div className="mx_AddressPickerDialog_error">{ _t("Error : Invalid file format.") }</div>
             });
         } else if (file.size > 25000) {
             this.setState({

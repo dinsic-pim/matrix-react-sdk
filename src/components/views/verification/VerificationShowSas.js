@@ -80,13 +80,9 @@ export default class VerificationShowSas extends React.Component {
 
         return <div className="mx_VerificationShowSas">
             <p>{sasCaption}</p>
-            <p>{_t(
-                "For maximum security, we recommend you do this in person or use another " +
-                "trusted means of communication.",
-            )}</p>
             {sasDisplay}
             <DialogButtons onPrimaryButtonClick={this.props.onDone}
-                primaryButton={_t("Continue")}
+                primaryButton={_t("Confirm")}
                 hasCancel={true}
                 onCancel={this.props.onCancel}
             />

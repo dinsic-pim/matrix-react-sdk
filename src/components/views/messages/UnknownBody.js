@@ -34,7 +34,7 @@ module.exports = React.createClass({
         const event = this.props.mxEvent.getContent();
         let text;
         if (event && event.msgtype && event.msgtype === "m.bad.encrypted") {
-            text = _t("Unable to decrypt: The sender's device has not sent us the keys for this message.");
+            text = _t("Decryption fail: Please open Tchap on an other connected device to allow key sharing.");
         } else {
             text = event.body;
         }

@@ -22,17 +22,16 @@ import { _t } from '../../../languageHandler';
 export default class VerificationComplete extends React.Component {
     static propTypes = {
         onDone: PropTypes.func.isRequired,
+        text: PropTypes.string,
     }
 
     render() {
         const DialogButtons = sdk.getComponent('views.elements.DialogButtons');
+        const text = this.props.text ? (<p>{this.props.text}</p>) : null;
         return <div>
             <h2>{_t("Verified!")}</h2>
-            <p>{_t("You've successfully verified this user.")}</p>
-            <p>{_t(
-                "Secure messages with this user are end-to-end encrypted and not able to be " +
-                "read by third parties.",
-            )}</p>
+            <p>{_t("You've successfully verified this device.")}</p>
+            {text}
             <DialogButtons onPrimaryButtonClick={this.props.onDone}
                 primaryButton={_t("Got It")}
                 hasCancel={false}

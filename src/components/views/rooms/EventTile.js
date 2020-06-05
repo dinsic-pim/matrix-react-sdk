@@ -622,7 +622,7 @@ module.exports = withMatrixClient(React.createClass({
                             'for key share requests.') :
                         _t( 'Key share requests are sent to your other devices automatically. If you ' +
                             'rejected or dismissed the key share request on your other devices, click ' +
-                            'here to request the keys for this session again.')
+                            'here to request the keys again.')
                     }
                 </p>
                 <p>

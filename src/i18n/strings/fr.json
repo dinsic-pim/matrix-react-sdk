@@ -1497,7 +1497,7 @@
     "You've successfully verified this device.": "Vous avez bien vérifié cet appareil.",
     "Secure messages with this user are end-to-end encrypted and not able to be read by third parties.": "Les messages sécurisés avec cet utilisateur sont chiffrés de bout en bout et ne peuvent être lus par personne d'autre.",
     "Got It": "Compris",
-    "Please also confirm the number on the other device.": "Veuillez confirmer également les nombres sur l'autre appareil.",
+    "Verify this user by confirming the following number appears on their screen.": "Vérifier cet utilisateur en confirmant que le nombre suivant apparaît sur leur écran.",
     "For maximum security, we reccommend you do this in person or use another trusted means of communication.": "Pour une sécurité maximale, nous recommandons que vous fassiez cela en personne ou que vous utilisiez un autre moyen sûr de communication.",
     "To continue, click on each pair to confirm it's correct.": "Pour continuer, cliquez sur chaque paire pour confirmer que c'est correct.",
     "Yes": "Oui",
@@ -1643,7 +1643,7 @@
     "%(senderDisplayName)s has prevented guests from joining the room.": "%(senderDisplayName)s a empêché les invités de rejoindre le salon.",
     "%(senderDisplayName)s changed guest access to %(rule)s": "%(senderDisplayName)s a changé l'accès des invités en %(rule)s",
     "Group & filter rooms by custom tags (refresh to apply changes)": "Grouper et filtrer les salons grâce à des étiquettes personnalisées (actualiser pour appliquer les changements)",
-    "Please also confirm the emojis on the other device.": "Veuillez confirmer également les emojis sur l'autre appareil.",
+    "Verify this user by confirming the following emoji appear on their screen.": "Vérifier cet utilisateur en confirmant que les émojis suivant apparaissent sur son écran.",
     "Unable to find a supported verification method.": "Impossible de trouver une méthode de vérification prise en charge.",
     "Dog": "Chien",
     "Cat": "Chat",
@@ -1929,5 +1929,6 @@
     "Try again later, or ask a room admin to check if you have access.": "Réessayez plus tard ou demandez à un administrateur du salon si vous y avez accès.",
     "Are you sure you want to remove this room from the rooms directory?": "Voulez-vous vraiment retirer ce salon des salons publics ?",
     "Remove this room from the rooms directory": "Retirer ce salon de la liste des salons publics",
-    "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes.": "Le partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes."
+    "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes.": "Le partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.",
+    "Please also confirm the emojis on the other device.": "Veuillez confirmer également les emojis sur l'autre appareil."
 }

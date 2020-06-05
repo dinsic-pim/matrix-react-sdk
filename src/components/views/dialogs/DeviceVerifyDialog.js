@@ -226,7 +226,7 @@ export default class DeviceVerifyDialog extends React.Component {
         return <div>
             <Spinner />
             <p>{_t(
-                "Waiting for confirmation on device %(deviceDisplayName)s...", {deviceDisplayName: this.props.device.getDisplayName()},
+                "Please also confirm the emojis on the other device.",
             )}</p>
         </div>;
     }

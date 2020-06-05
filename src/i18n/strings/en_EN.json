@@ -355,8 +355,8 @@
     "You've successfully verified this device.": "You've successfully verified this device.",
     "Secure messages with this user are end-to-end encrypted and not able to be read by third parties.": "Secure messages with this user are end-to-end encrypted and not able to be read by third parties.",
     "Got It": "Got It",
-    "Please also confirm the emojis on the other device.": "Please also confirm the emojis on the other device.",
-    "Please also confirm the number on the other device.": "Please also confirm the number on the other device.",
+    "Verify this user by confirming the following emoji appear on their screen.": "Verify this user by confirming the following emoji appear on their screen.",
+    "Verify this user by confirming the following number appears on their screen.": "Verify this user by confirming the following number appears on their screen.",
     "Unable to find a supported verification method.": "Unable to find a supported verification method.",
     "For maximum security, we recommend you do this in person or use another trusted means of communication.": "For maximum security, we recommend you do this in person or use another trusted means of communication.",
     "Dog": "Dog",
@@ -1664,5 +1664,6 @@
     "Share": "Share",
     "Are you sure you want to remove this room from the rooms directory?": "Are you sure you want to remove this room from the rooms directory?",
     "Remove this room from the rooms directory": "Remove this room from the rooms directory",
-    "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes.": "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes."
+    "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes.": "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes.",
+    "Please also confirm the emojis on the other device.": "Please also confirm the emojis on the other device."
 }

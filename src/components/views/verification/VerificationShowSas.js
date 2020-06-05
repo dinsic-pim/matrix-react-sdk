@@ -65,7 +65,7 @@ export default class VerificationShowSas extends React.Component {
                 {numberBlocks}
             </div>;
             sasCaption = _t(
-                "Verify this user by confirming the following number appear on their screen.",
+                "Verify this user by confirming the following number appears on their screen.",
             );
         } else {
             return <div>

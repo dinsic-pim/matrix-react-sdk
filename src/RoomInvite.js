@@ -66,6 +66,18 @@ export function showStartChatInviteDialog() {
     });
 }
 
+export function showRoomInviteDialogFromFile(roomId) {
+    const InviteFromFileDialog = sdk.getComponent("tchap.views.dialogs.InviteFromFileDialog");
+    Modal.createTrackedDialog('Room Invite From File', '', InviteFromFileDialog, {
+        title: _t('Invite new room members from a file'),
+        roomId: roomId,
+        onFinished: (shouldInvite, addrs) => {
+            if (!shouldInvite) return;
+            _onRoomInviteFromFileFinished(roomId, addrs)
+        }
+    });
+}
+
 export function showRoomInviteDialog(roomId) {
     const AddressPickerDialog = sdk.getComponent("dialogs.AddressPickerDialog");
     Modal.createTrackedDialog('Chat Invite', '', AddressPickerDialog, {
@@ -208,9 +220,23 @@ function _onRoomInviteFinished(roomId, shouldInvite, addrs) {
     if (!shouldInvite) return;
 
     const addrTexts = addrs.map((addr) => addr.address);
+    _multipleInvite(roomId, addrTexts);
+}
 
-    // Invite new users to a room
-    inviteMultipleToRoom(roomId, addrTexts).then((result) => {
+function _onRoomInviteFromFileFinished(roomId, addrs) {
+    if (!addrs || addrs.length <= 0) {
+        const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
+        Modal.createTrackedDialog('Failed to invite users to the room', '', ErrorDialog, {
+            title: _t("Failed to invite users to the room:", {roomName: ""}),
+            description: _t("Invalid Email Address"),
+        });
+        return;
+    }
+    _multipleInvite(roomId, addrs);
+}
+
+function _multipleInvite(roomId, addrs) {
+    inviteMultipleToRoom(roomId, addrs).then((result) => {
         const room = MatrixClientPeg.get().getRoom(roomId);
         return _showAnyInviteErrors(result.states, room, result.inviter);
     }).catch((err) => {

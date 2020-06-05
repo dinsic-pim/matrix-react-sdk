@@ -23,6 +23,8 @@ import classnames from 'classnames';
 import sdk from '../../../index';
 import { _t } from '../../../languageHandler';
 import SettingsStore from "../../../settings/SettingsStore";
+import Tchap from '../../../Tchap';
+import Matrix from 'matrix-js-sdk';
 
 /* This file contains a collection of components which are used by the
  * InteractiveAuth to prompt the user to enter the information needed
@@ -370,19 +372,30 @@ export const EmailIdentityAuthEntry = React.createClass({
 
     getInitialState: function() {
         return {
+            matrixClient: this.props.matrixClient,
             requestingToken: false,
         };
     },
 
     componentWillMount: function() {
-        if (this.props.stageState.emailSid === null) {
-            this.setState({requestingToken: true});
-            this._requestEmailToken().catch((e) => {
-                this.props.fail(e);
-            }).finally(() => {
-                this.setState({requestingToken: false});
-            }).done();
-        }
+        Tchap.discoverPlatform(this.props.inputs.emailAddress).then(data => {
+            let _matrixClient = Matrix.createClient({
+                baseUrl: data,
+                idBaseUrl: data,
+            });
+            this.setState({
+                matrixClient: _matrixClient
+            });
+            if (this.props.stageState.emailSid === null) {
+                this.setState({requestingToken: true});
+                this._requestEmailToken().catch((e) => {
+                    this.props.fail(e);
+                }).finally(() => {
+                    this.setState({requestingToken: false});
+                }).done();
+            }
+        });
+
     },
 
     /*
@@ -391,12 +404,12 @@ export const EmailIdentityAuthEntry = React.createClass({
     _requestEmailToken: function() {
         const nextLink = this.props.makeRegistrationUrl({
             client_secret: this.props.clientSecret,
-            hs_url: this.props.matrixClient.getHomeserverUrl(),
-            is_url: this.props.matrixClient.getIdentityServerUrl(),
+            hs_url: this.state.matrixClient.getHomeserverUrl(),
+            is_url: this.state.matrixClient.getIdentityServerUrl(),
             session_id: this.props.authSessionId,
         });
 
-        return this.props.matrixClient.requestRegisterEmailToken(
+        return this.state.matrixClient.requestRegisterEmailToken(
             this.props.inputs.emailAddress,
             this.props.clientSecret,
             1, // TODO: Multiple send attempts?
@@ -413,7 +426,7 @@ export const EmailIdentityAuthEntry = React.createClass({
         } else {
             return (
                 <div>
-                    <p>{ _t("An email has been sent to %(emailAddress)s",
+                    <p>{ _t("An email has been sent to %(emailAddress)s, unless a Tchap account is already associated with it",
                         { emailAddress: (sub) => <i>{ this.props.inputs.emailAddress }</i> },
                     ) }
                     </p>

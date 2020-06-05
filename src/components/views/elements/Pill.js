@@ -277,7 +277,7 @@ const Pill = React.createClass({
         });
 
         const member = this.state.member
-        const displayName = member.rawDisplayName || '';
+        const displayName = member ? member.rawDisplayName : '';
 
         if (this.state.pillType) {
             return this.props.inMessage ?

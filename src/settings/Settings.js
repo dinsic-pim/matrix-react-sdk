@@ -182,7 +182,7 @@ export const SETTINGS = {
     "showRoomRecoveryReminder": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
         displayName: _td('Show a reminder to enable Secure Message Recovery in encrypted rooms'),
-        default: true,
+        default: false, // Key Backup are temporarily disabled.
     },
     "enableSyntaxHighlightLanguageDetection": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
@@ -336,7 +336,7 @@ export const SETTINGS = {
     },
     "promptBeforeInviteUnknownUsers": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
-        displayName: _td('Prompt before sending invites to potentially invalid matrix IDs'),
+        displayName: _td('Prompt before sending invites to potentially invalid Tchap IDs'),
         default: true,
     },
     "showDeveloperTools": {
@@ -354,6 +354,6 @@ export const SETTINGS = {
     "RoomList.orderByImportance": {
         supportedLevels: LEVELS_ACCOUNT_SETTINGS,
         displayName: _td('Order rooms in the room list by most important first instead of most recent'),
-        default: true,
+        default: false,
     },
 };

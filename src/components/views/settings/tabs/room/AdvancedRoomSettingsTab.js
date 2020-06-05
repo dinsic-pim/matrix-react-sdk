@@ -87,7 +87,7 @@ export default class AdvancedRoomSettingsTab extends React.Component {
         let unfederatableSection;
         const createEvent = room.currentState.getStateEvents('m.room.create', '');
         if (createEvent && createEvent.getContent()['m.federate'] === false) {
-            unfederatableSection = <div>{_t('This room is not accessible by remote Matrix servers')}</div>;
+            unfederatableSection = <div>{_t('This room is not accessible by remote Tchap servers')}</div>;
         }
 
         let roomUpgradeButton;

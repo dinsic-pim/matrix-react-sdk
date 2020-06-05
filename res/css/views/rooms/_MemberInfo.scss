@@ -53,6 +53,7 @@ limitations under the License.
 
 .mx_MemberInfo_container {
     margin: 0 16px 16px 16px;
+    color: $primary-fg-color;
 }
 
 .mx_MemberInfo .mx_RoomTile_nameContainer {
@@ -93,7 +94,7 @@ limitations under the License.
 
 .mx_MemberInfo h3 {
     text-transform: uppercase;
-    color: $input-darker-fg-color;
+    color: $primary-fg-color;
     font-weight: bold;
     font-size: 12px;
     margin: 4px 0;
@@ -111,7 +112,7 @@ limitations under the License.
 .mx_MemberInfo_field {
     cursor: pointer;
     font-size: 15px;
-    color: $input-darker-fg-color;
+    color: $primary-fg-color;
     margin-left: 8px;
     line-height: 23px;
 }

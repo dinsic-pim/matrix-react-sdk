@@ -152,7 +152,7 @@ module.exports = React.createClass({
                     event.getContent().msgtype === 'm.bad.encrypted' ? (
                     <tr>
                         <td>{ _t('Decryption error') }</td>
-                        <td>{ event.getContent().body }</td>
+                        <td>{ _t(event.getContent().body) }</td>
                     </tr>
                     ) : null
                 }

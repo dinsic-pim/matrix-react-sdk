@@ -81,6 +81,10 @@ limitations under the License.
     white-space: nowrap;
 }
 
+.mx_EntityTile_name_expired {
+    color: $input-darker-fg-color;
+}
+
 .mx_EntityTile_details {
     overflow: hidden;
 }

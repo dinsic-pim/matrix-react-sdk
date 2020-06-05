@@ -234,8 +234,9 @@ module.exports = React.createClass({
 
     renderEmailSent() {
         return <div>
-            {_t("An email has been sent to %(emailAddress)s. Once you've followed the " +
-                "link it contains, click below.", { emailAddress: this.state.email })}
+            {_t("If a Tchap account exists, an email has been sent to the address: " +
+              "%(emailAddress)s. Once you've followed the link it contains, " +
+              "click below.", { emailAddress: this.state.email })}
             <br />
             <input className="mx_Login_submit" type="button" onClick={this.onVerify}
                 value={_t('I have verified my email address')} />

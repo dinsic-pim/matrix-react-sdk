@@ -30,10 +30,15 @@ class Tchap {
         return this._capitalize(domain) || 'Tchap';
     }
 
-    static getInfo(email) {
+    /**
+     * Return a HS from a given email.
+     * @param {string} email
+     * @returns {Promise}
+     */
+    static getHSInfoFromEmail(email) {
         const tchapHostsList = this._shuffle(SdkConfig.get()['hs_url_list']);
         const hostBase = TchapApi.hostBase;
-        const infoUrl = TchapApi.info;
+        const infoUrl = TchapApi.infoFromEmailUrl;
         return fetch(hostBase + tchapHostsList[0] + infoUrl + email).then(res => {
             return res.json();
         });
@@ -46,7 +51,7 @@ class Tchap {
      */
     static discoverPlatform(email) {
         const hostBase = TchapApi.hostBase;
-        const infoUrl = TchapApi.info;
+        const infoUrl = TchapApi.infoFromEmailUrl;
         return new Promise((resolve, reject) => {
             const tchapHostsList = this._shuffle(SdkConfig.get()['hs_url_list']);
             if (tchapHostsList) {
@@ -84,12 +89,22 @@ class Tchap {
         return hsUrl.includes('.e.') || hsUrl.includes('.externe.');
     }
 
+    /**
+     * Return true if the given server url is external.
+     * @param {string} hs
+     * @returns {boolean}
+     */
     static isUserExternFromServer(hs) {
         return hs.includes('.e.') || hs.includes('.externe.');
     }
 
+    /**
+     * Return true if the given server hostname is external.
+     * @param {string} hs
+     * @returns {boolean}
+     */
     static isUserExternFromServerHostname(hs) {
-        return hs.includes('e.') || hs.includes('externe.');
+        return hs.startsWith('e.') || hs.startsWith('agent.externe.');
     }
 
     /**
@@ -105,33 +120,6 @@ class Tchap {
         ) : false;
     }
 
-
-    /**
-     * A fetch with a timeout option and an always resolver.
-     * @param {string} url The url to fetch.
-     * @param {object} opts init object from fetch() api plus a timeout option.
-     * @returns {Promise}
-     * @private
-     */
-    static _httpRequest(url, opts) {
-        const options = opts || {};
-        const timeoutValue = options.timeout || 2000;
-        return new Promise((resolve, reject) => {
-            const timeoutId = setTimeout(() => {
-                resolve(new Error("timeout"));
-            }, timeoutValue);
-            fetch(url, options).then(
-                (res) => {
-                    clearTimeout(timeoutId);
-                    resolve(res.json());
-                },
-                (err) => {
-                    clearTimeout(timeoutId);
-                    resolve({err});
-                });
-        });
-    }
-
     /**
      * Lookup using the proxied API.
      * @param {string} medium
@@ -142,7 +130,7 @@ class Tchap {
         const homeserverUrl = MatrixClientPeg.get().getHomeserverUrl();
         const homeserverName = MatrixClientPeg.get().getIdentityServerUrl().split("https://")[1];
         const accessToken = MatrixClientPeg.get().getAccessToken();
-        const url = `${homeserverUrl}${TchapApi.lookup}?medium=${medium}&address=${address}&id_server=${homeserverName}`;
+        const url = `${homeserverUrl}${TchapApi.lookupUrl}?medium=${medium}&address=${address}&id_server=${homeserverName}`;
         const options = {
             method: 'GET',
             headers: {
@@ -180,6 +168,11 @@ class Tchap {
         fetch(url, options);
     }
 
+    /**
+     * Return true if the current user is the last administrator of the given room.
+     * @param {string} room
+     * @returns {boolean}
+     */
     static isUserLastAdmin(room) {
         const userId = MatrixClientPeg.get().getUserId();
         const members = room.getJoinedMembers();
@@ -204,7 +197,7 @@ class Tchap {
     static getAccessRules(roomId) {
         const stateEventType = "im.vector.room.access_rules";
         const keyName = "rule";
-        const defaultValue = "";
+        const defaultValue = "restricted";
         const room = MatrixClientPeg.get().getRoom(roomId);
         const event = room.currentState.getStateEvents(stateEventType, '');
         if (!event) {
@@ -212,6 +205,57 @@ class Tchap {
         }
         const content = event.getContent();
         return keyName in content ? content[keyName] : defaultValue;
+    }
+
+    /**
+     *
+     * @param {string} userId
+     * @returns {Promise}
+     */
+    static getUserExpiredInfo(userId) {
+        const infoUrl = TchapApi.expiredInfoUrl;
+        const homeserverUrl = MatrixClientPeg.get().getHomeserverUrl();
+        const accessToken = MatrixClientPeg.get().getAccessToken();
+        const url = `${homeserverUrl}${infoUrl}${userId}/info`;
+
+        const options = {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        };
+
+        return fetch(url, options).then(res => {
+            return res.json();
+        }).then(data => {
+            return data.expired;
+        });
+    }
+
+    /**
+     * A fetch with a timeout option and an always resolver.
+     * @param {string} url The url to fetch.
+     * @param {object} opts init object from fetch() api plus a timeout option.
+     * @returns {Promise}
+     * @private
+     */
+    static _httpRequest(url, opts) {
+        const options = opts || {};
+        const timeoutValue = options.timeout || 2000;
+        return new Promise((resolve, reject) => {
+            const timeoutId = setTimeout(() => {
+                resolve(new Error("timeout"));
+            }, timeoutValue);
+            fetch(url, options).then(
+                (res) => {
+                    clearTimeout(timeoutId);
+                    resolve(res.json());
+                },
+                (err) => {
+                    clearTimeout(timeoutId);
+                    resolve({err});
+                });
+        });
     }
 
     /**

@@ -58,10 +58,11 @@ module.exports = React.createClass({
         cli.on("Room", this.onRoom); // invites & joining after peek
         const enablePresenceByHsUrl = SdkConfig.get()["enable_presence_by_hs_url"];
         const hsUrl = MatrixClientPeg.get().baseUrl;
-        this._showPresence = true;
-        if (enablePresenceByHsUrl && enablePresenceByHsUrl[hsUrl] !== undefined) {
+        this._showPresence = false;
+        // We dont want to use presence for the moment.
+        /*if (enablePresenceByHsUrl && enablePresenceByHsUrl[hsUrl] !== undefined) {
             this._showPresence = enablePresenceByHsUrl[hsUrl];
-        }
+        }*/
     },
 
     _listenForMembersChanges: function() {

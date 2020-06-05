@@ -17,9 +17,7 @@ limitations under the License.
 import MatrixClientPeg from "./MatrixClientPeg";
 import isIp from "is-ip";
 import utils from 'matrix-js-sdk/lib/utils';
-
-export const host = "matrix.to";
-export const baseUrl = `https://${host}`;
+import SdkConfig from './SdkConfig';
 
 // The maximum number of servers to pick when working out which servers
 // to add to permalinks. The servers are appended as ?via=example.org
@@ -78,6 +76,7 @@ export class RoomPermalinkCreator {
         this._allowedHostsRegexps = null;
         this._serverCandidates = null;
         this._started = false;
+        this.base_host_url = SdkConfig.get().base_host_url;
 
         this.onMembership = this.onMembership.bind(this);
         this.onRoomState = this.onRoomState.bind(this);
@@ -117,14 +116,14 @@ export class RoomPermalinkCreator {
 
     forEvent(eventId) {
         const roomId = this._room.roomId;
-        const permalinkBase = `${baseUrl}/#/${roomId}/${eventId}`;
-        return `${permalinkBase}${encodeServerCandidates(this._serverCandidates)}`;
+        const permalinkBase = `${this.base_host_url}/#/room/${roomId}/${eventId}`;
+        return permalinkBase;
     }
 
     forRoom() {
         const roomId = this._room.roomId;
-        const permalinkBase = `${baseUrl}/#/${roomId}`;
-        return `${permalinkBase}${encodeServerCandidates(this._serverCandidates)}`;
+        const permalinkBase = `${this.base_host_url}/#/room/${roomId}`;
+        return permalinkBase;
     }
 
     onRoomState(event) {
@@ -248,11 +247,13 @@ export class RoomPermalinkCreator {
 
 
 export function makeUserPermalink(userId) {
+    const baseUrl = SdkConfig.get().base_host_url;
     return `${baseUrl}/#/${userId}`;
 }
 
 export function makeRoomPermalink(roomId) {
-    const permalinkBase = `${baseUrl}/#/${roomId}`;
+    const baseUrl = SdkConfig.get().base_host_url;
+    const permalinkBase = `${baseUrl}/#/room/${roomId}`;
 
     if (!roomId) {
         throw new Error("can't permalink a falsey roomId");

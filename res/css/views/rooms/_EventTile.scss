@@ -220,6 +220,10 @@ limitations under the License.
 }
 
 .mx_EventTile_editButton {
+    border-width: 1px;
+    border-style: solid;
+    border-color: $edit-button-border;
+    border-radius: 50%;
     position: absolute;
     display: inline-block;
     visibility: hidden;

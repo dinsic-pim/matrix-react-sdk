@@ -243,14 +243,16 @@ export default class SecurityUserSettingsTab extends React.Component {
         const SettingsFlag = sdk.getComponent('views.elements.SettingsFlag');
 
         const KeyBackupPanel = sdk.getComponent('views.settings.KeyBackupPanel');
-        const keyBackup = (
+        const keyBackup = null;
+        // Key Backup are temporarily disabled.
+        /*const keyBackup = (
             <div className='mx_SettingsTab_section'>
                 <span className="mx_SettingsTab_subheading">{_t("Key backup")}</span>
                 <div className='mx_SettingsTab_subsectionText'>
                     <KeyBackupPanel />
                 </div>
             </div>
-        );
+        );*/
 
         return (
             <div className="mx_SettingsTab mx_SecurityUserSettingsTab">

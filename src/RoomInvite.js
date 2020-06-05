@@ -58,7 +58,7 @@ export function showStartChatInviteDialog() {
     Modal.createTrackedDialog('Start a chat', '', AddressPickerDialog, {
         title: _t('Start a chat'),
         description: _t("Who would you like to communicate with?"),
-        placeholder: _t("Email, name or matrix ID"),
+        placeholder: _t("Email, name or tchap ID"),
         validAddressTypes: ['mx-user-id', 'email'],
         button: _t("Start Chat"),
         invitationType: 'direct',
@@ -79,29 +79,19 @@ export function showRoomInviteDialogFromFile(roomId) {
 }
 
 export function showRoomInviteDialog(roomId) {
-    const validAddressTypes = ['mx-user-id'];
-    let placeholder = "Name or matrix ID";
-
-    MatrixClientPeg.get().getRoomDirectoryVisibility(roomId).then((result => {
-        if (result.visibility !== "public") {
-            validAddressTypes.push('email');
-            placeholder = "Email, name or matrix ID";
-        }
-
-        const AddressPickerDialog = sdk.getComponent("dialogs.AddressPickerDialog");
-        Modal.createTrackedDialog('Chat Invite', '', AddressPickerDialog, {
-            title: _t('Invite new room members'),
-            description: _t('Who would you like to add to this room?'),
-            button: _t('Send Invites'),
-            placeholder: _t(placeholder),
-            validAddressTypes: validAddressTypes,
-            invitationType: 'room',
-            roomId: roomId,
-            onFinished: (shouldInvite, addrs) => {
-                _onRoomInviteFinished(roomId, shouldInvite, addrs);
-            },
-        });
-    }));
+    const AddressPickerDialog = sdk.getComponent("dialogs.AddressPickerDialog");
+    Modal.createTrackedDialog('Chat Invite', '', AddressPickerDialog, {
+        title: _t('Invite new room members'),
+        description: _t('Who would you like to add to this room?'),
+        button: _t('Send Invites'),
+        placeholder: _t("Email, name or tchap ID"),
+        validAddressTypes: ['mx-user-id', 'email'],
+        invitationType: 'room',
+        roomId: roomId,
+        onFinished: (shouldInvite, addrs) => {
+            _onRoomInviteFinished(roomId, shouldInvite, addrs);
+        },
+    });
 }
 
 /**
@@ -178,7 +168,7 @@ export function onStartChatFinished(shouldInvite, addrs) {
 
                 default:
                     // Create a new room.
-                    createRoom({dmUserId: addrText}).catch((err) => {
+                    createRoom({dmUserId: invitedUserId}).catch((err) => {
                         Modal.createTrackedDialog('Failed to invite user', '', ErrorDialog, {
                             title: _t("Failed to invite user"),
                             description: ((err && err.message) ? err.message : _t("Operation failed")),

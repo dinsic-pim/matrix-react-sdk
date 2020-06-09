@@ -34,7 +34,7 @@ export default React.createClass({
             errorText: null,
             visibility: 'private',
             isPublic: false,
-            federate: false,
+            federate: true,
             domain: domain,
             externAllowed: false,
             externAllowedSwitchDisabled: false
@@ -50,7 +50,7 @@ export default React.createClass({
             const opts = {
                 visibility: this.state.visibility,
                 preset: this.state.visibility === 'public' ? 'public_chat' : 'private_chat',
-                noFederate: this.state.federate,
+                noFederate: !this.state.federate,
                 access_rules: this.state.externAllowed === true ? 'unrestricted' : 'restricted'
             };
             this.props.onFinished(true, this.refs.textinput.value, opts);
@@ -66,19 +66,21 @@ export default React.createClass({
             this.setState({
                 externAllowed: false,
                 externAllowedSwitchDisabled: true,
-                visibility: ev.target.value
+                visibility: ev.target.value,
+                federate: false,
             });
         } else {
             this.setState({
                 externAllowedSwitchDisabled: false,
-                visibility: ev.target.value
+                visibility: ev.target.value,
+                federate: true,
             });
         }
     },
 
     _onFederateSwitchChange: function(ev) {
         this.setState({
-            federate: ev
+            federate: !ev
         });
     },
 
@@ -105,7 +107,7 @@ export default React.createClass({
         let federationOption;
         if (this.state.visibility === 'public') {
             federationOption = (
-                <LabelledToggleSwitch value={this.state.federate}
+                <LabelledToggleSwitch value={!this.state.federate}
                                       onChange={ this._onFederateSwitchChange }
                                       label={ _t('Limit access to this room to domain members "%(domain)s"', {domain: this.state.domain}) } />
             );

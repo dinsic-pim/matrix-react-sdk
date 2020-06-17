@@ -247,8 +247,7 @@ export class RoomPermalinkCreator {
 
 
 export function makeUserPermalink(userId) {
-    const baseUrl = SdkConfig.get().base_host_url;
-    return `${baseUrl}/#/${userId}`;
+    return `https://matrix.to/#/${userId}`;
 }
 
 export function makeRoomPermalink(roomId) {

@@ -29,6 +29,9 @@ export default React.createClass({
     },
 
     onFinished: function() {
+        if (window.localStorage) {
+            window.localStorage.setItem("tc_validate_encryption_informations", "done");
+        }
         this.props.onFinished();
     },
 

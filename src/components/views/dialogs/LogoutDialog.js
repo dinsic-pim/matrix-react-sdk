@@ -79,6 +79,9 @@ export default class LogoutDialog extends React.Component {
     }
 
     _onFinished(confirmed) {
+        if (window.localStorage) {
+            window.localStorage.removeItem("tc_validate_encryption_informations");
+        }
         if (confirmed) {
             dis.dispatch({action: 'logout'});
         }

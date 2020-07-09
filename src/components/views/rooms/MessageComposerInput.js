@@ -49,7 +49,7 @@ import ComposerHistoryManager from '../../../ComposerHistoryManager';
 import MessageComposerStore from '../../../stores/MessageComposerStore';
 import ContentMessages from '../../../ContentMessages';
 
-import {MATRIXTO_URL_PATTERN} from '../../../linkify-matrix';
+import {TCHAP_URL_PATTERN} from '../../../linkify-matrix';
 
 import {
     asciiRegexp, unicodeRegexp, shortnameToUnicode,
@@ -229,7 +229,7 @@ export default class MessageComposerInput extends React.Component {
                             const href = el.getAttribute('href');
                             let m;
                             if (href) {
-                                m = href.match(MATRIXTO_URL_PATTERN);
+                                m = href.match(TCHAP_URL_PATTERN);
                             }
                             if (m) {
                                 return {

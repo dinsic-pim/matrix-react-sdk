@@ -193,7 +193,7 @@ const transformTags = { // custom to matrix
 
             let m;
             // FIXME: horrible duplication with linkify-matrix
-            m = attribs.href.match(linkifyMatrix.VECTOR_URL_PATTERN);
+            m = attribs.href.match(linkifyMatrix.TCHAP_URL_PATTERN);
             if (m) {
                 attribs.href = m[1];
                 delete attribs.target;
@@ -204,9 +204,6 @@ const transformTags = { // custom to matrix
                     switch (entity[0]) {
                         case '@':
                             attribs.href = '#/user/' + entity;
-                            break;
-                        case '+':
-                            attribs.href = '#/group/' + entity;
                             break;
                         case '#':
                         case '!':

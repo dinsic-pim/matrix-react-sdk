@@ -197,6 +197,21 @@ const transformTags = { // custom to matrix
             if (m) {
                 attribs.href = m[1];
                 delete attribs.target;
+            } else {
+                m = attribs.href.match(linkifyMatrix.MATRIXTO_URL_PATTERN);
+                if (m) {
+                    const entity = m[1];
+                    switch (entity[0]) {
+                        case '@':
+                            attribs.href = '#/user/' + entity;
+                            break;
+                        case '#':
+                        case '!':
+                            attribs.href = '#/room/' + entity;
+                            break;
+                    }
+                    delete attribs.target;
+                }
             }
         }
         attribs.rel = 'noopener'; // https://mathiasbynens.github.io/rel-noopener/

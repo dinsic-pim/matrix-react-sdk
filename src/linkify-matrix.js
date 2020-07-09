@@ -180,6 +180,7 @@ matrixLinkify.TCHAP_URL_PATTERN = "^(?:https?:\/\/)?(?:"
     + escapeRegExp(window.location.host + window.location.pathname) + "|"
     + "(?:www\\.)?tchap\\.gouv\\.fr/"
     + ")(#/(?:user|room)/(([#@!+]).*))";
+matrixLinkify.MATRIXTO_URL_PATTERN = "^(?:https?:\/\/)?(?:www\\.)?matrix\\.to/#/(([#@!+]).*)";
 
 matrixLinkify.options = {
     events: function(href, type) {
@@ -205,29 +206,13 @@ matrixLinkify.options = {
         }
     },
 
-    formatHref: function(href, type) {
-        switch (type) {
-            case 'roomalias':
-            case 'userid':
-            default: {
-                // FIXME: horrible duplication with HtmlUtils' transform tags
-                let m = href.match(matrixLinkify.TCHAP_URL_PATTERN);
-                if (m) {
-                    return m[1];
-                }
-
-                return href;
-            }
-        }
-    },
-
     linkAttributes: {
         rel: 'noreferrer nofollow noopener',
     },
 
     target: function(href, type) {
         if (type === 'url') {
-            if (href.match(matrixLinkify.TCHAP_URL_PATTERN)) {
+            if (href.match(matrixLinkify.TCHAP_URL_PATTERN) || href.match(matrixLinkify.MATRIXTO_URL_PATTERN)) {
                 return null;
             } else {
                 return '_blank';

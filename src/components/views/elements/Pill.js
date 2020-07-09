@@ -107,7 +107,7 @@ const Pill = React.createClass({
             // resource and prefix will be undefined instead of throwing
             matrixToMatch = regex.exec(nextProps.url) || [];
 
-            resourceId = matrixToMatch[1]; // The room/user ID
+            resourceId = decodeURI(matrixToMatch[1]); // The room/user ID
             prefix = matrixToMatch[2]; // The first character of prefix
         }
 
@@ -138,7 +138,7 @@ const Pill = React.createClass({
             case Pill.TYPE_ROOM_MENTION: {
                 const localRoom = resourceId[0] === '#' ?
                     MatrixClientPeg.get().getRooms().find((r) => {
-                        return r.getAliases().includes(resourceId);
+                        return r.getCanonicalAlias() === resourceId;
                     }) : MatrixClientPeg.get().getRoom(resourceId);
                 room = localRoom;
                 if (!localRoom) {
@@ -246,7 +246,7 @@ const Pill = React.createClass({
             case Pill.TYPE_ROOM_MENTION: {
                 const room = this.state.room;
                 if (room) {
-                    linkText = (room ? getDisplayAliasForRoom(room) : null) || resource;
+                    linkText = (room ? room.name : null) || resource;
                     if (this.props.shouldShowPillAvatar) {
                         avatar = <RoomAvatar room={room} width={16} height={16} />;
                     }

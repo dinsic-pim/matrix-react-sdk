@@ -120,7 +120,9 @@ const LoggedInView = React.createClass({
         this._matrixClient.on("accountData", this.onAccountData);
         this._matrixClient.on("sync", this.onSync);
         this._matrixClient.on("RoomState.events", this.onRoomStateEvents);
-        Modal.createTrackedDialog('', '', InfoEncryptionDialog);
+        if (window.localStorage && !window.localStorage.getItem("tc_validate_encryption_informations")) {
+            Modal.createTrackedDialog('', '', InfoEncryptionDialog);
+        }
     },
 
     componentDidUpdate(prevProps) {

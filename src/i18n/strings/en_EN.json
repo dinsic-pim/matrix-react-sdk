@@ -1693,5 +1693,12 @@
     "Stay connected from at least one other device": "Stay connected from at least one other device",
     "Export your encryption keys": "Export your encryption keys",
     "Find out more": "Find out more",
-    "Export keys and log-out": "Export keys and log-out"
+    "Private room": "Private room",
+    "Accessible to all gouv.fr users by invitation from an administrator.": "Accessible to all gouv.fr users by invitation from an administrator.",
+    "Private room opened to externals": "Private room opened to externals",
+    "Accessible to all gouv.fr users and to external guests by invitation of an administrator.": "Accessible to all gouv.fr users and to external guests by invitation of an administrator.",
+    "Forum room": "Salon forum",
+    "Accessible to all gouv.fr users from the directory or from a shared link.": "Accessible to all gouv.fr users from the directory or from a shared link.",
+    "Forum room directory": "Forum room directory",
+    "Are you sure you want to remove this room from the forum rooms directory?": "Are you sure you want to remove this room from the forum rooms directory?"
 }

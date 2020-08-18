@@ -536,7 +536,7 @@ module.exports = React.createClass({
                 hasCancel={true}
                 onFinished={this.props.onFinished}
                 headerButton={createRoomButton}
-                title={_t("Room directory")}
+                title={_t("Forum room directory")}
             >
                 <div className="mx_RoomDirectory">
                     <div className="mx_RoomDirectory_list">

@@ -190,6 +190,15 @@ class Tchap {
     }
 
     /**
+     * Given a room, return if this room is a "forum room" (old "public")
+     * @param room
+     * @returns {boolean}
+     */
+    static isRoomForum(room) {
+        return !MatrixClientPeg.get().isRoomEncrypted(room.roomId) && this.getJoinRules(room) === "public";
+    }
+
+    /**
      * Given a roomId, return the access_rule of the room.
      * @param {string} roomId The room ID to test for.
      * @returns {string} The access_rules of the room.
@@ -230,6 +239,23 @@ class Tchap {
         }).then(data => {
             return data.expired;
         });
+    }
+
+    /**
+     * Given a room, return the stateEvent "m.room.join_rules"
+     * @param room
+     * @returns {string|*|string}
+     */
+    static getJoinRules(room) {
+        const stateEventType = "m.room.join_rules";
+        const keyName = "join_rule";
+        const defaultValue = "public";
+        const event = room.currentState.getStateEvents(stateEventType, '');
+        if (!event) {
+            return defaultValue;
+        }
+        const content = event.getContent();
+        return keyName in content ? content[keyName] : defaultValue;
     }
 
     /**

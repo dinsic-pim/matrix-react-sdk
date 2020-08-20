@@ -25,6 +25,7 @@ import LabelledToggleSwitch from "../elements/LabelledToggleSwitch";
 const sdk = require("../../../index");
 import Modal from '../../../Modal';
 import Tchap from '../../../Tchap';
+import {RoomPermalinkCreator} from "../../../matrix-to";
 
 // TODO: Merge with ProfileSettings?
 export default class RoomProfileSettings extends React.Component {
@@ -49,6 +50,15 @@ export default class RoomProfileSettings extends React.Component {
         const nameEvent = room.currentState.getStateEvents('m.room.name', '');
         const name = nameEvent && nameEvent.getContent() ? nameEvent.getContent()['name'] : '';
 
+        const permalinkCreator = new RoomPermalinkCreator(room);
+        permalinkCreator.load();
+        const link = permalinkCreator.forRoom();
+
+        let link_sharing = false;
+        if (client.isRoomEncrypted(props.roomId) && this._getJoinRules(props.roomId) === "public") {
+            link_sharing = true;
+        }
+
         this.state = {
             originalDisplayName: name,
             displayName: name,
@@ -62,7 +72,9 @@ export default class RoomProfileSettings extends React.Component {
             canSetTopic: room.currentState.maySendStateEvent('m.room.topic', client.getUserId()),
             canSetAvatar: room.currentState.maySendStateEvent('m.room.avatar', client.getUserId()),
             access_rules: Tchap.getAccessRules(props.roomId),
-            join_rules: this._getJoinRules(props.roomId),
+            link_sharing,
+            link: link,
+            copied: false,
         };
     }
 
@@ -155,6 +167,18 @@ export default class RoomProfileSettings extends React.Component {
         return keyName in content ? content[keyName] : defaultValue;
     };
 
+    _getGuestAccessRules(room) {
+        const stateEventType = "m.room.guest_access";
+        const keyName = "guest_access";
+        const defaultValue = "can_join";
+        const event = room.currentState.getStateEvents(stateEventType, '');
+        if (!event) {
+            return defaultValue;
+        }
+        const content = event.getContent();
+        return keyName in content ? content[keyName] : defaultValue;
+    };
+
     _onExternAllowedSwitchChange = () => {
         const self = this;
         const access_rules = this.state.access_rules;
@@ -181,11 +205,101 @@ export default class RoomProfileSettings extends React.Component {
         });
     };
 
+    _onCopyClick = (e) => {
+        e.preventDefault();
+        const self = this;
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(this.state.link).then(function() {
+                self.setState({
+                    copied: true,
+                })
+            }, function(err) {
+                console.error("navigator.clipboard error. Maybe incompatible ?", err);
+            });
+        }
+    };
+
+    _setJoinRules = (room, joinRule) => {
+        const client = MatrixClientPeg.get();
+        const self = this;
+        client.sendStateEvent(room.roomId, "m.room.join_rules", { join_rule: joinRule }, "").then(() => {
+            self.setState({
+                link_sharing: joinRule === "public",
+            });
+        }).catch((err) => {
+            console.error(err);
+        });
+    };
+
+    _setUpRoomByLink = (room) => {
+        const client = MatrixClientPeg.get();
+        if (!room.getCanonicalAlias()) {
+            let alias = "";
+            if (room.name) {
+                const tmpAlias = room.name.replace(/[^a-z0-9]/gi, "");
+                alias = tmpAlias + this._generateRandomString(7);
+            } else {
+                alias = this._generateRandomString(7);
+            }
+            alias = `#${alias}:${client.getDomain()}`;
+            client.createAlias(alias, room.roomId).then(() => {
+                client.sendStateEvent(room.roomId, "m.room.canonical_alias",
+                    { alias }, "").then(() => {
+                    this._setJoinRules(room, "public");
+                }).catch((err) => {
+                    console.error(err)
+                });
+            }).catch(err => {
+                console.error(err);
+            });
+        } else {
+            this._setJoinRules(room, "public");
+        }
+    };
+
+    _onLinkSharingSwitchChange = (e) => {
+        const client = MatrixClientPeg.get();
+        const room = client.getRoom(this.props.roomId);
+        if (e) {
+            if (this._getGuestAccessRules(room) === "can_join") {
+                client.sendStateEvent(room.roomId, "m.room.guest_access", {guest_access: "forbidden"}, "").then(() => {
+                    this._setUpRoomByLink(room);
+                }).catch((err) => {
+                    console.error(err);
+                });
+            } else {
+                this._setUpRoomByLink(room);
+            }
+        } else {
+            this._setJoinRules(room, "invite");
+        }
+    };
+
+    _generateRandomString(len) {
+        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let str = '';
+        for (let i = 0; i < len; i++) {
+            let r = Math.floor(Math.random() * charset.length);
+            str += charset.substring(r, r + 1);
+        }
+        return str;
+    };
+
     render() {
         // TODO: Why is rendering a box with an overlay so complicated? Can the DOM be reduced?
         const client = MatrixClientPeg.get();
         const room = client.getRoom(this.props.roomId);
         const isCurrentUserAdmin = room.getMember(client.getUserId()).powerLevelNorm >= 100;
+        const permalinkCreator = new RoomPermalinkCreator(room);
+        permalinkCreator.load();
+
+        let link = this.state.link;
+        const newLink = permalinkCreator.forRoom();
+        if (link !== newLink) {
+            this.setState({
+                link: newLink,
+            })
+        }
 
         let showOverlayAnyways = true;
         let avatarElement = <div className="mx_ProfileSettings_avatarPlaceholder" />;
@@ -224,12 +338,57 @@ export default class RoomProfileSettings extends React.Component {
             }
         }
         let accessRule = null;
-        if (isCurrentUserAdmin && this.state.join_rules !== "public") {
+        if (isCurrentUserAdmin && !Tchap.isRoomForum(room)) {
             accessRule = (
                 <LabelledToggleSwitch value={this.state.access_rules === "unrestricted"}
                                       onChange={ this._onExternAllowedSwitchChange }
                                       label={ _t('Allow the externals to join this room') }
                                       disabled={ this.state.access_rules === "unrestricted" } />
+            );
+        }
+
+        let linkSharingUI = null;
+        if (isCurrentUserAdmin && !Tchap.isRoomForum(room)) {
+            let linkUrlField = null
+            if (this.state.link_sharing) {
+                let btnClasses = "tc_LinkSharing_Field_btn_hide";
+                if (navigator.clipboard) {
+                    btnClasses = "tc_LinkSharing_Field_btn";
+                    btnClasses += this.state.copied ? " tc_LinkSharing_Field_btn_selected" : "";
+                }
+                linkUrlField = (
+                    <div className={"tc_LinkSharing_Field"}>
+                        <Field
+                            id="link_sharing"
+                            type="text"
+                            value={this.state.link}
+                            className={"tc_LinkSharing_Field_input"}
+                            disabled={true}
+                        />
+                        <AccessibleButton onClick={this._onCopyClick} className={btnClasses}>
+                            &nbsp;
+                        </AccessibleButton>
+                    </div>
+                );
+            }
+
+            let linkSharingSwitchLabel = (
+                <div>
+                    { "Salon accessible par lien" }
+                    <img className="tc_LinkSharing_Helper" src={require('../../../../res/img/question_mark.svg')}
+                        width={20} height={20}
+                        title={ "Vos invités pourrons acceder au salon en suivant le lien" }
+                        alt={"Vos invités pourrons acceder au salon en suivant le lien"} />
+                </div>
+            );
+
+            linkSharingUI = (
+                <div>
+                    <LabelledToggleSwitch value={this.state.link_sharing}
+                        onChange={ this._onLinkSharingSwitchChange }
+                        label={ linkSharingSwitchLabel } />
+                    { linkUrlField }
+                </div>
             );
         }
 
@@ -251,11 +410,14 @@ export default class RoomProfileSettings extends React.Component {
                         {avatarHoverElement}
                     </div>
                 </div>
-                { accessRule }
                 <AccessibleButton onClick={this._saveProfile} kind="primary"
                                   disabled={!this.state.enableProfileSave}>
                     {_t("Save")}
                 </AccessibleButton>
+                <br />
+                <br />
+                { accessRule }
+                { linkSharingUI }
             </form>
         );
     }

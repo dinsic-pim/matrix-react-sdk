@@ -390,7 +390,9 @@ module.exports = React.createClass({
         const RoomAvatar = sdk.getComponent('avatars.RoomAvatar');
         let encryptedIndicator;
         if (cli.isRoomEncrypted(this.props.room.roomId)) {
-            encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-encrypted_room.svg")} className="mx_RoomTile_dm" width="10" height="12" alt="encrypted" />;
+            encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-encrypted.svg")} className="mx_RoomTile_dm" width="12" height="14" alt="encrypted" />;
+        } else if (!isInvite) {
+            encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-public_mono.svg")} className="mx_RoomTile_forum" width="10" height="12" alt="forum" />;
         }
 
         let mainAvatarClass = avatarClasses;

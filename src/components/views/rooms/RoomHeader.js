@@ -32,6 +32,7 @@ import RoomHeaderButtons from '../right_panel/RoomHeaderButtons';
 import E2EIcon from './E2EIcon';
 import DMRoomMap from '../../../utils/DMRoomMap';
 import Tchap from '../../../Tchap';
+import Modal from "../../../Modal";
 
 module.exports = React.createClass({
     displayName: 'RoomHeader',
@@ -110,6 +111,13 @@ module.exports = React.createClass({
 
     _onRoomNameChange: function(room) {
         this.forceUpdate();
+    },
+
+    onShareRoomClick: function(ev) {
+        const ShareDialog = sdk.getComponent("dialogs.ShareDialog");
+        Modal.createTrackedDialog('share room dialog', '', ShareDialog, {
+            target: this.props.room,
+        });
     },
 
     _hasUnreadPins: function() {
@@ -266,6 +274,17 @@ module.exports = React.createClass({
                 </AccessibleButton>;
         }
 
+        let shareRoomButton;
+        if (this.props.inRoom && (Tchap.isRoomForum(this.props.room) ||
+            (MatrixClientPeg.get().isRoomEncrypted(this.props.room.roomId) && Tchap.getJoinRules(this.props.room) === "public"))) {
+            shareRoomButton =
+                <AccessibleButton className="mx_RoomHeader_button mx_RoomHeader_shareButton"
+                    onClick={this.onShareRoomClick}
+                    title={_t('Share room')}
+                >
+                </AccessibleButton>;
+        }
+
         // For the moment, Integs are disabled.
         let manageIntegsButton;
         if (this.props.room && this.props.room.roomId && this.props.inRoom) {
@@ -278,6 +297,7 @@ module.exports = React.createClass({
             <div className="mx_RoomHeader_buttons">
                 { settingsButton }
                 { pinnedEventsButton }
+                { shareRoomButton }
                 { forgetButton }
                 { searchButton }
             </div>;

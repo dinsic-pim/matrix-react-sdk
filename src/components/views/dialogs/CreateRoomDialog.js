@@ -42,7 +42,7 @@ export default React.createClass({
             roomOption: "public",
             classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
             classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
-            classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_public",
+            classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
         };
     },
 
@@ -115,7 +115,7 @@ export default React.createClass({
                     roomOption: selected,
                     classesRoomOptionPrivate: this.state.classesRoomOptionPrivate + " tc_CreateRoomDialog_RoomOption_selected",
                     classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
-                    classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_public",
+                    classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
                 })
                 break;
             }
@@ -127,7 +127,7 @@ export default React.createClass({
                     roomOption: selected,
                     classesRoomOptionExternal: this.state.classesRoomOptionExternal + " tc_CreateRoomDialog_RoomOption_selected",
                     classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
-                    classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_public",
+                    classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
                 })
                 break;
             }

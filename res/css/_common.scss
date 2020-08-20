@@ -684,16 +684,16 @@ textarea {
     }
 }
 
-.tc_CreateRoomDialog_RoomOption_public {
+.tc_CreateRoomDialog_RoomOption_forum {
     border: 0 solid #27ae60;
     color: #27ae60;
     &::before {
-        width: 16px;
-        height: 16px;
+        width: 11px;
+        height: 14px;
         content: "";
         display: inline-block;
         vertical-align: sub;
-        background-image: url("$(res)/img/tchap/create-room-dialog/padlock-public.svg");
+        background-image: url("$(res)/img/tchap/create-room-dialog/padlock-forum.svg");
         background-repeat: no-repeat;
         background-size: 100%;
         margin-right: 4px;

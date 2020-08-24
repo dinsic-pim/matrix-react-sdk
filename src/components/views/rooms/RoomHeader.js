@@ -276,7 +276,9 @@ module.exports = React.createClass({
 
         let shareRoomButton;
         if (this.props.inRoom && (Tchap.isRoomForum(this.props.room) ||
-            (MatrixClientPeg.get().isRoomEncrypted(this.props.room.roomId) && Tchap.getJoinRules(this.props.room) === "public"))) {
+            (MatrixClientPeg.get().isRoomEncrypted(this.props.room.roomId)
+                && Tchap.getJoinRules(this.props.room) === "public"
+                && Tchap.getAccessRules(this.props.room.roomId) === "restricted"))) {
             shareRoomButton =
                 <AccessibleButton className="mx_RoomHeader_button mx_RoomHeader_shareButton"
                     onClick={this.onShareRoomClick}

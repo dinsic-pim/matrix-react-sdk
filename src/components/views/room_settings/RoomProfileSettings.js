@@ -71,10 +71,12 @@ export default class RoomProfileSettings extends React.Component {
             canSetName: room.currentState.maySendStateEvent('m.room.name', client.getUserId()),
             canSetTopic: room.currentState.maySendStateEvent('m.room.topic', client.getUserId()),
             canSetAvatar: room.currentState.maySendStateEvent('m.room.avatar', client.getUserId()),
-            access_rules: Tchap.getAccessRules(props.roomId),
+            accessRules: Tchap.getAccessRules(props.roomId),
+            joinRules: Tchap.getJoinRules(room),
             link_sharing,
             link: link,
             copied: false,
+            isForumRoom: Tchap.isRoomForum(room)
         };
     }
 
@@ -181,7 +183,7 @@ export default class RoomProfileSettings extends React.Component {
 
     _onExternAllowedSwitchChange = () => {
         const self = this;
-        const access_rules = this.state.access_rules;
+        const accessRules = this.state.accessRules;
         const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
         Modal.createTrackedDialog('Allow the externals to join this room', '', QuestionDialog, {
             title: _t('Allow the externals to join this room'),
@@ -189,7 +191,7 @@ export default class RoomProfileSettings extends React.Component {
             onFinished: (confirm) => {
                 if (confirm) {
                     self.setState({
-                        access_rules: 'unrestricted'
+                        accessRules: 'unrestricted'
                     });
                     MatrixClientPeg.get().sendStateEvent(
                         self.props.roomId, "im.vector.room.access_rules",
@@ -198,7 +200,7 @@ export default class RoomProfileSettings extends React.Component {
                     )
                 } else {
                     self.setState({
-                        access_rules
+                        accessRules
                     });
                 }
             },
@@ -219,12 +221,13 @@ export default class RoomProfileSettings extends React.Component {
         }
     };
 
-    _setJoinRules = (room, joinRule) => {
+    _setJoinRules = (room, joinRules) => {
         const client = MatrixClientPeg.get();
         const self = this;
-        client.sendStateEvent(room.roomId, "m.room.join_rules", { join_rule: joinRule }, "").then(() => {
+        client.sendStateEvent(room.roomId, "m.room.join_rules", { join_rule: joinRules }, "").then(() => {
             self.setState({
-                link_sharing: joinRule === "public",
+                link_sharing: joinRules === "public",
+                joinRules,
             });
         }).catch((err) => {
             console.error(err);
@@ -337,18 +340,19 @@ export default class RoomProfileSettings extends React.Component {
                 );
             }
         }
+
         let accessRule = null;
-        if (isCurrentUserAdmin && !Tchap.isRoomForum(room)) {
+        if (isCurrentUserAdmin && !this.state.isForumRoom) {
             accessRule = (
-                <LabelledToggleSwitch value={this.state.access_rules === "unrestricted"}
+                <LabelledToggleSwitch value={this.state.accessRules === "unrestricted"}
                                       onChange={ this._onExternAllowedSwitchChange }
                                       label={ _t('Allow the externals to join this room') }
-                                      disabled={ this.state.access_rules === "unrestricted" } />
+                                      disabled={ this.state.accessRules === "unrestricted" } />
             );
         }
 
         let linkSharingUI = null;
-        if (isCurrentUserAdmin && !Tchap.isRoomForum(room)) {
+        if (isCurrentUserAdmin && !this.state.isForumRoom) {
             let linkUrlField = null
             if (this.state.link_sharing) {
                 let btnClasses = "tc_LinkSharing_Field_btn_hide";

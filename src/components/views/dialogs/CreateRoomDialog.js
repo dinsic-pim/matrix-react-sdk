@@ -43,6 +43,7 @@ export default React.createClass({
             classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
             classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
             classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
+            padlockImage: require("../../../../res/img/tchap/padlock-forum_mono.svg"),
         };
     },
 
@@ -116,6 +117,7 @@ export default React.createClass({
                     classesRoomOptionPrivate: this.state.classesRoomOptionPrivate + " tc_CreateRoomDialog_RoomOption_selected",
                     classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
                     classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
+                    padlockImage: require("../../../../res/img/tchap/padlock-encrypted.svg")
                 })
                 break;
             }
@@ -128,6 +130,7 @@ export default React.createClass({
                     classesRoomOptionExternal: this.state.classesRoomOptionExternal + " tc_CreateRoomDialog_RoomOption_selected",
                     classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
                     classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
+                    padlockImage: require("../../../../res/img/tchap/padlock-encrypted.svg")
                 })
                 break;
             }
@@ -140,6 +143,7 @@ export default React.createClass({
                     classesRoomOptionPublic: this.state.classesRoomOptionPublic + " tc_CreateRoomDialog_RoomOption_selected",
                     classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
                     classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
+                    padlockImage: require("../../../../res/img/tchap/padlock-forum_mono.svg")
                 })
                 break;
             }
@@ -150,6 +154,7 @@ export default React.createClass({
         const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
         const DialogButtons = sdk.getComponent('views.elements.DialogButtons');
         const errorText = this.state.errorText;
+        const padlockImage = this.state.padlockImage;
 
         let errorTextSection;
         if (errorText) {
@@ -208,6 +213,7 @@ export default React.createClass({
                             <div className={inputAvatarContainerClass}>
                                 <img src={require("../../../../res/img/8b8999.png")} alt="Avatar"/>
                             </div>
+                            <img src={padlockImage} className="mx_CreateRoomDialog_input_avatar_padlock" alt="Padlock" width={14}/>
                             <input id="textinput" ref="textinput" className="mx_CreateRoomDialog_input" autoFocus={true} />
                         </div>
                         {errorTextSection}

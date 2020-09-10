@@ -39,7 +39,7 @@ export default React.createClass({
             domain: domain,
             externAllowed: false,
             externAllowedSwitchDisabled: false,
-            roomOption: "public",
+            roomOption: "private",
             classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
             classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
             classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
@@ -177,19 +177,19 @@ export default React.createClass({
                 <AccessibleButton className={this.state.classesRoomOptionPrivate} onClick={this.onRoomOptionChange} aria-name={"private"}>
                     { _t("Private room") }
                     <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-name={"private"}>
-                        { _t("Accessible to all gouv.fr users by invitation from an administrator.") }
+                        { _t("Accessible to all users by invitation from an administrator.") }
                     </div>
                 </AccessibleButton>
                 <AccessibleButton className={this.state.classesRoomOptionExternal} onClick={this.onRoomOptionChange} aria-name={"external"}>
                     { _t("Private room opened to externals") }
                     <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-name={"external"}>
-                        { _t("Accessible to all gouv.fr users and to external guests by invitation of an administrator.") }
+                        { _t("Accessible to all users and to external guests by invitation of an administrator.") }
                     </div>
                 </AccessibleButton>
                 <AccessibleButton className={this.state.classesRoomOptionPublic} onClick={this.onRoomOptionChange} aria-name={"public"}>
                     { _t("Forum room") }
                     <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-name={"public"}>
-                        { _t("Accessible to all gouv.fr users from the directory or from a shared link.") }
+                        { _t("Accessible to all users from the forum directory or from a shared link.") }
                     </div>
                     <div className={"tc_CreateRoomDialog_RoomOption_suboption"}>
                         <LabelledToggleSwitch label={ _t('Limit access to this room to domain members "%(domain)s"',

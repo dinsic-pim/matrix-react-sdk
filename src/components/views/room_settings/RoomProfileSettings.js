@@ -343,18 +343,18 @@ export default class RoomProfileSettings extends React.Component {
 
         // As long as the server refuse a mix roomSharing/externAllowed this condition is needed to restric it client-side
         let accessRule = null;
-        if (isCurrentUserAdmin && !this.state.isForumRoom && this.state.joinRules === "invite") {
+        if (!this.state.isForumRoom && this.state.joinRules === "invite") {
             accessRule = (
                 <LabelledToggleSwitch value={this.state.accessRules === "unrestricted"}
                                       onChange={ this._onExternAllowedSwitchChange }
                                       label={ _t('Allow the externals to join this room') }
-                                      disabled={ this.state.accessRules === "unrestricted" } />
+                                      disabled={ this.state.accessRules === "unrestricted" || !isCurrentUserAdmin} />
             );
         }
 
         // As long as the server refuse a mix roomSharing/externAllowed this condition is needed to restric it client-side
         let linkSharingUI = null;
-        if (isCurrentUserAdmin && !this.state.isForumRoom && this.state.accessRules === "restricted") {
+        if (!this.state.isForumRoom && this.state.accessRules === "restricted") {
             let linkUrlField = null
             if (this.state.link_sharing) {
                 let btnClasses = "tc_LinkSharing_Field_btn_hide";
@@ -392,7 +392,8 @@ export default class RoomProfileSettings extends React.Component {
                 <div>
                     <LabelledToggleSwitch value={this.state.link_sharing}
                         onChange={ this._onLinkSharingSwitchChange }
-                        label={ linkSharingSwitchLabel } />
+                        label={ linkSharingSwitchLabel }
+                        disabled={!isCurrentUserAdmin}/>
                     { linkUrlField }
                 </div>
             );

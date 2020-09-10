@@ -380,11 +380,11 @@ export default class RoomProfileSettings extends React.Component {
 
             let linkSharingSwitchLabel = (
                 <div>
-                    { "Salon accessible par lien" }
+                    { _t("Activate link access to this room") }
                     <img className="tc_LinkSharing_Helper" src={require('../../../../res/img/question_mark.svg')}
                         width={20} height={20}
-                        title={ "Vos invités pourrons acceder au salon en suivant le lien" }
-                        alt={"Vos invités pourrons acceder au salon en suivant le lien"} />
+                        title={ _t("Users can join this room with the following link:") }
+                        alt={ _t("Room information") } />
                 </div>
             );
 

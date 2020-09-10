@@ -1958,5 +1958,7 @@
     "Stay connected from at least one other device": "Restez connecté depuis au moins un autre appareil",
     "Export your encryption keys": "Exporter vos clés de chiffrement",
     "Find out more": "En savoir plus",
-    "Export keys and log-out": "Exporter les clés et se déconnecter"
+    "Export keys and log-out": "Exporter les clés et se déconnecter",
+    "Activate link access to this room": "Activer l'accès au salon par lien",
+    "Users can join this room with the following link:": "Les utilisateurs peuvent rejoindre ce salon à partir du lien suivant :"
 }

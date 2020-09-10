@@ -1693,5 +1693,7 @@
     "Stay connected from at least one other device": "Stay connected from at least one other device",
     "Export your encryption keys": "Export your encryption keys",
     "Find out more": "Find out more",
-    "Export keys and log-out": "Export keys and log-out"
+    "Export keys and log-out": "Export keys and log-out",
+    "Activate link access to this room": "Activate link access to this room",
+    "Users can join this room with the following link:": "Users can join this room with the following link:"
 }

@@ -24,7 +24,7 @@ export default class MemberDeviceInfo extends React.Component {
     render() {
         const DeviceVerifyButtons = sdk.getComponent('elements.DeviceVerifyButtons');
         const iconClasses = classNames({
-            mx_MemberDeviceInfo_icon: true,
+            mx_MemberDeviceInfo_icon: false,
             mx_MemberDeviceInfo_icon_blacklisted: this.props.device.isBlocked(),
             mx_MemberDeviceInfo_icon_verified: this.props.device.isVerified(),
             mx_MemberDeviceInfo_icon_unverified: this.props.device.isUnverified(),

@@ -170,7 +170,7 @@ class Tchap {
 
     /**
      * Return true if the current user is the last administrator of the given room.
-     * @param {string} room
+     * @param {Room} room
      * @returns {boolean}
      */
     static isUserLastAdmin(room) {

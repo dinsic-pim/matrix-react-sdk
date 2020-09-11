@@ -643,47 +643,12 @@ textarea {
     color: $input-darker-fg-color;
 }
 
-.tc_LinkSharing_Field {
-    display: flex;
-    align-items: center;
-    height: 40px;
-}
-
-.tc_LinkSharing_Field > .mx_Field_input {
-    width: 100%;
-}
-
-.tc_LinkSharing_Field_input {
-    cursor: text;
-    width: calc(100% - 45px);
-}
-
-.tc_LinkSharing_Field_btn {
-    background-image: url($copy-button-url);
-    background-color: #ececec;
-    background-repeat: no-repeat;
-    background-size: contain;
-    margin-left: 5px;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    border: 1px solid #888888;
-    border-radius: 4px;
-    position: absolute;
-    right: 120px;
-}
-
-.tc_LinkSharing_Field_btn_selected {
-    background-image: url('$(res)/img/tchap/icon-done.svg');
-    border-color: #27ae60;
-}
-
-.tc_LinkSharing_Field_btn_hide {
-    display: none;
-}
-
 .tc_LinkSharing_Helper {
     position: relative;
     top: 5px;
     left: 5px;
+}
+
+.tc_ShareDialog {
+    border-color: #e7e7e7 !important;
 }

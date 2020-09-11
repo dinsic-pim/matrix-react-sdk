@@ -26,6 +26,7 @@ const sdk = require("../../../index");
 import Modal from '../../../Modal';
 import Tchap from '../../../Tchap';
 import {RoomPermalinkCreator} from "../../../matrix-to";
+import * as ContextualMenu from "../../structures/ContextualMenu";
 
 // TODO: Merge with ProfileSettings?
 export default class RoomProfileSettings extends React.Component {
@@ -58,6 +59,9 @@ export default class RoomProfileSettings extends React.Component {
         if (client.isRoomEncrypted(props.roomId) && this._getJoinRules(props.roomId) === "public") {
             link_sharing = true;
         }
+
+        this._onCopyClick = this._onCopyClick.bind(this);
+        this._onLinkClick = this._onLinkClick.bind(this);
 
         this.state = {
             originalDisplayName: name,
@@ -207,20 +211,6 @@ export default class RoomProfileSettings extends React.Component {
         });
     };
 
-    _onCopyClick = (e) => {
-        e.preventDefault();
-        const self = this;
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(this.state.link).then(function() {
-                self.setState({
-                    copied: true,
-                })
-            }, function(err) {
-                console.error("navigator.clipboard error. Maybe incompatible ?", err);
-            });
-        }
-    };
-
     _setJoinRules = (room, joinRules) => {
         const client = MatrixClientPeg.get();
         const self = this;
@@ -276,6 +266,48 @@ export default class RoomProfileSettings extends React.Component {
         } else {
             this._setJoinRules(room, "invite");
         }
+    };
+
+    _selectText(target) {
+        const range = document.createRange();
+        range.selectNodeContents(target);
+
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+    };
+
+    _onLinkClick(e) {
+        e.preventDefault();
+        const {target} = e;
+        this._selectText(target);
+    };
+
+    _onCopyClick(e) {
+        e.preventDefault();
+
+        this._selectText(this.refs.link);
+
+        let successful;
+        try {
+            successful = document.execCommand('copy');
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+
+        const GenericTextContextMenu = sdk.getComponent('context_menus.GenericTextContextMenu');
+        const buttonRect = e.target.getBoundingClientRect();
+
+        // The window X and Y offsets are to adjust position when zoomed in to page
+        const x = buttonRect.right + window.pageXOffset;
+        const y = (buttonRect.top + (buttonRect.height / 2) + window.pageYOffset) - 19;
+        const {close} = ContextualMenu.createMenu(GenericTextContextMenu, {
+            chevronOffset: 10,
+            left: x,
+            top: y,
+            message: successful ? _t('Copied!') : _t('Failed to copy'),
+        }, false);
+        e.target.onmouseleave = close;
     };
 
     _generateRandomString(len) {
@@ -357,23 +389,19 @@ export default class RoomProfileSettings extends React.Component {
         if (!this.state.isForumRoom && this.state.accessRules === "restricted") {
             let linkUrlField = null
             if (this.state.link_sharing) {
-                let btnClasses = "tc_LinkSharing_Field_btn_hide";
-                if (navigator.clipboard) {
-                    btnClasses = "tc_LinkSharing_Field_btn";
-                    btnClasses += this.state.copied ? " tc_LinkSharing_Field_btn_selected" : "";
-                }
                 linkUrlField = (
-                    <div className={"tc_LinkSharing_Field"}>
-                        <Field
-                            id="link_sharing"
-                            type="text"
-                            value={this.state.link}
-                            className={"tc_LinkSharing_Field_input"}
-                            disabled={true}
-                        />
-                        <AccessibleButton onClick={this._onCopyClick} className={btnClasses}>
-                            &nbsp;
-                        </AccessibleButton>
+                    <div className="mx_ShareDialog_matrixto tc_ShareDialog">
+                        <a ref="link"
+                            href={this.state.link}
+                            onClick={this._onLinkClick}
+                            className="mx_ShareDialog_matrixto_link"
+                        >
+                            { this.state.link }
+                        </a>
+                        <a href={this.state.link} className="mx_ShareDialog_matrixto_copy" onClick={this._onCopyClick}>
+                            { _t('COPY') }
+                            <div>&nbsp;</div>
+                        </a>
                     </div>
                 );
             }

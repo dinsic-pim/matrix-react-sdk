@@ -1960,5 +1960,9 @@
     "Find out more": "En savoir plus",
     "Export keys and log-out": "Exporter les clés et se déconnecter",
     "Activate link access to this room": "Activer l'accès au salon par lien",
-    "Users can join this room with the following link:": "Les utilisateurs peuvent rejoindre ce salon à partir du lien suivant :"
+    "Users can join this room with the following link:": "Les utilisateurs peuvent rejoindre ce salon à partir du lien suivant :",
+    "Failed to open link access for this room": "Échec de l'ouverture de l'accès par lien à ce sallon",
+    "This change is not currently supported because externs are allowed to join this room.": "Ce changement n'est pas supporté actuellement car les externes sont autorisés à rejoindre ce salon.",
+    "Failed to open this room to externs": "Échec de l'ouverture aux externes de ce sallon",
+    "This change is not currently supported because this room is accessible by link.": "Ce changement n'est pas supporté actuellement car ce salon est accessible par lien."
 }

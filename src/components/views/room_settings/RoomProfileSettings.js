@@ -194,14 +194,27 @@ export default class RoomProfileSettings extends React.Component {
             description: ( _t('This action is irreversible.') + " " + _t('Are you sure you want to allow the externals to join this room ?')),
             onFinished: (confirm) => {
                 if (confirm) {
-                    self.setState({
-                        accessRules: 'unrestricted'
-                    });
                     MatrixClientPeg.get().sendStateEvent(
                         self.props.roomId, "im.vector.room.access_rules",
                         { rule: 'unrestricted' },
                         "",
-                    )
+                    ).then(() => {
+                        self.setState({
+                            accessRules: 'unrestricted'
+                        });
+                    }).catch(err => {
+                        console.error(err)
+                        self.setState({
+                            accessRules
+                        });
+                        if (err.errcode === "M_FORBIDDEN" && self.state.joinRules === "public") {
+                            const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
+                            Modal.createTrackedDialog('Failure to create room', '', ErrorDialog, {
+                                title: _t("Failed to open this room to externs"),
+                                description: _t("This change is not currently supported because this room is accessible by link."),
+                            });
+                        }
+                    })
                 } else {
                     self.setState({
                         accessRules
@@ -221,6 +234,16 @@ export default class RoomProfileSettings extends React.Component {
             });
         }).catch((err) => {
             console.error(err);
+            this.setState({
+                link_sharing: false,
+            });
+            if (err.errcode === "M_FORBIDDEN" && this.state.accessRules === "unrestricted") {
+                const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
+                Modal.createTrackedDialog('Failure to create room', '', ErrorDialog, {
+                    title: _t("Failed to open link access for this room"),
+                    description: _t("This change is not currently supported because externs are allowed to join this room."),
+                });
+            }
         });
     };
 
@@ -387,7 +410,7 @@ export default class RoomProfileSettings extends React.Component {
         // As long as the server refuse a mix roomSharing/externAllowed this condition is needed to restric it client-side
         let linkSharingUI = null;
         if (!this.state.isForumRoom && this.state.accessRules === "restricted") {
-            let linkUrlField = null
+            let linkUrlField = null;
             if (this.state.link_sharing) {
                 linkUrlField = (
                     <div className="mx_ShareDialog_matrixto tc_ShareDialog">

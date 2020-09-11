@@ -1695,5 +1695,9 @@
     "Find out more": "Find out more",
     "Export keys and log-out": "Export keys and log-out",
     "Activate link access to this room": "Activate link access to this room",
-    "Users can join this room with the following link:": "Users can join this room with the following link:"
+    "Users can join this room with the following link:": "Users can join this room with the following link:",
+    "Failed to open link access for this room": "Failed to open link access for this room",
+    "This change is not currently supported because externs are allowed to join this room.": "This change is not currently supported because externs are allowed to join this room.",
+    "Failed to open this room to externs": "Failed to open this room to externs",
+    "This change is not currently supported because this room is accessible by link.": "This change is not currently supported because this room is accessible by link."
 }

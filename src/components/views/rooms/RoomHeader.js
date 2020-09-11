@@ -210,10 +210,10 @@ module.exports = React.createClass({
                 oobData={this.props.oobData}
                 viewAvatarOnClick={true} />);
         }
-
+        const myMembership = this.props.room.getMyMembership();
         const dmRoomMap = new DMRoomMap(MatrixClientPeg.get());
         const isDMRoom = Boolean(dmRoomMap.getUserIdForRoomId(this.props.room.roomId));
-        if (this.props.onSettingsClick && !isDMRoom) {
+        if (this.props.onSettingsClick && !isDMRoom && myMembership === "join") {
             settingsButton =
                 <AccessibleButton className="mx_RoomHeader_button mx_RoomHeader_settingsButton"
                     onClick={this.props.onSettingsClick}

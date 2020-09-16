@@ -396,9 +396,8 @@ export default class RoomProfileSettings extends React.Component {
             }
         }
 
-        // As long as the server refuse a mix roomSharing/externAllowed this condition is needed to restric it client-side
         let accessRule = null;
-        if (!this.state.isForumRoom && this.state.joinRules === "invite") {
+        if (!this.state.isForumRoom) {
             accessRule = (
                 <LabelledToggleSwitch value={this.state.accessRules === "unrestricted"}
                                       onChange={ this._onExternAllowedSwitchChange }
@@ -407,9 +406,8 @@ export default class RoomProfileSettings extends React.Component {
             );
         }
 
-        // As long as the server refuse a mix roomSharing/externAllowed this condition is needed to restric it client-side
         let linkSharingUI = null;
-        if (!this.state.isForumRoom && this.state.accessRules === "restricted") {
+        if (!this.state.isForumRoom) {
             let linkUrlField = null;
             if (this.state.link_sharing) {
                 linkUrlField = (

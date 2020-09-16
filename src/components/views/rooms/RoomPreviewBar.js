@@ -185,9 +185,10 @@ module.exports = React.createClass({
     },
 
     _roomName: function(atStart = false) {
-        const name = this.props.room ? this.props.room.name : this.props.roomAlias;
-        if (name) {
-            return name;
+        if (this.props.room) {
+            return this.props.room.name;
+        } else if (this.props.roomAlias) {
+            return this.props.roomAlias.split(':')[0]
         } else if (atStart) {
             return _t("This room");
         } else {

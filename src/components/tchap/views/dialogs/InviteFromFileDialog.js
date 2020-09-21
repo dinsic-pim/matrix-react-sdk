@@ -89,7 +89,7 @@ module.exports = React.createClass({
             if (address) {
                 if (Email.looksValid(address)) {
                     if (accessRules === "restricted") {
-                        Tchap.getInfo(address).then(res => {
+                        Tchap.getHSInfoFromEmail(address).then(res => {
                             if (!Tchap.isUserExternFromServerHostname(res.hs)) {
                                 Tchap.lookupThreePid("email", address).then(r => {
                                     let member = room.getMember(r.mxid);

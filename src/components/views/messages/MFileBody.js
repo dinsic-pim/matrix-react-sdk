@@ -202,6 +202,7 @@ module.exports = React.createClass({
             contentUrl: null,
             isClean: null,
             isEncrypted: false,
+            decrypting: false,
         };
     },
 
@@ -329,6 +330,7 @@ module.exports = React.createClass({
         const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
         const fileSize = content.info ? content.info.size : null;
         const fileType = content.info ? content.info.mimetype : "application/octet-stream";
+        let decrypting = this.state.decrypting;
 
         if (isEncrypted) {
             if (this.state.decryptedBlob === null) {
@@ -340,7 +342,9 @@ module.exports = React.createClass({
                     if (decrypting) {
                         return false;
                     }
-                    decrypting = true;
+                    this.setState({
+                        decrypting: true,
+                    });
                     Promise.resolve(ContentScanner.downloadEncryptedContent(content )).then((blob) => {
                         if (blob.size > 0) {
                             this.setState({
@@ -360,7 +364,9 @@ module.exports = React.createClass({
                             description: _t("Error decrypting attachment"),
                         });
                     }).finally(() => {
-                        decrypting = false;
+                        this.setState({
+                            decrypting: false,
+                        });
                     });
                 };
 
@@ -370,10 +376,22 @@ module.exports = React.createClass({
                             <img
                                 src={require("../../../../res/img/spinner.gif")}
                                 alt={ _t("Analysis in progress") }
-                                width="32"
-                                height="32"
+                                width="16"
+                                height="16"
                             />
                             { _t("Analysis in progress") }
+                        </span>
+                    );
+                } else if (decrypting) {
+                    return (
+                        <span className="mx_MFileBody" ref="body">
+                            <img
+                                src={require("../../../../res/img/spinner.gif")}
+                                alt={ _t("Decrypting...") }
+                                width="16"
+                                height="16"
+                            />
+                            { _t("Decrypting...") }
                         </span>
                     );
                 } else if (isClean === true) {

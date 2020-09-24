@@ -1693,5 +1693,6 @@
     "Stay connected from at least one other device": "Stay connected from at least one other device",
     "Export your encryption keys": "Export your encryption keys",
     "Find out more": "Find out more",
-    "Export keys and log-out": "Export keys and log-out"
+    "Export keys and log-out": "Export keys and log-out",
+    "Decrypting...": "Déchiffrement..."
 }

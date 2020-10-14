@@ -71,23 +71,6 @@ export default React.createClass({
         this.props.onFinished(false);
     },
 
-    _onRoomVisibilityRadioToggle: function(ev) {
-        if (ev.target.value === "public") {
-            this.setState({
-                externAllowed: false,
-                externAllowedSwitchDisabled: true,
-                visibility: ev.target.value,
-                federate: false,
-            });
-        } else {
-            this.setState({
-                externAllowedSwitchDisabled: false,
-                visibility: ev.target.value,
-                federate: true,
-            });
-        }
-    },
-
     _onFederateSwitchChange: function(ev) {
         this.setState({
             federate: !ev
@@ -102,7 +85,7 @@ export default React.createClass({
 
     onRoomOptionChange: function(ev) {
         ev.preventDefault();
-        const selected = ev.target.getAttribute("aria-name")
+        const selected = ev.target.getAttribute("aria-label")
         this.setUpRoomOptions(selected);
     },
 
@@ -114,6 +97,7 @@ export default React.createClass({
                     externAllowed: false,
                     federate: true,
                     roomOption: selected,
+                    visibility: "private",
                     classesRoomOptionPrivate: this.state.classesRoomOptionPrivate + " tc_CreateRoomDialog_RoomOption_selected",
                     classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
                     classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
@@ -127,6 +111,7 @@ export default React.createClass({
                     externAllowed: true,
                     federate: true,
                     roomOption: selected,
+                    visibility: "private",
                     classesRoomOptionExternal: this.state.classesRoomOptionExternal + " tc_CreateRoomDialog_RoomOption_selected",
                     classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
                     classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
@@ -140,6 +125,7 @@ export default React.createClass({
                     externAllowed: false,
                     federate: false,
                     roomOption: selected,
+                    visibility: "public",
                     classesRoomOptionPublic: this.state.classesRoomOptionPublic + " tc_CreateRoomDialog_RoomOption_selected",
                     classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
                     classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
@@ -174,21 +160,21 @@ export default React.createClass({
 
         let roomOptions = (
             <div className={"tc_CreateRoomDialog_RoomOption"}>
-                <AccessibleButton className={this.state.classesRoomOptionPrivate} onClick={this.onRoomOptionChange} aria-name={"private"}>
+                <AccessibleButton className={this.state.classesRoomOptionPrivate} onClick={this.onRoomOptionChange} aria-label={"private"}>
                     { _t("Private room") }
-                    <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-name={"private"}>
+                    <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-label={"private"}>
                         { _t("Accessible to all users by invitation from an administrator.") }
                     </div>
                 </AccessibleButton>
-                <AccessibleButton className={this.state.classesRoomOptionExternal} onClick={this.onRoomOptionChange} aria-name={"external"}>
+                <AccessibleButton className={this.state.classesRoomOptionExternal} onClick={this.onRoomOptionChange} aria-label={"external"}>
                     { _t("Private room opened to externals") }
-                    <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-name={"external"}>
+                    <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-label={"external"}>
                         { _t("Accessible to all users and to external guests by invitation of an administrator.") }
                     </div>
                 </AccessibleButton>
-                <AccessibleButton className={this.state.classesRoomOptionPublic} onClick={this.onRoomOptionChange} aria-name={"public"}>
+                <AccessibleButton className={this.state.classesRoomOptionPublic} onClick={this.onRoomOptionChange} aria-label={"public"}>
                     { _t("Forum room") }
-                    <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-name={"public"}>
+                    <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-label={"public"}>
                         { _t("Accessible to all users from the forum directory or from a shared link.") }
                     </div>
                     <div className={"tc_CreateRoomDialog_RoomOption_suboption"}>

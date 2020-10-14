@@ -147,10 +147,6 @@ module.exports = React.createClass({
         let settingsButton = null;
         let pinnedEventsButton = null;
 
-        const e2eIcon = this.props.e2eStatus ?
-            <E2EIcon status={this.props.e2eStatus} /> :
-            undefined;
-
         if (this.props.onCancelClick) {
             cancelButton = <CancelButton onClick={this.props.onCancelClick} />;
         }
@@ -282,6 +278,13 @@ module.exports = React.createClass({
                 { searchButton }
             </div>;
 
+        let encryptedIndicator;
+        if (MatrixClientPeg.get().isRoomEncrypted(this.props.room.roomId)) {
+            encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-encrypted_light.svg")} className="mx_RoomHeader_encrypted" width="11" height="14" alt="encrypted" />;
+        } else {
+            encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-forum_light.svg")} className="mx_RoomHeader_forum" width="10" height="12" alt="forum" />;
+        }
+
         let roomAccessibility;
         let mainAvatarClass = "mx_RoomHeader_avatar";
         if (!isDMRoom) {
@@ -295,7 +298,7 @@ module.exports = React.createClass({
             <div className="mx_RoomHeader light-panel">
                 <div className="mx_RoomHeader_wrapper">
                     <div className={mainAvatarClass}>{ roomAvatar }</div>
-                    { e2eIcon }
+                    {encryptedIndicator}
                     { name }
                     { topicElement }
                     { cancelButton }

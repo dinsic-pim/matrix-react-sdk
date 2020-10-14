@@ -125,6 +125,20 @@ limitations under the License.
     top: 1px;
 }
 
+.mx_RoomHeader_encrypted {
+    display: block;
+    position: relative;
+    bottom: 9px;
+    right: 15px;
+}
+
+.mx_RoomHeader_forum {
+    display: block;
+    position: relative;
+    bottom: 8px;
+    right: 13px;
+}
+
 .mx_RoomTile_name {
     font-size: 14px;
     padding: 0 6px;

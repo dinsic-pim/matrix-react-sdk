@@ -413,7 +413,7 @@ function textForEncryptionEvent(event) {
 
 // Currently will only display a change if a user's power level is changed
 function textForPowerEvent(event) {
-    const senderName = event.sender ? event.sender.name : event.getSender();
+    const senderName = event.sender ? event.sender.rawDisplayName : event.getSender();
     if (!event.getPrevContent() || !event.getPrevContent().users) {
         return '';
     }
@@ -462,7 +462,7 @@ function textForPinnedEvent(event) {
 }
 
 function textForWidgetEvent(event) {
-    const senderName = event.getSender();
+    const senderName = event.sender ? event.sender.rawDisplayName : event.getSender();
     const {name: prevName, type: prevType, url: prevUrl} = event.getPrevContent();
     const {name, type, url} = event.getContent() || {};
 

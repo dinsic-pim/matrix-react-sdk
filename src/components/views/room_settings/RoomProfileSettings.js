@@ -406,6 +406,16 @@ export default class RoomProfileSettings extends React.Component {
             );
         }
 
+        let warningSharingExtern = null;
+        if (this.state.accessRules === "unrestricted" && this.state.joinRules === "public") {
+            warningSharingExtern = (
+                <div className="tc_ExternSharing_warning">
+                    <img src={require("../../../../res/img/tchap/warning.svg")} width="16" height="16"  alt="warning" />
+                    <span>{ _t("An invitation is still required for externs, although link access is enabled.") }</span>
+                </div>
+            );
+        }
+
         let linkSharingUI = null;
         if (!this.state.isForumRoom) {
             let linkUrlField = null;
@@ -443,6 +453,7 @@ export default class RoomProfileSettings extends React.Component {
                         onChange={ this._onLinkSharingSwitchChange }
                         label={ linkSharingSwitchLabel }
                         disabled={!isCurrentUserAdmin}/>
+                    { warningSharingExtern }
                     { linkUrlField }
                 </div>
             );

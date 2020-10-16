@@ -52,6 +52,7 @@ import WidgetEchoStore from '../../stores/WidgetEchoStore';
 import SettingsStore, {SettingLevel} from "../../settings/SettingsStore";
 import WidgetUtils from '../../utils/WidgetUtils';
 import AccessibleButton from "../views/elements/AccessibleButton";
+import Tchap from "../../Tchap";
 
 const DEBUG = false;
 let debuglog = function() {};
@@ -342,6 +343,7 @@ module.exports = React.createClass({
                     // Stop peeking if anything went wrong
                     this.setState({
                         isPeeking: false,
+                        peekLoading: false,
                     });
 
                     // This won't necessarily be a MatrixError, but we duck-type
@@ -351,6 +353,11 @@ module.exports = React.createClass({
                         // This is fine: the room just isn't peekable (we assume).
                         this.setState({
                             peekLoading: false,
+                        });
+                    } else if (err.errcode === "M_FORBIDDEN" && Tchap.isCurrentUserExtern()) {
+                        this.setState({
+                            peekLoading: false,
+                            roomLoadError: err,
                         });
                     } else {
                         throw err;
@@ -1514,7 +1521,7 @@ module.exports = React.createClass({
 
         if (!this.state.room) {
             const loading = this.state.roomLoading || this.state.peekLoading;
-            if (loading) {
+            if (loading || this.state.roomLoadError) {
                 return (
                     <div className="mx_RoomView">
                         <RoomPreviewBar

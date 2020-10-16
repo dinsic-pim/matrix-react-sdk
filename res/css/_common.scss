@@ -652,3 +652,15 @@ textarea {
 .tc_ShareDialog {
     border-color: #e7e7e7 !important;
 }
+
+.tc_ExternSharing_warning {
+    font-size: 14px;
+    color: #747474;
+    margin-bottom: 6px;
+    img {
+        position: absolute;
+    }
+    span {
+        margin-left: 20px;
+    }
+}

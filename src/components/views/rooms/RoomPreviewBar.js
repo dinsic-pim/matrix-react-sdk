@@ -34,6 +34,7 @@ const MessageCase = Object.freeze({
     Rejecting: "Rejecting",
     Kicked: "Kicked",
     Banned: "Banned",
+    ExternNotInvited: "ExternNotInvited",
     OtherThreePIDError: "OtherThreePIDError",
     InvitedEmailMismatch: "InvitedEmailMismatch",
     Invite: "Invite",
@@ -122,6 +123,8 @@ module.exports = React.createClass({
         const myMember = this.props.room &&
             this.props.room.getMember(MatrixClientPeg.get().getUserId());
 
+        const isUserExtern = Tchap.isCurrentUserExtern();
+
         if (myMember) {
             if (myMember.isKicked()) {
                 return MessageCase.Kicked;
@@ -134,6 +137,8 @@ module.exports = React.createClass({
             return MessageCase.Joining;
         } else if (this.props.rejecting) {
             return MessageCase.Rejecting;
+        } else if (isUserExtern && this.props.error) {
+            return MessageCase.ExternNotInvited;
         } else if (this.props.loading || this.state.busy) {
             return MessageCase.Loading;
         }
@@ -280,6 +285,11 @@ module.exports = React.createClass({
                 primaryActionHandler = this.props.onForgetClick;
                 break;
             }
+            case MessageCase.ExternNotInvited: {
+                title = _t("You are not allowed to join %(roomName)s", { roomName: _t("this room")});
+                subTitle = [_t("Try again later, or ask a room admin to check if you can have access.")];
+                break;
+            }
             case MessageCase.OtherThreePIDError: {
                 title = _t("Something went wrong with your invite to this room");
                 const joinRule = this._joinRule();
@@ -371,9 +381,9 @@ module.exports = React.createClass({
                 break;
             }
             case MessageCase.OtherError: {
-                title = _t("%(roomName)s is not accessible at this time.", {roomName: this._roomName(true)});
+                title = _t("You are not allowed to join %(roomName)s", {roomName: this._roomName(false)});
                 subTitle = [
-                    _t("Try again later, or ask a room admin to check if you have access."),
+                    _t("Try again later, or ask a room admin to check if you can have access."),
                 ];
                 console.error(this.props.error.errcode);
                 break;

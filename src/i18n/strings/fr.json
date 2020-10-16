@@ -588,6 +588,7 @@
     "Start authentication": "Commencer une authentification",
     "This invitation was sent to an email address which is not associated with this account:": "Cette invitation a été envoyée à une adresse e-mail qui n'est pas associée avec ce compte :",
     "This room": "Ce salon",
+    "this room": "ce salon",
     "Unable to ascertain that the address this invite was sent to matches one associated with your account.": "Impossible de vérifier que l'adresse à qui cette invitation a été envoyée correspond à celle associée à votre compte.",
     "Undecryptable": "Indéchiffrable",
     "Unencrypted message": "Message non chiffré",
@@ -1936,7 +1937,7 @@
     ".txt with email addresses separated by ';'": ".txt avec les adresses email séparées par des ';'",
     ".csv with email addresses separated by lines break": ".csv avec les adresses email séparées par des retours à la ligne",
     "Share": "Partager",
-    "Try again later, or ask a room admin to check if you have access.": "Réessayez plus tard ou demandez à un administrateur du salon si vous y avez accès.",
+    "Try again later, or ask a room admin to check if you can have access.": "Réessayez plus tard ou demandez à un administrateur du salon si vous pouvez y avoir accès.",
     "Are you sure you want to remove this room from the rooms directory?": "Voulez-vous vraiment retirer ce salon des salons publics ?",
     "Remove this room from the rooms directory": "Retirer ce salon de la liste des salons publics",
     "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes.": "Le partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.",
@@ -1964,5 +1965,7 @@
     "Failed to open link access for this room": "Échec de l'ouverture de l'accès par lien à ce sallon",
     "This change is not currently supported because externs are allowed to join this room.": "Ce changement n'est pas supporté actuellement car les externes sont autorisés à rejoindre ce salon.",
     "Failed to open this room to externs": "Échec de l'ouverture aux externes de ce sallon",
-    "This change is not currently supported because this room is accessible by link.": "Ce changement n'est pas supporté actuellement car ce salon est accessible par lien."
+    "This change is not currently supported because this room is accessible by link.": "Ce changement n'est pas supporté actuellement car ce salon est accessible par lien.",
+    "You are not allowed to join %(roomName)s": "Vous n'êtes pas autorisé à acceder à %(roomName)s",
+    "An invitation is still required for externs, although link access is enabled.": "Une invitation est nécessaire pour les externes, bien que l'accès par lien soit activé."
 }

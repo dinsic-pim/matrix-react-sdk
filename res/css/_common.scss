@@ -713,6 +713,9 @@ textarea {
     font-weight: normal;
     font-size: 12px;
     padding: 10px 4px 0 4px;
+    .mx_SettingsFlag span {
+        font-size: 12px !important;
+    }
 }
 
 .tc_CreateRoomDialog_RoomOption_selected {

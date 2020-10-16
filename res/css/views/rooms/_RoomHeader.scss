@@ -180,8 +180,8 @@ limitations under the License.
 
 .mx_RoomHeader_avatar {
     flex: 0;
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     margin: 0 7px;
 }
 
@@ -202,7 +202,7 @@ limitations under the License.
     -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     flex: unset;
-    padding: 4px 0 0 4px;
+    padding: 2px 0 0 2px;
 }
 
 .mx_RoomHeader_avatar .mx_BaseAvatar_image {

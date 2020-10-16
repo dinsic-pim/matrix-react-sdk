@@ -115,8 +115,11 @@ module.exports = React.createClass({
 
     onShareRoomClick: function(ev) {
         const ShareDialog = sdk.getComponent("dialogs.ShareDialog");
+        const accessRules = Tchap.getAccessRules(this.props.room.roomId);
+        const joinRules = Tchap.getJoinRules(this.props.room);
         Modal.createTrackedDialog('share room dialog', '', ShareDialog, {
             target: this.props.room,
+            isExtShared: accessRules === "unrestricted" && joinRules === "public" && !Tchap.isRoomForum(this.props.room),
         });
     },
 
@@ -277,8 +280,7 @@ module.exports = React.createClass({
         let shareRoomButton;
         if (this.props.inRoom && (Tchap.isRoomForum(this.props.room) ||
             (MatrixClientPeg.get().isRoomEncrypted(this.props.room.roomId)
-                && Tchap.getJoinRules(this.props.room) === "public"
-                && Tchap.getAccessRules(this.props.room.roomId) === "restricted"))) {
+                && Tchap.getJoinRules(this.props.room) === "public"))) {
             shareRoomButton =
                 <AccessibleButton className="mx_RoomHeader_button mx_RoomHeader_shareButton"
                     onClick={this.onShareRoomClick}

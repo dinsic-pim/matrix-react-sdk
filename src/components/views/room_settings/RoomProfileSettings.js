@@ -55,9 +55,10 @@ export default class RoomProfileSettings extends React.Component {
         permalinkCreator.load();
         const link = permalinkCreator.forRoom();
 
-        let link_sharing = false;
-        if (client.isRoomEncrypted(props.roomId) && this._getJoinRules(props.roomId) === "public") {
-            link_sharing = true;
+        let linkSharing = false;
+        if ((client.isRoomEncrypted(props.roomId) && this._getJoinRules(props.roomId) === "public") ||
+            Tchap.isRoomForum(room)) {
+            linkSharing = true;
         }
 
         this._onCopyClick = this._onCopyClick.bind(this);
@@ -77,7 +78,7 @@ export default class RoomProfileSettings extends React.Component {
             canSetAvatar: room.currentState.maySendStateEvent('m.room.avatar', client.getUserId()),
             accessRules: Tchap.getAccessRules(props.roomId),
             joinRules: Tchap.getJoinRules(room),
-            link_sharing,
+            linkSharing: linkSharing,
             link: link,
             copied: false,
             isForumRoom: Tchap.isRoomForum(room)
@@ -209,7 +210,7 @@ export default class RoomProfileSettings extends React.Component {
                         });
                         if (err.errcode === "M_FORBIDDEN" && self.state.joinRules === "public") {
                             const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
-                            Modal.createTrackedDialog('Failure to create room', '', ErrorDialog, {
+                            Modal.createTrackedDialog('Failure to open to externs', '', ErrorDialog, {
                                 title: _t("Failed to open this room to externs"),
                                 description: _t("This change is not currently supported because this room is accessible by link."),
                             });
@@ -229,17 +230,14 @@ export default class RoomProfileSettings extends React.Component {
         const self = this;
         client.sendStateEvent(room.roomId, "m.room.join_rules", { join_rule: joinRules }, "").then(() => {
             self.setState({
-                link_sharing: joinRules === "public",
+                linkSharing: joinRules === "public",
                 joinRules,
             });
         }).catch((err) => {
             console.error(err);
-            this.setState({
-                link_sharing: false,
-            });
             if (err.errcode === "M_FORBIDDEN" && this.state.accessRules === "unrestricted") {
                 const ErrorDialog = sdk.getComponent("dialogs.ErrorDialog");
-                Modal.createTrackedDialog('Failure to create room', '', ErrorDialog, {
+                Modal.createTrackedDialog('Failure to open link access', '', ErrorDialog, {
                     title: _t("Failed to open link access for this room"),
                     description: _t("This change is not currently supported because externs are allowed to join this room."),
                 });
@@ -273,10 +271,10 @@ export default class RoomProfileSettings extends React.Component {
         }
     };
 
-    _onLinkSharingSwitchChange = (e) => {
+    _onLinkSharingSwitchChange = (event) => {
         const client = MatrixClientPeg.get();
         const room = client.getRoom(this.props.roomId);
-        if (e) {
+        if (event) {
             if (this._getGuestAccessRules(room) === "can_join") {
                 client.sendStateEvent(room.roomId, "m.room.guest_access", {guest_access: "forbidden"}, "").then(() => {
                     this._setUpRoomByLink(room);
@@ -416,48 +414,45 @@ export default class RoomProfileSettings extends React.Component {
             );
         }
 
-        let linkSharingUI = null;
-        if (!this.state.isForumRoom) {
-            let linkUrlField = null;
-            if (this.state.link_sharing) {
-                linkUrlField = (
-                    <div className="mx_ShareDialog_matrixto tc_ShareDialog">
-                        <a ref="link"
-                            href={this.state.link}
-                            onClick={this._onLinkClick}
-                            className="mx_ShareDialog_matrixto_link"
-                        >
-                            { this.state.link }
-                        </a>
-                        <a href={this.state.link} className="mx_ShareDialog_matrixto_copy" onClick={this._onCopyClick}>
-                            { _t('COPY') }
-                            <div>&nbsp;</div>
-                        </a>
-                    </div>
-                );
-            }
-
-            let linkSharingSwitchLabel = (
-                <div>
-                    { _t("Activate link access to this room") }
-                    <img className="tc_LinkSharing_Helper" src={require('../../../../res/img/question_mark.svg')}
-                        width={20} height={20}
-                        title={ _t("Users can join this room with the following link:") }
-                        alt={ _t("Room information") } />
-                </div>
-            );
-
-            linkSharingUI = (
-                <div>
-                    <LabelledToggleSwitch value={this.state.link_sharing}
-                        onChange={ this._onLinkSharingSwitchChange }
-                        label={ linkSharingSwitchLabel }
-                        disabled={!isCurrentUserAdmin}/>
-                    { warningSharingExtern }
-                    { linkUrlField }
+        let linkUrlField = null;
+        if (this.state.linkSharing) {
+            linkUrlField = (
+                <div className="mx_ShareDialog_matrixto tc_ShareDialog">
+                    <a ref="link"
+                        href={this.state.link}
+                        onClick={this._onLinkClick}
+                        className="mx_ShareDialog_matrixto_link"
+                    >
+                        { this.state.link }
+                    </a>
+                    <a href={this.state.link} className="mx_ShareDialog_matrixto_copy" onClick={this._onCopyClick}>
+                        { _t('COPY') }
+                        <div>&nbsp;</div>
+                    </a>
                 </div>
             );
         }
+
+        const linkSharingSwitchLabel = (
+            <div>
+                { _t("Activate link access to this room") }
+                <img className="tc_LinkSharing_Helper" src={require('../../../../res/img/question_mark.svg')}
+                    width={20} height={20}
+                    title={ _t("Users can join this room with the following link:") }
+                    alt={ _t("Room information") } />
+            </div>
+        );
+
+        const linkSharingUI = (
+            <div>
+                <LabelledToggleSwitch value={this.state.linkSharing}
+                    onChange={ this._onLinkSharingSwitchChange }
+                    label={ linkSharingSwitchLabel }
+                    disabled={!isCurrentUserAdmin || Tchap.isRoomForum(room)}/>
+                { warningSharingExtern }
+                { linkUrlField }
+            </div>
+        );
 
         return (
             <form onSubmit={this._saveProfile} autoComplete={false} noValidate={true}>

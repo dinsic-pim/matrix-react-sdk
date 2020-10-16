@@ -63,7 +63,7 @@ export default class GeneralRoomSettingsTab extends React.Component {
 
         Modal.createTrackedDialog('Remove this room from the rooms directory', '', QuestionDialog, {
             title: _t('Remove this room from the rooms directory'),
-            description: ( _t('This action is irreversible.') + " " + _t('Are you sure you want to remove this room from the forum rooms directory?')),
+            description: ( _t('This action is irreversible.') + " " + _t('Are you sure you want to remove this room from the forums directory?')),
             onFinished: (confirm) => {
                 if (confirm) {
                     client.sendStateEvent(room.roomId, "m.room.encryption", { algorithm: "m.megolm.v1.aes-sha2" });

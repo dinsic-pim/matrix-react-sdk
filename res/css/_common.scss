@@ -642,3 +642,85 @@ textarea {
     background: white;
     color: $input-darker-fg-color;
 }
+
+.tc_CreateRoomDialog_RoomOption > div {
+    background-color: #f2f5f8;
+    border-radius: 6px;
+    margin: 8px 0 8px 0;
+    padding: 4px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.tc_CreateRoomDialog_RoomOption_private {
+    border: 0 solid #eb5757;
+    color: #eb5757;
+    &::before {
+        width: 12px;
+        height: 16px;
+        content: "";
+        display: inline-block;
+        vertical-align: sub;
+        background-image: url("$(res)/img/tchap/create-room-dialog/padlock-private.svg");
+        background-repeat: no-repeat;
+        background-size: 100%;
+        margin-right: 4px;
+    }
+}
+
+.tc_CreateRoomDialog_RoomOption_external {
+    border: 0 solid #f07a12;
+    color: #f07a12;
+    &::before {
+        width: 12px;
+        height: 16px;
+        content: "";
+        display: inline-block;
+        vertical-align: sub;
+        background-image: url("$(res)/img/tchap/create-room-dialog/padlock-external.svg");
+        background-repeat: no-repeat;
+        background-size: 100%;
+        margin-right: 4px;
+    }
+}
+
+.tc_CreateRoomDialog_RoomOption_forum {
+    border: 0 solid #27ae60;
+    color: #27ae60;
+    &::before {
+        width: 11px;
+        height: 14px;
+        content: "";
+        display: inline-block;
+        vertical-align: sub;
+        background-image: url("$(res)/img/tchap/create-room-dialog/padlock-forum.svg");
+        background-repeat: no-repeat;
+        background-size: 100%;
+        margin-right: 4px;
+    }
+}
+
+.tc_CreateRoomDialog_RoomOption_descr {
+    color: grey;
+    font-weight: normal;
+    font-size: 12px;
+    padding: 0 4px;
+}
+
+.tc_CreateRoomDialog_RoomOption_suboption {
+    display: none;
+    color: grey;
+    font-weight: normal;
+    font-size: 12px;
+    padding: 10px 4px 0 4px;
+    .mx_SettingsFlag span {
+        font-size: 12px !important;
+    }
+}
+
+.tc_CreateRoomDialog_RoomOption_selected {
+    border-width: 2px;
+    .tc_CreateRoomDialog_RoomOption_suboption {
+        display: block;
+    }
+}

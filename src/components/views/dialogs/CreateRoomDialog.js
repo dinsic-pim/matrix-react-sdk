@@ -21,6 +21,7 @@ import SdkConfig from '../../../SdkConfig';
 import { _t } from '../../../languageHandler';
 import Tchap from '../../../Tchap';
 import LabelledToggleSwitch from "../elements/LabelledToggleSwitch";
+import AccessibleButton from "../elements/AccessibleButton";
 
 export default React.createClass({
     displayName: 'CreateRoomDialog',
@@ -37,8 +38,17 @@ export default React.createClass({
             federate: true,
             domain: domain,
             externAllowed: false,
-            externAllowedSwitchDisabled: false
+            externAllowedSwitchDisabled: false,
+            roomOption: "private",
+            classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
+            classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
+            classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
+            padlockImage: require("../../../../res/img/tchap/padlock-forum_mono.svg"),
         };
+    },
+
+    componentDidMount: function() {
+        this.setUpRoomOptions(this.state.roomOption);
     },
 
     onOk: function() {
@@ -61,23 +71,6 @@ export default React.createClass({
         this.props.onFinished(false);
     },
 
-    _onRoomVisibilityRadioToggle: function(ev) {
-        if (ev.target.value === "public") {
-            this.setState({
-                externAllowed: false,
-                externAllowedSwitchDisabled: true,
-                visibility: ev.target.value,
-                federate: false,
-            });
-        } else {
-            this.setState({
-                externAllowedSwitchDisabled: false,
-                visibility: ev.target.value,
-                federate: true,
-            });
-        }
-    },
-
     _onFederateSwitchChange: function(ev) {
         this.setState({
             federate: !ev
@@ -90,10 +83,64 @@ export default React.createClass({
         });
     },
 
+    onRoomOptionChange: function(ev) {
+        ev.preventDefault();
+        const selected = ev.target.getAttribute("aria-label")
+        this.setUpRoomOptions(selected);
+    },
+
+    setUpRoomOptions: function(selected) {
+        switch (selected) {
+            case "private": {
+                this.setState({
+                    isPublic: false,
+                    externAllowed: false,
+                    federate: true,
+                    roomOption: selected,
+                    visibility: "private",
+                    classesRoomOptionPrivate: this.state.classesRoomOptionPrivate + " tc_CreateRoomDialog_RoomOption_selected",
+                    classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
+                    classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
+                    padlockImage: require("../../../../res/img/tchap/padlock-encrypted.svg")
+                })
+                break;
+            }
+            case "external": {
+                this.setState({
+                    isPublic: false,
+                    externAllowed: true,
+                    federate: true,
+                    roomOption: selected,
+                    visibility: "private",
+                    classesRoomOptionExternal: this.state.classesRoomOptionExternal + " tc_CreateRoomDialog_RoomOption_selected",
+                    classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
+                    classesRoomOptionPublic: "tc_CreateRoomDialog_RoomOption_forum",
+                    padlockImage: require("../../../../res/img/tchap/padlock-encrypted.svg")
+                })
+                break;
+            }
+            case "public": {
+                this.setState({
+                    isPublic: true,
+                    externAllowed: false,
+                    federate: false,
+                    roomOption: selected,
+                    visibility: "public",
+                    classesRoomOptionPublic: this.state.classesRoomOptionPublic + " tc_CreateRoomDialog_RoomOption_selected",
+                    classesRoomOptionPrivate: "tc_CreateRoomDialog_RoomOption_private",
+                    classesRoomOptionExternal: "tc_CreateRoomDialog_RoomOption_external",
+                    padlockImage: require("../../../../res/img/tchap/padlock-forum_mono.svg")
+                })
+                break;
+            }
+        }
+    },
+
     render: function() {
         const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
         const DialogButtons = sdk.getComponent('views.elements.DialogButtons');
         const errorText = this.state.errorText;
+        const padlockImage = this.state.padlockImage;
 
         let errorTextSection;
         if (errorText) {
@@ -104,21 +151,40 @@ export default React.createClass({
             );
         }
 
-        let federationOption;
-        if (this.state.visibility === 'public') {
-            federationOption = (
-                <LabelledToggleSwitch value={!this.state.federate}
-                                      onChange={ this._onFederateSwitchChange }
-                                      label={ _t('Limit access to this room to domain members "%(domain)s"', {domain: this.state.domain}) } />
-            );
-        }
-
         let inputAvatarContainerClass = "mx_CreateRoomDialog_input_avatar_container";
         if (this.state.externAllowed) {
             inputAvatarContainerClass += " mx_CreateRoomDialog_input_avatar_container_unrestricted";
         } else {
             inputAvatarContainerClass += " mx_CreateRoomDialog_input_avatar_container_restricted";
         }
+
+        let roomOptions = (
+            <div className={"tc_CreateRoomDialog_RoomOption"}>
+                <AccessibleButton className={this.state.classesRoomOptionPrivate} onClick={this.onRoomOptionChange} aria-label={"private"}>
+                    { _t("Private room") }
+                    <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-label={"private"}>
+                        { _t("Accessible to all users by invitation from an administrator.") }
+                    </div>
+                </AccessibleButton>
+                <AccessibleButton className={this.state.classesRoomOptionExternal} onClick={this.onRoomOptionChange} aria-label={"external"}>
+                    { _t("Private room opened to externals") }
+                    <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-label={"external"}>
+                        { _t("Accessible to all users and to external guests by invitation of an administrator.") }
+                    </div>
+                </AccessibleButton>
+                <AccessibleButton className={this.state.classesRoomOptionPublic} onClick={this.onRoomOptionChange} aria-label={"public"}>
+                    { _t("Forum room") }
+                    <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-label={"public"}>
+                        { _t("Accessible to all users from the forum directory or from a shared link.") }
+                    </div>
+                    <div className={"tc_CreateRoomDialog_RoomOption_suboption"}>
+                        <LabelledToggleSwitch label={ _t('Limit access to this room to domain members "%(domain)s"',
+                            {domain: Tchap.getShortDomain()}) }
+                            onChange={this._onFederateSwitchChange} value={!this.state.federate} />
+                    </div>
+                </AccessibleButton>
+            </div>
+        );
 
         return (
             <BaseDialog className="mx_CreateRoomDialog" onFinished={this.props.onFinished}
@@ -133,31 +199,12 @@ export default React.createClass({
                             <div className={inputAvatarContainerClass}>
                                 <img src={require("../../../../res/img/8b8999.png")} alt="Avatar"/>
                             </div>
+                            <img src={padlockImage} className="mx_CreateRoomDialog_input_avatar_padlock" alt="Padlock" width={14}/>
                             <input id="textinput" ref="textinput" className="mx_CreateRoomDialog_input" autoFocus={true} />
                         </div>
                         {errorTextSection}
                         <br />
-
-                        <label htmlFor="roomVis"> { _t('Room type') } : </label>
-                        <label>
-                            <input type="radio" name="roomVis" value="private"
-                                   onChange={this._onRoomVisibilityRadioToggle}
-                                   checked={this.state.visibility === "private"} />
-                            { _t('Private') }
-                        </label>
-                        <label>
-                            <input type="radio" name="roomVis" value="public"
-                                   onChange={this._onRoomVisibilityRadioToggle}
-                                   checked={this.state.visibility !== "private"} />
-                            { _t('Public') }
-                        </label>
-                        <br />
-                        <br />
-                        <LabelledToggleSwitch value={this.state.externAllowed}
-                                              onChange={ this._onExternAllowedSwitchChange }
-                                              label={ _t("Allow the externals to join this room") }
-                                              disabled={ this.state.externAllowedSwitchDisabled } />
-                        { federationOption }
+                        { roomOptions }
                     </div>
                 </form>
                 <DialogButtons primaryButton={_t('Create Room')}

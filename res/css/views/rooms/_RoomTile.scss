@@ -82,8 +82,8 @@ limitations under the License.
 
 .mx_RoomTile_avatar {
     flex: 0;
-    padding: 4px;
-    width: 24px;
+    padding: 2px;
+    width: 26px;
     vertical-align: middle;
 }
 
@@ -111,9 +111,32 @@ limitations under the License.
 .mx_RoomTile_dm {
     display: block;
     position: absolute;
-    bottom: 0;
-    left: 32px;
+    top: 0;
+    left: 31px;
     z-index: 2;
+}
+
+.mx_RoomTile_forum {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 34px;
+    z-index: 2;
+    top: 1px;
+}
+
+.mx_RoomHeader_encrypted {
+    display: block;
+    position: relative;
+    bottom: 9px;
+    right: 13px;
+}
+
+.mx_RoomHeader_forum {
+    display: block;
+    position: relative;
+    bottom: 8px;
+    right: 13px;
 }
 
 .mx_RoomTile_name {

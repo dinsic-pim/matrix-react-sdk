@@ -1968,5 +1968,6 @@
     "Create a private room opened to externals": "Créer un salon privé ouvert aux externes",
     "Create a forum room": "Créer un salon forum",
     "Forums directory": "Annuaire des forums",
-    "Are you sure you want to remove this room from the forums directory?": "Voulez-vous vraiment retirer ce salon des forums ?"
+    "Are you sure you want to remove this room from the forums directory?": "Voulez-vous vraiment retirer ce salon des forums ?",
+    "Decrypting...": "Déchiffrement..."
 }

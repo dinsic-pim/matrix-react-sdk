@@ -1939,7 +1939,7 @@
     "Share": "Partager",
     "Try again later, or ask a room admin to check if you can have access.": "Réessayez plus tard ou demandez à un administrateur du salon si vous pouvez y avoir accès.",
     "Are you sure you want to remove this room from the rooms directory?": "Voulez-vous vraiment retirer ce salon des salons publics ?",
-    "Remove this room from the rooms directory": "Retirer ce salon de la liste des salons publics",
+    "Remove this room from the rooms directory": "Retirer ce salon de l'annuaire des forums",
     "The key sharing will be done gradually. The messages will decipher as you go. This may take a few minutes.": "Le partage des clés va s'effectuer progressivement. Les messages se déchiffreront au fur à mesure. Cela peut prendre quelques minutes.",
     "Please also confirm the emojis on the other device.": "Veuillez confirmer également les emojis sur l'autre appareil.",
     "Welcome to Tchap!": "Bienvenue sur Tchap !",
@@ -1967,5 +1967,16 @@
     "Failed to open this room to externs": "Échec de l'ouverture aux externes de ce salon",
     "This change is not currently supported because this room is accessible by link.": "Ce changement n'est pas supporté actuellement car ce salon est accessible par lien.",
     "You are not allowed to join %(roomName)s": "Vous n'êtes pas autorisé à acceder à %(roomName)s",
-    "An invitation is still required for externs, although link access is enabled.": "Une invitation est nécessaire pour les externes, bien que l'accès par lien soit activé."
+    "An invitation is still required for externs, although link access is enabled.": "Une invitation est nécessaire pour les externes, bien que l'accès par lien soit activé.",
+    "Private room": "Salon privé",
+    "Accessible to all users by invitation from an administrator.": "Accessible à tous les utilisateurs sur invitation d’un administrateur.",
+    "Private room opened to externals": "Salon privé ouvert aux externes",
+    "Accessible to all users and to external guests by invitation of an administrator.": "Accessible à tous les utilisateurs et aux invités externes sur invitation d’un administrateur.",
+    "Forum room": "Salon forum",
+    "Accessible to all users from the forum directory or from a shared link.": "Accessible à tous les utilisateurs à partir de la liste des forums ou d’un lien partagé.",
+    "Create a private room opened to externals": "Créer un salon privé ouvert aux externes",
+    "Create a forum room": "Créer un salon forum",
+    "Forums directory": "Annuaire des forums",
+    "Are you sure you want to remove this room from the forums directory?": "Voulez-vous vraiment retirer ce salon des forums ?",
+    "Decrypting...": "Déchiffrement..."
 }

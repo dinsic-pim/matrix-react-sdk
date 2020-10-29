@@ -89,16 +89,19 @@ export default React.createClass({
                     { _t("Unblacklist") }
                 </button>
             );
-        } else {
+        }
+
+        // We want to remove "Blacklist" and "Verify" button for the moment.
+        /* else {
             blacklistButton = (
                 <button className="mx_MemberDeviceInfo_textButton mx_MemberDeviceInfo_blacklist"
                   onClick={this.onBlacklistClick}>
                     { _t("Blacklist") }
                 </button>
             );
-        }
+        }*/
 
-        if (this.state.device.isVerified()) {
+/*        if (this.state.device.isVerified()) {
             verifyButton = (
                 <button className="mx_MemberDeviceInfo_textButton mx_MemberDeviceInfo_unverify"
                   onClick={this.onUnverifyClick}>
@@ -112,7 +115,7 @@ export default React.createClass({
                     { _t("Verify...") }
                 </button>
             );
-        }
+        }*/
 
         return (
             <div className="mx_DeviceVerifyButtons" >

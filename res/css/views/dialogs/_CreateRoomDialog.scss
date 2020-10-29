@@ -45,6 +45,12 @@ limitations under the License.
     background-image: url('$(res)/img/cccccc.png');
 }
 
+.mx_CreateRoomDialog_input_avatar_padlock {
+    position: absolute;
+    left: 61px;
+    top: 115px;
+}
+
 .mx_CreateRoomDialog_input_avatar_container img {
     width: 28px;
     height: 30px;

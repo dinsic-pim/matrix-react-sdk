@@ -33,6 +33,7 @@ export default class ShareDialog extends React.Component {
             PropTypes.instanceOf(RoomMember),
             PropTypes.instanceOf(MatrixEvent),
         ]).isRequired,
+        isExtShared: PropTypes.bool,
     };
 
     constructor(props) {
@@ -157,12 +158,24 @@ export default class ShareDialog extends React.Component {
 
         const encodedUrl = encodeURIComponent(matrixToUrl);
 
+        let warningSharingExtUI;
+        if (this.props.isExtShared) {
+            warningSharingExtUI = (
+                <div className="tc_ExternSharing_warning">
+                    <img src={require("../../../../res/img/tchap/warning.svg")} width="16" height="16"  alt="warning" />
+                    <span>{ _t("An invitation is still required for externs, although link access is enabled.") }</span>
+                </div>
+            );
+        }
+
+
         const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
         return <BaseDialog title={title}
                            className='mx_ShareDialog'
                            contentId='mx_Dialog_content'
                            onFinished={this.props.onFinished}
         >
+            { warningSharingExtUI }
             <div className="mx_ShareDialog_content">
                 <div className="mx_ShareDialog_matrixto">
                     <a ref="link"

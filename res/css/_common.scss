@@ -643,6 +643,29 @@ textarea {
     color: $input-darker-fg-color;
 }
 
+
+.tc_LinkSharing_Helper {
+    position: relative;
+    top: 5px;
+    left: 5px;
+}
+
+.tc_ShareDialog {
+    border-color: #e7e7e7 !important;
+}
+
+.tc_ExternSharing_warning {
+    font-size: 14px;
+    color: #747474;
+    margin-bottom: 6px;
+    img {
+        position: relative;
+    }
+    span {
+        margin-left: 8px;
+    }
+}
+
 .tc_CreateRoomDialog_RoomOption > div {
     background-color: #f2f5f8;
     border-radius: 6px;

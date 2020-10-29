@@ -115,14 +115,14 @@ export class RoomPermalinkCreator {
     }
 
     forEvent(eventId) {
-        const roomId = this._room.roomId;
-        const permalinkBase = `${this.base_host_url}/#/room/${roomId}/${eventId}`;
+        const identifier = this._room.getCanonicalAlias() ? this._room.getCanonicalAlias() : this._room.roomId;
+        const permalinkBase = `${this.base_host_url}/#/room/${identifier}/${eventId}`;
         return permalinkBase;
     }
 
     forRoom() {
-        const roomId = this._room.roomId;
-        const permalinkBase = `${this.base_host_url}/#/room/${roomId}`;
+        const identifier = this._room.getCanonicalAlias() ? this._room.getCanonicalAlias() : this._room.roomId;
+        const permalinkBase = `${this.base_host_url}/#/room/${identifier}`;
         return permalinkBase;
     }
 

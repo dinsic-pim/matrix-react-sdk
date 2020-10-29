@@ -170,7 +170,7 @@ class Tchap {
 
     /**
      * Return true if the current user is the last administrator of the given room.
-     * @param {string} room
+     * @param {Room} room
      * @returns {boolean}
      */
     static isUserLastAdmin(room) {
@@ -187,6 +187,15 @@ class Tchap {
             }
         });
         return isUserAdmin && adminNumber <= 1;
+    }
+
+    /**
+     * Given a room, return if this room is a "forum room" (old "public")
+     * @param room
+     * @returns {boolean}
+     */
+    static isRoomForum(room) {
+        return !MatrixClientPeg.get().isRoomEncrypted(room.roomId) && this.getJoinRules(room) === "public";
     }
 
     /**
@@ -230,6 +239,23 @@ class Tchap {
         }).then(data => {
             return data.expired;
         });
+    }
+
+    /**
+     * Given a room, return the stateEvent "m.room.join_rules"
+     * @param room
+     * @returns {string|*|string}
+     */
+    static getJoinRules(room) {
+        const stateEventType = "m.room.join_rules";
+        const keyName = "join_rule";
+        const defaultValue = "public";
+        const event = room.currentState.getStateEvents(stateEventType, '');
+        if (!event) {
+            return defaultValue;
+        }
+        const content = event.getContent();
+        return keyName in content ? content[keyName] : defaultValue;
     }
 
     /**

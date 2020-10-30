@@ -57,8 +57,7 @@ export default class DevicesPanelEntry extends React.Component {
         let lastSeen = "";
         if (device.last_seen_ts) {
             const lastSeenDate = formatDate(new Date(device.last_seen_ts));
-            lastSeen = device.last_seen_ip + " @ " +
-                lastSeenDate.toLocaleString();
+            lastSeen = lastSeenDate.toLocaleString();
         }
 
         let myDeviceClass = '';

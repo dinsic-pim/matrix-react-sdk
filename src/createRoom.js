@@ -83,9 +83,9 @@ function createRoom(opts) {
     let alias;
     if (createOpts.name) {
         const tmpAlias = createOpts.name.replace(/[^a-z0-9]/gi, "");
-        alias = tmpAlias + _generateRandomString(7);
+        alias = tmpAlias + _generateRandomString(11);
     } else {
-        alias = _generateRandomString(7);
+        alias = _generateRandomString(11);
     }
 
     // Allow guests by default since the room is private and they'd

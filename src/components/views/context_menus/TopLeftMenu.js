@@ -35,6 +35,7 @@ export class TopLeftMenu extends React.Component {
         super();
         this.viewHomePage = this.viewHomePage.bind(this);
         this.openSettings = this.openSettings.bind(this);
+        this.openFavourite = this.openFavourite.bind(this);
         this.signIn = this.signIn.bind(this);
         this.signOut = this.signOut.bind(this);
     }
@@ -97,6 +98,9 @@ export class TopLeftMenu extends React.Component {
             <ul className="mx_TopLeftMenu_section_withIcon">
                 <li className="mx_TopLeftMenu_icon_settings" onClick={this.openSettings}>{_t("Settings")}</li>
             </ul>
+            <ul className="mx_TopLeftMenu_section_withIcon">
+                <li className="mx_TopLeftMenu_icon_favourite" onClick={this.openFavourite}>{_t("Favourite")}</li>
+            </ul>
             {signInOutSection}
         </div>;
     }
@@ -108,6 +112,11 @@ export class TopLeftMenu extends React.Component {
 
     openSettings() {
         dis.dispatch({action: 'view_user_settings'});
+        this.closeMenu();
+    }
+
+    openFavourite() {
+        dis.dispatch({action: 'view_user_favourite'});
         this.closeMenu();
     }
 

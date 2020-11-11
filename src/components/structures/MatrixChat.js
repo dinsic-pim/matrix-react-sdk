@@ -595,6 +595,11 @@ export default React.createClass({
                 this._viewSomethingBehindModal();
                 break;
             }
+            case 'view_user_favourite': {
+                const FavouriteDialog = sdk.getComponent("tchap.views.dialogs.FavouriteDialog");
+                Modal.createTrackedDialog('User favourite', '', FavouriteDialog);
+            }
+            break;
             case 'view_create_room':
                 this._createRoom();
                 break;

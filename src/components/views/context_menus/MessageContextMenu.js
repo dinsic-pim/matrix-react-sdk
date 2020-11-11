@@ -27,6 +27,7 @@ import Modal from '../../../Modal';
 import Resend from '../../../Resend';
 import SettingsStore from '../../../settings/SettingsStore';
 import { isUrlPermitted } from '../../../HtmlUtils';
+import TchapFavouriteManager from "../../../TchapFavouriteManager";
 
 module.exports = React.createClass({
     displayName: 'MessageContextMenu',
@@ -49,12 +50,16 @@ module.exports = React.createClass({
         return {
             canRedact: false,
             canPin: false,
+            isFavourite: false,
         };
     },
 
     componentWillMount: function() {
         MatrixClientPeg.get().on('RoomMember.powerLevel', this._checkPermissions);
         this._checkPermissions();
+        this.setState({
+            isFavourite: TchapFavouriteManager.isEventFavourite(this.props.mxEvent),
+        })
     },
 
     componentWillUnmount: function() {
@@ -214,6 +219,15 @@ module.exports = React.createClass({
         this.closeMenu();
     },
 
+    onFavouriteClick: function() {
+        if (this.state.isFavourite) {
+            TchapFavouriteManager.removeFavorite(this.props.mxEvent)
+        } else {
+            TchapFavouriteManager.addFavourite(this.props.mxEvent)
+        }
+        this.closeMenu();
+    },
+
     render: function() {
         const mxEvent = this.props.mxEvent;
         const eventStatus = mxEvent.status;
@@ -242,7 +256,7 @@ module.exports = React.createClass({
 
         if (isSent && this.state.canRedact) {
             redactButton = (
-                <div className="mx_MessageContextMenu_field" onClick={this.onRedactClick}>
+                <div className="mx_MessageContextMenu_field mx_MessageContextMenu_field_icon mx_MessageContextMenu_field_remove" onClick={this.onRedactClick}>
                     { _t('Remove') }
                 </div>
             );
@@ -260,13 +274,13 @@ module.exports = React.createClass({
             const content = mxEvent.getContent();
             if (content.msgtype && content.msgtype !== 'm.bad.encrypted' && content.hasOwnProperty('body')) {
                 forwardButton = (
-                    <div className="mx_MessageContextMenu_field" onClick={this.onForwardClick}>
+                    <div className="mx_MessageContextMenu_field mx_MessageContextMenu_field_icon mx_MessageContextMenu_field_forward" onClick={this.onForwardClick}>
                         { _t('Forward Message') }
                     </div>
                 );
 
                 replyButton = (
-                    <div className="mx_MessageContextMenu_field" onClick={this.onReplyClick}>
+                    <div className="mx_MessageContextMenu_field mx_MessageContextMenu_field_icon mx_MessageContextMenu_field_reply" onClick={this.onReplyClick}>
                         { _t('Reply') }
                     </div>
                 );
@@ -311,7 +325,7 @@ module.exports = React.createClass({
         }
         // XXX: if we use room ID, we should also include a server where the event can be found (other than in the domain of the event ID)
         const permalinkButton = (
-            <div className="mx_MessageContextMenu_field">
+            <div className="mx_MessageContextMenu_field mx_MessageContextMenu_field_icon mx_MessageContextMenu_field_share">
                 <a href={permalink} target="_blank" rel="noopener" onClick={this.onPermalinkClick} tabIndex={-1}>
                     { mxEvent.isRedacted() || mxEvent.getType() !== 'm.room.message'
                         ? _t('Share Permalink') : _t('Share Message') }
@@ -321,7 +335,7 @@ module.exports = React.createClass({
 
         if (this.props.eventTileOps && this.props.eventTileOps.getInnerText) {
             quoteButton = (
-                <div className="mx_MessageContextMenu_field" onClick={this.onQuoteClick}>
+                <div className="mx_MessageContextMenu_field mx_MessageContextMenu_field_icon mx_MessageContextMenu_field_quote" onClick={this.onQuoteClick}>
                     { _t('Quote') }
                 </div>
             );
@@ -355,8 +369,17 @@ module.exports = React.createClass({
                 </div>;
         }
 
+        let favouriteClasses = "mx_MessageContextMenu_field mx_MessageContextMenu_field_icon";
+        favouriteClasses += this.state.isFavourite ? " mx_MessageContextMenu_field_favourite" : " mx_MessageContextMenu_field_favourite_out";
+        const favoriteButton = (
+            <div className={favouriteClasses} onClick={this.onFavouriteClick}>
+                { _t('Favourite') }
+            </div>
+        );
+
         return (
             <div className="mx_MessageContextMenu">
+                { favoriteButton }
                 { resendButton }
                 { redactButton }
                 { cancelButton }

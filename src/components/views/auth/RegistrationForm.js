@@ -304,7 +304,7 @@ module.exports = React.createClass({
                         />
                         <img className="tc_PasswordHelper" src={require('../../../../res/img/question_mark.svg')}
                              width={25} height={25}
-                             title={ _t('This password is too weak. It must include a lower-case letter, an upper-case letter, a number and a symbol and be at a minimum 8 characters in length.') } alt={""} />
+                             title={ _t("Your password must include a lower-case letter, an upper-case letter, a number and a symbol and be at a minimum 8 characters in length.") } alt={""} />
                     </div>
                     { registerButton }
                 </form>

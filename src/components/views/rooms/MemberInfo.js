@@ -532,9 +532,9 @@ module.exports = withMatrixClient(React.createClass({
     _buildAddrObject: function() {
         const addrObject = {};
         const user = this.props.member.user;
-        addrObject.address = user.userId;
-        addrObject.avatarMxc = user.avatarUrl;
-        addrObject.displayName = user.displayName;
+        addrObject.address = user ? user.userId : this.props.member.userId;
+        addrObject.avatarMxc = user ? user.avatarUrl : null;
+        addrObject.displayName = user ? user.displayName : this.props.member.rawDisplayName;
         addrObject.addressType = "mx-user-id";
         addrObject.isKnown = true;
 
@@ -928,8 +928,6 @@ module.exports = withMatrixClient(React.createClass({
                             { this._renderUserOptions() }
 
                             { adminTools }
-
-                            { startChat }
 
                             { this._renderDevices() }
 

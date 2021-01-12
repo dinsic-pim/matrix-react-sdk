@@ -1639,7 +1639,7 @@
     "The file '%(fileName)s' exceeds this homeserver's size limit for uploads": "Le fichier \"%(fileName)s\" dépasse la taille limite autorisée par ce serveur pour les téléchargements",
     "Gets or sets the room topic": "Récupère ou défini le sujet du salon",
     "This room has no topic.": "Ce salon n'a pas de sujet.",
-    "%(senderDisplayName)s made the room public to whoever knows the link.": "%(senderDisplayName)s a rendu le salon public à tous ceux qui en connaissent le lien.",
+    "%(senderDisplayName)s made the room accessible to whoever knows the link.": "%(senderDisplayName)s a rendu le salon accessible à tous ceux qui en connaissent le lien.",
     "%(senderDisplayName)s made the room invite only.": "%(senderDisplayName)s a rendu le salon disponible sur invitation seulement.",
     "%(senderDisplayName)s changed the join rule to %(rule)s": "%(senderDisplayName)s a changé la règle d’adhésion en %(rule)s",
     "%(senderDisplayName)s has allowed guests to join the room.": "%(senderDisplayName)s a autorisé les invités à rejoindre le salon.",

@@ -200,6 +200,7 @@ export default React.createClass({
             syncError: null, // If the current syncing status is ERROR, the error object, otherwise null.
             resizeNotifier: new ResizeNotifier(),
             showNotifierToolbar: false,
+            expiredAccount: false,
         };
         return s;
     },
@@ -1292,7 +1293,6 @@ export default React.createClass({
         this.firstSyncPromise = Promise.defer();
         const cli = MatrixClientPeg.get();
         const IncomingSasDialog = sdk.getComponent('views.dialogs.IncomingSasDialog');
-        let expiredAccount = false;
 
         // Allow the JS SDK to reap timeline events. This reduces the amount of
         // memory consumed as the JS SDK stores multiple distinct copies of room
@@ -1334,49 +1334,63 @@ export default React.createClass({
             // would do this dispatch and expose the sync state itself (by listening to
             // its own dispatch).
 
-            if (!expiredAccount) {
-                if (data.error && data.error.errcode === "ORG_MATRIX_EXPIRED_ACCOUNT") {
-                    expiredAccount = true;
-                    MatrixClientPeg.get().stopClient();
-                    MatrixClientPeg.get().store.deleteAllData().done();
-                    const ExpiredAccountDialog = sdk.getComponent("dialogs.ExpiredAccountDialog");
-                    Modal.createTrackedDialog('Expired Account Dialog', '', ExpiredAccountDialog, {
-                        onFinished: () => {
-                            expiredAccount = false;
-                            MatrixClientPeg.start();
-                        },
-                    });
-                }
+            console.error("this.state.expiredAccount")
+            console.error(self.state.expiredAccount)
 
-                dis.dispatch({action: 'sync_state', prevState, state});
 
-                if (state === "ERROR" || state === "RECONNECTING") {
-                    if (data.error instanceof Matrix.InvalidStoreError) {
-                        Lifecycle.handleInvalidStoreError(data.error);
-                    }
-                    self.setState({syncError: data.error || true});
-                } else if (self.state.syncError) {
-                    self.setState({syncError: null});
-                }
-
-                self.updateStatusIndicator(state, prevState);
-                if (state === "SYNCING" && prevState === "SYNCING") {
-                    return;
-                }
-                console.log("MatrixClient sync state => %s", state);
-                if (state !== "PREPARED") {
-                    return;
-                }
-
-                self.firstSyncComplete = true;
-                self.firstSyncPromise.resolve();
-
-                dis.dispatch({action: 'focus_composer'});
+            if (data.error && data.error.errcode === "ORG_MATRIX_EXPIRED_ACCOUNT" || self.state.expiredAccount) {
                 self.setState({
-                    ready: true,
-                    showNotifierToolbar: Notifier.shouldShowToolbar(),
+                    expiredAccount: true,
                 });
+                MatrixClientPeg.get().stopClient();
+                MatrixClientPeg.get().store.deleteAllData().done();
+                const ExpiredAccountDialog = sdk.getComponent("dialogs.ExpiredAccountDialog");
+                const close = Modal.createTrackedDialog('Expired Account Dialog', '', ExpiredAccountDialog, {
+                    onFinished: (stillExpired) => {
+                        if (!stillExpired) {
+                            self.setState({
+                                expiredAccount: false,
+                            })
+                            MatrixClientPeg.start();
+                        }
+                    },
+                    onLogout: () => {
+                        dis.dispatch({
+                            action: 'logout',
+                        });
+                        close(true);
+                    },
+                }).close;
             }
+
+            dis.dispatch({action: 'sync_state', prevState, state});
+
+            if (state === "ERROR" || state === "RECONNECTING") {
+                if (data.error instanceof Matrix.InvalidStoreError) {
+                    Lifecycle.handleInvalidStoreError(data.error);
+                }
+                self.setState({syncError: data.error || true});
+            } else if (self.state.syncError) {
+                self.setState({syncError: null});
+            }
+
+            self.updateStatusIndicator(state, prevState);
+            if (state === "SYNCING" && prevState === "SYNCING") {
+                return;
+            }
+            console.log("MatrixClient sync state => %s", state);
+            if (state !== "PREPARED") {
+                return;
+            }
+
+            self.firstSyncComplete = true;
+            self.firstSyncPromise.resolve();
+
+            dis.dispatch({action: 'focus_composer'});
+            self.setState({
+                ready: true,
+                showNotifierToolbar: Notifier.shouldShowToolbar(),
+            });
         });
         cli.on('Call.incoming', function(call) {
             // we dispatch this synchronously to make sure that the event
@@ -1976,6 +1990,9 @@ export default React.createClass({
                 );
             } else {
                 // we think we are logged in, but are still waiting for the /sync to complete
+                if (this.state.expiredAccount) {
+                    return null;
+                }
                 const Spinner = sdk.getComponent('elements.Spinner');
                 let errorBox;
                 if (this.state.syncError && !isStoreError) {

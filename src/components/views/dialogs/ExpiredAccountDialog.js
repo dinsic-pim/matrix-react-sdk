@@ -26,6 +26,7 @@ export default React.createClass({
     propTypes: {
         button: PropTypes.string,
         focus: PropTypes.bool,
+        onLogout: PropTypes.func.isRequired,
         onFinished: PropTypes.func.isRequired,
     },
 
@@ -36,7 +37,7 @@ export default React.createClass({
     },
 
     onOk: function() {
-        this.props.onFinished(true);
+        this.props.onFinished(false);
     },
 
     onResendEmail: function() {
@@ -70,6 +71,9 @@ export default React.createClass({
                     focus={this.props.focus}
                     onCancel={null}
                 >
+                <a href="#" className="tc_ExpiredAccountDialog_link" onClick={this.props.onLogout}>
+                    { _t('Logout') }
+                </a>
                 <button onClick={this.onResendEmail}>
                     { _t('Request a renewal email') }
                 </button>

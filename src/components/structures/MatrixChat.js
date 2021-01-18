@@ -1334,10 +1334,6 @@ export default React.createClass({
             // would do this dispatch and expose the sync state itself (by listening to
             // its own dispatch).
 
-            console.error("this.state.expiredAccount")
-            console.error(self.state.expiredAccount)
-
-
             if (data.error && data.error.errcode === "ORG_MATRIX_EXPIRED_ACCOUNT" || self.state.expiredAccount) {
                 self.setState({
                     expiredAccount: true,

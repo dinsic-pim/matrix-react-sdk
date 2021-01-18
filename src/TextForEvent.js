@@ -499,7 +499,6 @@ const handlers = {
 };
 
 const stateHandlers = {
-    'm.room.canonical_alias': textForCanonicalAliasEvent,
     'm.room.name': textForRoomNameEvent,
     'm.room.member': textForMemberEvent,
     'm.room.third_party_invite': textForThreePidInviteEvent,

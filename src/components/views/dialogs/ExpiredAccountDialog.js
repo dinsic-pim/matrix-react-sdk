@@ -47,6 +47,14 @@ export default React.createClass({
         Tchap.requestNewExpiredAccountEmail();
     },
 
+    /**
+        <a href="#" className="tc_ExpiredAccountDialog_link" onClick={this.props.onLogout}>
+            { _t('Logout') }
+        </a>
+     This code add a Logout button to the Expired Account Modal.
+     Keep it here in case of need.
+     */
+
     render: function() {
         const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
         const DialogButtons = sdk.getComponent('views.elements.DialogButtons');
@@ -71,9 +79,6 @@ export default React.createClass({
                     focus={this.props.focus}
                     onCancel={null}
                 >
-                <a href="#" className="tc_ExpiredAccountDialog_link" onClick={this.props.onLogout}>
-                    { _t('Logout') }
-                </a>
                 <button onClick={this.onResendEmail}>
                     { _t('Request a renewal email') }
                 </button>

@@ -133,11 +133,6 @@ export default class GeneralRoomSettingsTab extends React.Component {
                 <br />
                 { roomPublishChange }
 
-                <span className='mx_SettingsTab_subheading'>{_t("URL Previews")}</span>
-                <div className='mx_SettingsTab_section'>
-                    <UrlPreviewSettings room={room} />
-                </div>
-
                 <span className='mx_SettingsTab_subheading'>{_t("Leave room")}</span>
                 <div className='mx_SettingsTab_section'>
                     <AccessibleButton kind='danger' onClick={this._onLeaveClick}>

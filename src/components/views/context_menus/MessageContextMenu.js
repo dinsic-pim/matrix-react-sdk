@@ -362,15 +362,12 @@ module.exports = React.createClass({
                 { cancelButton }
                 { forwardButton }
                 { pinButton }
-                { viewSourceButton }
-                { viewClearSourceButton }
                 { unhidePreviewButton }
                 { permalinkButton }
                 { quoteButton }
                 { replyButton }
                 { externalURLButton }
                 { collapseReplyThread }
-                { e2eInfo }
             </div>
         );
     },

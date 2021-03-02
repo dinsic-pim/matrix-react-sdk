@@ -295,3 +295,36 @@ limitations under the License.
 .mx_RoomHeader_pinsIndicatorUnread {
     background-color: $pinned-unread-color;
 }
+
+.mx_RoomHeader_dash {
+    color: white;
+    font-weight: 400;
+    font-size: 13px;
+    margin: 4px 12px 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid transparent;
+    line-height: 1.2em;
+    max-height: 2.4em;
+}
+
+.mx_RoomHeader_retention_value {
+    font-weight: 400;
+    font-size: 13px;
+    color: white;
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    top: -2px;
+    position: relative;
+    margin-right: 5px;
+    margin-left: 3px;
+}
+
+.mx_RoomHeader_retention_img {
+    width: 18px;
+    height: 18px;
+    position: relative;
+    top: 2px;
+    margin-left: 5px;
+}

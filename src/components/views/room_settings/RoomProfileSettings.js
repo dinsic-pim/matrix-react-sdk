@@ -27,6 +27,7 @@ import Modal from '../../../Modal';
 import Tchap from '../../../Tchap';
 import {RoomPermalinkCreator} from "../../../matrix-to";
 import * as ContextualMenu from "../../structures/ContextualMenu";
+import Dropdown from "../elements/Dropdown";
 
 // TODO: Merge with ProfileSettings?
 export default class RoomProfileSettings extends React.Component {
@@ -61,8 +62,14 @@ export default class RoomProfileSettings extends React.Component {
             linkSharing = true;
         }
 
+        const retentionEvent = room.currentState.getStateEvents("m.room.retention", '');
+        const maxLifetime = retentionEvent && retentionEvent.event.content.max_lifetime ?
+            retentionEvent.event.content.max_lifetime :
+            0;
+
         this._onCopyClick = this._onCopyClick.bind(this);
         this._onLinkClick = this._onLinkClick.bind(this);
+        this._validRoomRetentionTime = this._validRoomRetentionTime.bind(this);
 
         this.state = {
             originalDisplayName: name,
@@ -81,7 +88,9 @@ export default class RoomProfileSettings extends React.Component {
             linkSharing: linkSharing,
             link: link,
             copied: false,
-            isForumRoom: Tchap.isRoomForum(room)
+            isForumRoom: Tchap.isRoomForum(room),
+            retentionTime: Tchap.msToDay(maxLifetime),
+            originalRetentionTime: Tchap.msToDay(maxLifetime),
         };
     }
 
@@ -120,6 +129,11 @@ export default class RoomProfileSettings extends React.Component {
         if (this.state.originalTopic !== this.state.topic) {
             await client.setRoomTopic(this.props.roomId, this.state.topic);
             newState.originalTopic = this.state.topic;
+        }
+
+        if (this.state.originalRetentionTime !== this.state.retentionTime) {
+            this._validRoomRetentionTime();
+            newState.originalRetentionTime = this.state.retentionTime;
         }
 
         this.setState(newState);
@@ -341,6 +355,39 @@ export default class RoomProfileSettings extends React.Component {
         return str;
     };
 
+    _onRetentionChange = (e) => {
+        let retentionValue = e;
+        retentionValue = retentionValue < 0 ? 0 : retentionValue;
+        retentionValue = retentionValue > 365 ? 365 : retentionValue;
+        retentionValue = Number(retentionValue);
+
+        if (retentionValue !== this.state.originalRetentionTime) {
+            this.setState({
+                enableProfileSave: true,
+                retentionTime: retentionValue,
+            });
+        } else {
+            this.setState({
+                enableProfileSave: false,
+                retentionTime: this.state.originalRetentionTime,
+            });
+        }
+    };
+
+    _validRoomRetentionTime() {
+        let retentionObj = {};
+        if (this.state.retentionTime !== 0) {
+            retentionObj = {max_lifetime: Tchap.dayToMs(this.state.retentionTime), expire_on_clients: true}
+        }
+        MatrixClientPeg.get().sendStateEvent(
+            this.props.roomId, "m.room.retention",
+            retentionObj,
+            ''
+        ).catch(err => {
+            console.error(err)
+        });
+    };
+
     render() {
         // TODO: Why is rendering a box with an overlay so complicated? Can the DOM be reduced?
         const client = MatrixClientPeg.get();
@@ -454,6 +501,22 @@ export default class RoomProfileSettings extends React.Component {
             </div>
         );
 
+
+        let roomRetention = (
+            <div className="mx_ProfileSettings_retention_block">
+                <span className="mx_ProfileSettings_retention_text">Durée de l'historique : &nbsp;</span>
+                <Dropdown className="mx_ProfileSettings_retention_select" onOptionChange={this._onRetentionChange}
+                    value={String(this.state.retentionTime)}>
+                    <option value="0" key="0">{ _t("Unlimited") }</option>
+                    <option value="365" key="365">{ _t("1 year") }</option>
+                    <option value="180" key="180">{ _t("6 months") }</option>
+                    <option value="30" key="30">{ _t("1 month") }</option>
+                    <option value="7" key="7">{ _t("1 week") }</option>
+                    <option value="1" key="1">{ _t("1 day") }</option>
+                </Dropdown>
+            </div>
+        );
+
         return (
             <form onSubmit={this._saveProfile} autoComplete={false} noValidate={true}>
                 <input type="file" ref="avatarUpload" className="mx_ProfileSettings_avatarUpload"
@@ -472,6 +535,7 @@ export default class RoomProfileSettings extends React.Component {
                         {avatarHoverElement}
                     </div>
                 </div>
+                { roomRetention }
                 <AccessibleButton onClick={this._saveProfile} kind="primary"
                                   disabled={!this.state.enableProfileSave}>
                     {_t("Save")}

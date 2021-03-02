@@ -648,6 +648,19 @@ module.exports = withMatrixClient(React.createClass({
                 <ToolTipButton helpText={keyRequestHelpText} />
             </div> : null;
 
+        if (isMessageEvent(this.props.mxEvent)) {
+            const nowTs = Date.now();
+            const eventTs = this.props.mxEvent.getTs();
+            const currentRoom = this.props.matrixClient.getRoom(this.props.mxEvent.getRoomId());
+            const retentionEvent = currentRoom.currentState.getStateEvents("m.room.retention", '');
+            if (retentionEvent) {
+                const maxLT = retentionEvent.event.content.max_lifetime;
+                if (eventTs && maxLT && eventTs < nowTs - maxLT) {
+                    return null;
+                }
+            }
+        }
+
         switch (this.props.tileShape) {
             case 'notif': {
                 const EmojiText = sdk.getComponent('elements.EmojiText');

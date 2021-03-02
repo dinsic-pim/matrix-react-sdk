@@ -158,6 +158,11 @@ module.exports = React.createClass({
         let settingsButton = null;
         let pinnedEventsButton = null;
 
+        const retentionEvent = this.props.room.currentState.getStateEvents("m.room.retention", '');
+        const maxLifetime = retentionEvent && retentionEvent.event.content.max_lifetime ?
+            retentionEvent.event.content.max_lifetime :
+            0;
+
         if (this.props.onCancelClick) {
             cancelButton = <CancelButton onClick={this.props.onCancelClick} />;
         }
@@ -312,9 +317,21 @@ module.exports = React.createClass({
         if (!isDMRoom) {
             mainAvatarClass += ` mx_RoomHeader_avatar_room mx_RoomHeader_avatar_${Tchap.getAccessRules(this.props.room.roomId)}`;
             if (Tchap.getAccessRules(this.props.room.roomId) !== "restricted") {
-                roomAccessibility = (<div className="mx_RoomHeader_accessibility" ref="accessibility" title={ _t("Room open to external users") } dir="auto">{ _t("Room open to external users") }</div>);
+                roomAccessibility = (
+                    <div className="mx_RoomHeader_accessibility" ref="accessibility" title={ _t("Room open to external users") } dir="auto">
+                        { _t("Room open to external users") }
+                    </div>
+                );
             }
         }
+
+        let historyRetention = maxLifetime === 0 ? null : (
+            <div className="mx_RoomHeader_retention" ref="accessibility"
+                title={ _t("History kept for %(lifetime)sd",{lifetime: String(Tchap.msToDay(maxLifetime))}) } dir="auto">
+                <img src={require("../../../../res/img/tchap/clock.svg")} className="mx_RoomHeader_retention_img"  alt="Clock" />
+                <span className="mx_RoomHeader_retention_value">{ _t("%(lifetime)s d",{lifetime: String(Tchap.msToDay(maxLifetime))}) }</span>
+            </div>
+        );
 
         return (
             <div className="mx_RoomHeader light-panel">
@@ -325,6 +342,7 @@ module.exports = React.createClass({
                     { topicElement }
                     { cancelButton }
                     { roomAccessibility }
+                    { historyRetention }
                     { rightRow }
                     <RoomHeaderButtons collapsedRhs={this.props.collapsedRhs} />
                 </div>

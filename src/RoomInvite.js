@@ -112,6 +112,64 @@ export function isValid3pidInvite(event) {
     return true;
 }
 
+function _inviteToChat(invitedUserId) {
+    const selectedRoom = _selectDirectChat(invitedUserId);
+    const roomStatus = selectedRoom ? selectedRoom.status : null;
+
+    switch (roomStatus) {
+        case "join-join":
+            // Redirect to the existing room.
+            dis.dispatch({
+                action: 'view_room',
+                room_id: selectedRoom.room.roomId,
+            });
+            break;
+
+        case "invite-join":
+            // Join room then redirect to this room.
+            matrixClient.joinRoom(selectedRoom.room.roomId).done(() => {
+                dis.dispatch({
+                    action: 'view_room',
+                    room_id: selectedRoom.room.roomId,
+                });
+            }, err => {
+                Modal.createTrackedDialog('Failed to join room', '', ErrorDialog, {
+                    title: _t("Failed to join room"),
+                    description: ((err && err.message) ? err.message : _t("Operation failed")),
+                });
+            });
+            break;
+
+        case "join-invite":
+            // Redirect to the existing room.
+            dis.dispatch({
+                action: 'view_room',
+                room_id: selectedRoom.room.roomId,
+            });
+            break;
+
+        case "join-leave":
+            // Send an invitation then redirect to the existing room.
+            _inviteToRoom(selectedRoom.room.roomId, addrText);
+            dis.dispatch({
+                action: 'view_room',
+                room_id: selectedRoom.room.roomId,
+            });
+            break;
+
+        default:
+            // Create a new room.
+            createRoom({dmUserId: invitedUserId}).catch((err) => {
+                Modal.createTrackedDialog('Failed to invite user', '', ErrorDialog, {
+                    title: _t("Failed to invite user"),
+                    description: ((err && err.message) ? err.message : _t("Operation failed")),
+                });
+            });
+            break;
+    }
+}
+
+
 export function onStartChatFinished(shouldInvite, addrs) {
     if (!shouldInvite) return;
 
@@ -119,101 +177,52 @@ export function onStartChatFinished(shouldInvite, addrs) {
     const matrixClient = MatrixClientPeg.get();
     const addrText = addrs.map((addr) => addr.address)[0];
     const addrType = addrs.map((addr) => addr.addressType)[0];
-    Tchap.lookupThreePid(addrType, addrText).then(res => {
-        if (Object.entries(res).length !== 0) {
-            const invitedUserId = res.mxid;
-            const selectedRoom = _selectDirectChat(invitedUserId);
-            const roomStatus = selectedRoom ? selectedRoom.status : null;
 
-            switch (roomStatus) {
-                case "join-join":
-                    // Redirect to the existing room.
-                    dis.dispatch({
-                        action: 'view_room',
-                        room_id: selectedRoom.room.roomId,
+    if (addrType === 'mx-user-id') {
+        _inviteToChat(addrText);
+    } else {
+        Tchap.lookupThreePid(addrType, addrText).then(res => {
+            if (Object.entries(res).length !== 0) {
+                _inviteToChat(res.mxid);
+            } else {
+                // Case where a non-Tchap user is invited by email
+                const dmRoomMap = new DMRoomMap(matrixClient);
+                const dmRoomList = dmRoomMap.getDMRoomsForUserId(addrText);
+                const InfoDialog = sdk.getComponent("dialogs.InfoDialog");
+                let existingRoom = false;
+
+                dmRoomList.forEach(roomId => {
+                    const room = matrixClient.getRoom(roomId);
+                    if (room && room.getMyMembership() === "join") {
+                        existingRoom = true;
+                    }
+                });
+
+                if (existingRoom) {
+                    Modal.createTrackedDialog('New user by email : Invitation already sent', '', InfoDialog, {
+                        title: _t("Start a chat"),
+                        description: _t("You have already sent an invitation to %(email)s.", {email: addrText} ),
                     });
-                    break;
-
-                case "invite-join":
-                    // Join room then redirect to this room.
-                    matrixClient.joinRoom(selectedRoom.room.roomId).done(() => {
-                        dis.dispatch({
-                            action: 'view_room',
-                            room_id: selectedRoom.room.roomId,
-                        });
-                    }, err => {
-                        Modal.createTrackedDialog('Failed to join room', '', ErrorDialog, {
-                            title: _t("Failed to join room"),
-                            description: ((err && err.message) ? err.message : _t("Operation failed")),
-                        });
+                } else {
+                    Modal.createTrackedDialog('New user by email : Invitation sent', '', InfoDialog, {
+                        title: _t("Start a chat"),
+                        description: _t("An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.", {email: addrText} ),
                     });
-                    break;
-
-                case "join-invite":
-                    // Redirect to the existing room.
-                    dis.dispatch({
-                        action: 'view_room',
-                        room_id: selectedRoom.room.roomId,
-                    });
-                    break;
-
-                case "join-leave":
-                    // Send an invitation then redirect to the existing room.
-                    _inviteToRoom(selectedRoom.room.roomId, addrText);
-                    dis.dispatch({
-                        action: 'view_room',
-                        room_id: selectedRoom.room.roomId,
-                    });
-                    break;
-
-                default:
-                    // Create a new room.
-                    createRoom({dmUserId: invitedUserId}).catch((err) => {
+                    createRoom({dmUserId: addrText, andView: false}).catch((err) => {
                         Modal.createTrackedDialog('Failed to invite user', '', ErrorDialog, {
                             title: _t("Failed to invite user"),
                             description: ((err && err.message) ? err.message : _t("Operation failed")),
                         });
                     });
-                    break;
-            }
-        } else {
-            // Case where a non-Tchap user is invited by email
-            const dmRoomMap = new DMRoomMap(matrixClient);
-            const dmRoomList = dmRoomMap.getDMRoomsForUserId(addrText);
-            const InfoDialog = sdk.getComponent("dialogs.InfoDialog");
-            let existingRoom = false;
-
-            dmRoomList.forEach(roomId => {
-                const room = matrixClient.getRoom(roomId);
-                if (room && room.getMyMembership() === "join") {
-                    existingRoom = true;
                 }
-            });
-
-            if (existingRoom) {
-                Modal.createTrackedDialog('New user by email : Invitation already sent', '', InfoDialog, {
-                    title: _t("Start a chat"),
-                    description: _t("You have already sent an invitation to %(email)s.", {email: addrText} ),
-                });
-            } else {
-                Modal.createTrackedDialog('New user by email : Invitation sent', '', InfoDialog, {
-                    title: _t("Start a chat"),
-                    description: _t("An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.", {email: addrText} ),
-                });
-                createRoom({dmUserId: addrText, andView: false}).catch((err) => {
-                    Modal.createTrackedDialog('Failed to invite user', '', ErrorDialog, {
-                        title: _t("Failed to invite user"),
-                        description: ((err && err.message) ? err.message : _t("Operation failed")),
-                    });
-                });
             }
-        }
-    }).catch(err => {
-        Modal.createTrackedDialog('Failed to invite user', '', ErrorDialog, {
-            title: _t("Failed to invite user"),
-            description: ((err && err.message) ? err.message : _t("Operation failed")),
+        }).catch(err => {
+            Modal.createTrackedDialog('Failed to invite user', '', ErrorDialog, {
+                title: _t("Failed to invite user"),
+                description: ((err && err.message) ? err.message : _t("Operation failed")),
+            });
         });
-    });
+    }
 }
 
 function _onRoomInviteFinished(roomId, shouldInvite, addrs) {

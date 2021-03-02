@@ -479,6 +479,7 @@ export default class RoomProfileSettings extends React.Component {
                 <br />
                 <br />
                 { accessRule }
+                { linkSharingUI }
             </form>
         );
     }

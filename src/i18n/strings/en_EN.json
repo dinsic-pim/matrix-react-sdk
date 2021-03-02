@@ -205,7 +205,7 @@
     "%(senderDisplayName)s removed the room name.": "%(senderDisplayName)s removed the room name.",
     "%(senderDisplayName)s changed the room name to %(roomName)s.": "%(senderDisplayName)s changed the room name to %(roomName)s.",
     "%(senderDisplayName)s upgraded this room.": "%(senderDisplayName)s upgraded this room.",
-    "%(senderDisplayName)s made the room public to whoever knows the link.": "%(senderDisplayName)s made the room public to whoever knows the link.",
+    "%(senderDisplayName)s made the room accessible to whoever knows the link.": "%(senderDisplayName)s made the room accessible to whoever knows the link.",
     "%(senderDisplayName)s made the room invite only.": "%(senderDisplayName)s made the room invite only.",
     "%(senderDisplayName)s changed the join rule to %(rule)s": "%(senderDisplayName)s changed the join rule to %(rule)s",
     "%(senderDisplayName)s has allowed guests to join the room.": "%(senderDisplayName)s has allowed guests to join the room.",

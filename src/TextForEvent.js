@@ -139,7 +139,7 @@ function textForJoinRulesEvent(ev) {
     const senderDisplayName = ev.sender && ev.sender.name ? ev.sender.name : ev.getSender();
     switch (ev.getContent().join_rule) {
         case "public":
-            return _t('%(senderDisplayName)s made the room public to whoever knows the link.', {senderDisplayName});
+            return _t('%(senderDisplayName)s made the room accessible to whoever knows the link.', {senderDisplayName});
         case "invite":
             return _t('%(senderDisplayName)s made the room invite only.', {senderDisplayName});
         default:
@@ -499,22 +499,11 @@ const handlers = {
 };
 
 const stateHandlers = {
-    'm.room.aliases': textForRoomAliasesEvent,
-    'm.room.canonical_alias': textForCanonicalAliasEvent,
     'm.room.name': textForRoomNameEvent,
-    'm.room.topic': textForTopicEvent,
     'm.room.member': textForMemberEvent,
     'm.room.third_party_invite': textForThreePidInviteEvent,
-    'm.room.history_visibility': textForHistoryVisibilityEvent,
-    'm.room.encryption': textForEncryptionEvent,
     'm.room.power_levels': textForPowerEvent,
-    'm.room.pinned_events': textForPinnedEvent,
-    'm.room.server_acl': textForServerACLEvent,
-    'm.room.tombstone': textForTombstoneEvent,
     'm.room.join_rules': textForJoinRulesEvent,
-    'm.room.guest_access': textForGuestAccessEvent,
-    'm.room.related_groups': textForRelatedGroupsEvent,
-
     'im.vector.modular.widgets': textForWidgetEvent,
 };
 

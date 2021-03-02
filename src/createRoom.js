@@ -119,10 +119,6 @@ function createRoom(opts) {
         createOpts.room_alias_name = alias;
     }
 
-    createOpts.power_level_content_override = {
-        invite: 50,
-    };
-
     const modal = Modal.createDialog(Loader, null, 'mx_Dialog_spinner');
 
     let roomId;

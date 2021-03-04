@@ -131,3 +131,46 @@ limitations under the License.
 .mx_ProfileSettings_avatarUpload {
     display: none;
 }
+
+.mx_ProfileSettings_retention_block {
+    margin-bottom: 10px;
+}
+
+.mx_ProfileSettings_retention input {
+    display: inline-block;
+    width: 100%;
+}
+
+.mx_ProfileSettings_retention_select {
+    display: inline-block;
+    width: 100px;
+}
+
+.mx_ProfileSettings_retention_select .mx_Dropdown_input .mx_Dropdown_menu .mx_Dropdown_option {
+    line-height: unset;
+    min-height: unset;
+}
+
+.mx_ProfileSettings_retention_select .mx_Dropdown_input {
+    height: 20px;
+}
+
+.mx_ProfileSettings_retention_text {
+    font-size: 14px;
+    color: #2e2f32;
+}
+
+.mx_ProfileSettings_retention_img_edit {
+    position: relative;
+    top: 1px;
+    height: 14px;
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+.mx_ProfileSettings_retention_img_valid {
+    position: relative;
+    top: 3px;
+    margin-left: 4px;
+    cursor: pointer;
+}

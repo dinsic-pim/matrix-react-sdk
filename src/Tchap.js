@@ -285,6 +285,24 @@ class Tchap {
     }
 
     /**
+     * A static function transforming a duration from ms to days.
+     * @param {number} mss The time in ms to convert in days.
+     * @returns {number} The number of days.
+     */
+    static msToDay(mss) {
+        return parseInt((mss / 1000 / 3600 / 24).toFixed(0));
+    }
+
+    /**
+     * A static function transforming a duration from days to ms.
+     * @param {number} days The time in days to convert in mss.
+     * @returns {number} The number of mss.
+     */
+    static dayToMs(days) {
+        return days * 86400000;
+    }
+
+    /**
      * A static function shuffeling an array.
      * @param {array} arr The array to shuffle.
      * @returns {array} The array shuffeled.

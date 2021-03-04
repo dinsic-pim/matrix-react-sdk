@@ -1978,5 +1978,14 @@
     "Create a forum room": "Créer un salon forum",
     "Forums directory": "Annuaire des forums",
     "Are you sure you want to remove this room from the forums directory?": "Voulez-vous vraiment retirer ce salon des forums ?",
-    "Decrypting...": "Déchiffrement..."
+    "Decrypting...": "Déchiffrement...",
+    "%(lifetime)s d": "%(lifetime)s j",
+    "History kept for %(lifetime)sd": "Historique conservé durant %(lifetime)s j",
+    "History duration (in days)": "Durée de l'historique (en jours)",
+    "Unlimited": "Illimité",
+    "1 year": "1 an",
+    "6 months": "6 mois",
+    "1 month": "1 mois",
+    "1 week": "1 semaine",
+    "1 day": "1 jour"
 }

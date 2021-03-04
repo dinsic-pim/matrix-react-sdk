@@ -1710,6 +1710,7 @@
     "Accessible to all users from the forum directory or from a shared link.": "Accessible to all users from the forum directory or from a shared link.",
     "Forums directory": "Forums directory",
     "Are you sure you want to remove this room from the forums directory?": "Are you sure you want to remove this room from the forums directory?",
-    "Export keys and log-out": "Export keys and log-out",
-    "Decrypting...": "Déchiffrement..."
+    "Decrypting...": "Déchiffrement...",
+    "Pin room": "Pin room",
+    "Pinned": "Pinned"
 }

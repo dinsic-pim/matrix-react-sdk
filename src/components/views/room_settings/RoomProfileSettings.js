@@ -376,7 +376,7 @@ export default class RoomProfileSettings extends React.Component {
 
     _validRoomRetentionTime() {
         let retentionObj = {};
-        if (this.state.retentionTime !== 0) {
+        if (this.state.retentionTime > 0) {
             retentionObj = {max_lifetime: Tchap.dayToMs(this.state.retentionTime), expire_on_clients: true}
         }
         MatrixClientPeg.get().sendStateEvent(

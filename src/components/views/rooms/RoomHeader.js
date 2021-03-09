@@ -220,6 +220,7 @@ module.exports = React.createClass({
         const myMembership = this.props.room.getMyMembership();
         const dmRoomMap = new DMRoomMap(MatrixClientPeg.get());
         const isDMRoom = Boolean(dmRoomMap.getUserIdForRoomId(this.props.room.roomId));
+        const isNotice = Tchap.isRoomNotice(this.props.room);
         if (this.props.onSettingsClick && !isDMRoom && myMembership === "join") {
             settingsButton =
                 <AccessibleButton className="mx_RoomHeader_button mx_RoomHeader_settingsButton"
@@ -301,15 +302,17 @@ module.exports = React.createClass({
             </div>;
 
         let encryptedIndicator;
-        if (MatrixClientPeg.get().isRoomEncrypted(this.props.room.roomId)) {
-            encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-encrypted_light.svg")} className="mx_RoomHeader_encrypted" width="11" height="14" alt="encrypted" />;
-        } else {
-            encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-forum_light.svg")} className="mx_RoomHeader_forum" width="10" height="12" alt="forum" />;
+        if (!isNotice && !isDMRoom) {
+            if (MatrixClientPeg.get().isRoomEncrypted(this.props.room.roomId)) {
+                encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-encrypted_light.svg")} className="mx_RoomHeader_encrypted" width="11" height="14" alt="encrypted" />;
+            } else {
+                encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-forum_light.svg")} className="mx_RoomHeader_forum" width="10" height="12" alt="forum" />;
+            }
         }
 
         let roomAccessibility;
         let mainAvatarClass = "mx_RoomHeader_avatar";
-        if (!isDMRoom) {
+        if (!isDMRoom && !isNotice) {
             mainAvatarClass += ` mx_RoomHeader_avatar_room mx_RoomHeader_avatar_${Tchap.getAccessRules(this.props.room.roomId)}`;
             if (Tchap.getAccessRules(this.props.room.roomId) !== "restricted") {
                 roomAccessibility = (<div className="mx_RoomHeader_accessibility" ref="accessibility" title={ _t("Room open to external users") } dir="auto">{ _t("Room open to external users") }</div>);

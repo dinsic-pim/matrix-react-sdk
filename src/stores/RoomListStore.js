@@ -41,6 +41,7 @@ const CATEGORY_ORDER = [CATEGORY_RED, CATEGORY_GREY, CATEGORY_BOLD, CATEGORY_IDL
 const LIST_ORDERS = {
     "m.favourite": "manual",
     "im.vector.fake.invite": "recent",
+    "m.server_notice": "recent",
     "im.vector.fake.recent": "recent",
     "im.vector.fake.direct": "recent",
     "m.lowpriority": "recent",
@@ -574,7 +575,12 @@ class RoomListStore extends Store {
                         // Default to an arbitrary category for tags which aren't ordered by recents
                         let category = CATEGORY_IDLE;
                         if (LIST_ORDERS[tagName] === 'recent') category = this._calculateCategory(room);
-                        lists[tagName].push({room, category: category});
+                        // [Tchap] Merge "server_notice" with direct.
+                        if (tagName === "m.server_notice") {
+                            lists["im.vector.fake.direct"].push({room, category: category});
+                        } else {
+                            lists[tagName].push({room, category: category});
+                        }
                     }
                 } else if (dmUserId) {
                     // Hiding direct rooms created with an email invite.

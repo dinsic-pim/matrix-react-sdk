@@ -298,6 +298,8 @@ module.exports = React.createClass({
     render: function() {
         const cli = MatrixClientPeg.get();
         const isInvite = this.props.room.getMyMembership() === "invite";
+        const isNotice = Tchap.isRoomNotice(this.props.room);
+        const isForum = Tchap.isRoomForum(this.props.room);
         const notificationCount = this.props.notificationCount;
         // var highlightCount = this.props.room.getUnreadNotificationCount("highlight");
 
@@ -389,14 +391,17 @@ module.exports = React.createClass({
 
         const RoomAvatar = sdk.getComponent('avatars.RoomAvatar');
         let encryptedIndicator;
-        if (cli.isRoomEncrypted(this.props.room.roomId)) {
-            encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-encrypted.svg")} className="mx_RoomTile_dm" width="12" height="14" alt="encrypted" />;
-        } else if (!isInvite) {
-            encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-forum_mono.svg")} className="mx_RoomTile_forum" width="10" height="12" alt="forum" />;
+
+        if (!this._isDirectMessageRoom(this.props.room.roomId) && !isNotice) {
+            if (cli.isRoomEncrypted(this.props.room.roomId)) {
+                encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-encrypted.svg")} className="mx_RoomTile_dm" width="12" height="14" alt="encrypted" />;
+            } else if (!isInvite && isForum) {
+                encryptedIndicator = <img src={require("../../../../res/img/tchap/padlock-forum_mono.svg")} className="mx_RoomTile_forum" width="10" height="12" alt="forum" />;
+            }
         }
 
         let mainAvatarClass = avatarClasses;
-        if (!this._isDirectMessageRoom(this.props.room.roomId)) {
+        if (!this._isDirectMessageRoom(this.props.room.roomId) && !isNotice) {
             mainAvatarClass += " mx_RoomTile_avatar_room";
             mainAvatarClass += ` mx_RoomTile_avatar_${Tchap.getAccessRules(this.props.room.roomId)}`;
         }

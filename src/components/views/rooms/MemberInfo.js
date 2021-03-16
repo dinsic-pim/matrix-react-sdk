@@ -646,9 +646,13 @@ module.exports = withMatrixClient(React.createClass({
     _renderDevices: function() {
         if (!this._enableDevices) return null;
 
+        const room = this.props.matrixClient.getRoom(this.props.member.roomId);
+        const isNotice = Tchap.isRoomNotice(room);
         const devices = this.state.devices;
         const MemberDeviceInfo = sdk.getComponent('rooms.MemberDeviceInfo');
         const Spinner = sdk.getComponent("elements.Spinner");
+
+        if (isNotice) return;
 
         let devComponents;
         if (this.state.devicesLoading) {
@@ -685,11 +689,15 @@ module.exports = withMatrixClient(React.createClass({
         const isDirect = dmRooms.includes(member.roomId);
         const userExtern = Tchap.isCurrentUserExtern();
         const otherUserExtern = Tchap.isUserExtern(member.userId);
+        const room = this.props.matrixClient.getRoom(this.props.member.roomId);
+        const isNotice = Tchap.isRoomNotice(room);
 
         let ignoreButton = null;
         let insertPillButton = null;
         let readReceiptButton = null;
         let sendMessage = null;
+
+        if (isNotice) return;
 
         // Only allow the user to ignore the user if its not ourselves
         // same goes for jumping to read receipt
@@ -763,6 +771,9 @@ module.exports = withMatrixClient(React.createClass({
         let giveModButton;
         let spinner;
 
+        const room = this.props.matrixClient.getRoom(this.props.member.roomId);
+        const isNotice = Tchap.isRoomNotice(room);
+
         if (this.state.updating) {
             const Loader = sdk.getComponent("elements.Spinner");
             spinner = <Loader imgClassName="mx_ContextualMenu_spinner" />;
@@ -807,7 +818,7 @@ module.exports = withMatrixClient(React.createClass({
         }
 
         let adminTools;
-        if (kickButton || banButton || muteButton || giveModButton) {
+        if ((kickButton || banButton || muteButton || giveModButton) && !isNotice) {
             adminTools =
                 <div>
                     <h3>{ _t("Admin Tools") }</h3>
@@ -838,7 +849,6 @@ module.exports = withMatrixClient(React.createClass({
             }
         }
 
-        const room = this.props.matrixClient.getRoom(this.props.member.roomId);
         const powerLevelEvent = room ? room.currentState.getStateEvents("m.room.power_levels", "") : null;
         const powerLevelUsersDefault = powerLevelEvent ? powerLevelEvent.getContent().users_default : 0;
 

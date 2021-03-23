@@ -1711,5 +1711,7 @@
     "Forums directory": "Forums directory",
     "Are you sure you want to remove this room from the forums directory?": "Are you sure you want to remove this room from the forums directory?",
     "Export keys and log-out": "Export keys and log-out",
-    "Decrypting...": "Déchiffrement..."
+    "Decrypting...": "Déchiffrement...",
+    "Direct messages": "Direct messages",
+    "New direct": "New direct"
 }

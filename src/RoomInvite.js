@@ -56,11 +56,11 @@ function _inviteToRoom(roomId, addr) {
 export function showStartChatInviteDialog() {
     const AddressPickerDialog = sdk.getComponent("dialogs.AddressPickerDialog");
     Modal.createTrackedDialog('Start a chat', '', AddressPickerDialog, {
-        title: _t('Start a chat'),
+        title: _t('New direct'),
         description: _t("Who would you like to communicate with?"),
         placeholder: _t("Email, name or tchap ID"),
         validAddressTypes: ['mx-user-id', 'email'],
-        button: _t("Start Chat"),
+        button: _t("New direct"),
         invitationType: 'direct',
         onFinished: onStartChatFinished,
     });
@@ -200,12 +200,12 @@ export function onStartChatFinished(shouldInvite, addrs) {
 
                 if (existingRoom) {
                     Modal.createTrackedDialog('New user by email : Invitation already sent', '', InfoDialog, {
-                        title: _t("Start a chat"),
+                        title: _t("New direct"),
                         description: _t("You have already sent an invitation to %(email)s.", {email: addrText} ),
                     });
                 } else {
                     Modal.createTrackedDialog('New user by email : Invitation sent', '', InfoDialog, {
-                        title: _t("Start a chat"),
+                        title: _t("New direct"),
                         description: _t("An invitation has been sent to %(email)s. You will receive a notification when your guest joins the Tchap community.", {email: addrText} ),
                     });
                     createRoom({dmUserId: addrText, andView: false}).catch((err) => {

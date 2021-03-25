@@ -1978,5 +1978,7 @@
     "Create a forum room": "Créer un salon forum",
     "Forums directory": "Annuaire des forums",
     "Are you sure you want to remove this room from the forums directory?": "Voulez-vous vraiment retirer ce salon des forums ?",
-    "Decrypting...": "Déchiffrement..."
+    "Decrypting...": "Déchiffrement...",
+    "Pin room": "Épingler le salon",
+    "Pinned": "Épinglés"
 }

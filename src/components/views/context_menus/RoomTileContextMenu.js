@@ -315,7 +315,7 @@ module.exports = React.createClass({
                 <div className={favouriteClasses} onClick={this._onClickFavourite} >
                     <img className="mx_RoomTileContextMenu_tag_icon" src={require("../../../../res/img/icon_context_fave.svg")} width="15" height="15" />
                     <img className="mx_RoomTileContextMenu_tag_icon_set" src={require("../../../../res/img/icon_context_fave_on.svg")} width="15" height="15" />
-                    { _t('Favourite') }
+                    { _t('Pin room') }
                 </div>
             </div>
         );

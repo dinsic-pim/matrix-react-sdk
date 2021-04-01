@@ -744,7 +744,7 @@ module.exports = React.createClass({
             },
             {
                 list: this.state.lists['im.vector.fake.direct'],
-                label: _t('People'),
+                label: _t('Direct messages'),
                 tagName: "im.vector.fake.direct",
                 headerItems: this._getHeaderItems('im.vector.fake.direct'),
                 order: "recent",

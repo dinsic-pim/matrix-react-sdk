@@ -199,6 +199,15 @@ class Tchap {
     }
 
     /**
+     * Given a room, return if this room is a "notice room" (system alert).
+     * @param room
+     * @returns {boolean}
+     */
+    static isRoomNotice(room) {
+        return Object.keys(room.tags).includes("m.server_notice");
+    }
+
+    /**
      * Given a roomId, return the access_rule of the room.
      * @param {string} roomId The room ID to test for.
      * @returns {string} The access_rules of the room.

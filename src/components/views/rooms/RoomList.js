@@ -737,7 +737,7 @@ module.exports = React.createClass({
             },
             {
                 list: this.state.lists['m.favourite'],
-                label: _t('Favourites'),
+                label: _t('Pinned'),
                 tagName: "m.favourite",
                 order: "manual",
                 incomingCall: incomingCallIfTaggedAs('m.favourite'),

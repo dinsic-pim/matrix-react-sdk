@@ -67,7 +67,6 @@ class Tchap {
                         } else {
                             err = ("ERR_UNREACHABLE_HOMESERVER");
                         }
-                        console.error(err);
                     }
                     if (hs !== null) {
                         resolve(hostBase + hs);
@@ -276,7 +275,7 @@ class Tchap {
      */
     static _httpRequest(url, opts) {
         const options = opts || {};
-        const timeoutValue = options.timeout || 2000;
+        const timeoutValue = options.timeout || 30000;
         return new Promise((resolve, reject) => {
             const timeoutId = setTimeout(() => {
                 resolve(new Error("timeout"));

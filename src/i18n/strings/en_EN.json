@@ -1713,7 +1713,7 @@
     "Decrypting...": "Déchiffrement...",
     "%(lifetime)s d": "%(lifetime)s d",
     "History kept for %(lifetime)sd": "History kept for %(lifetime)sd",
-    "History duration (in days)": "History duration (in days)",
+    "History duration: ": "History duration: ",
     "Unlimited": "Unlimited",
     "1 year": "1 year",
     "6 months": "6 months",

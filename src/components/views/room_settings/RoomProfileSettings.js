@@ -504,9 +504,9 @@ export default class RoomProfileSettings extends React.Component {
 
         let roomRetention = (
             <div className="mx_ProfileSettings_retention_block">
-                <span className="mx_ProfileSettings_retention_text">Durée de l'historique : &nbsp;</span>
+                <span className="mx_ProfileSettings_retention_text">{ _t("History duration: ") }</span>
                 <Dropdown className="mx_ProfileSettings_retention_select" onOptionChange={this._onRetentionChange}
-                    value={String(this.state.retentionTime)}>
+                    value={String(this.state.retentionTime)} disabled={!isCurrentUserAdmin}>
                     <option value="0" key="0">{ _t("Unlimited") }</option>
                     <option value="365" key="365">{ _t("1 year") }</option>
                     <option value="180" key="180">{ _t("6 months") }</option>

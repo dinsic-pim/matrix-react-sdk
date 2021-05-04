@@ -45,7 +45,8 @@ module.exports = React.createClass({
             processingIndex: 0,
             fileType: null,
             authorizedTypeTxt: ['text/plain'],
-            authorizedTypeCsv: ['text/csv', 'text/x-csv', 'application/vnd.ms-excel', 'application/csv', 'application/x-csv']
+            authorizedTypeCsv: ['text/csv', 'text/x-csv', 'application/vnd.ms-excel', 'application/csv', 'application/x-csv'],
+            authorizedTypeString: ".txt, .csv"
         };
     },
 
@@ -183,7 +184,7 @@ module.exports = React.createClass({
         const error = this.state.error;
         const totalProcess = this.state.processingIndex;
         const totalSize = this.state.listSize;
-        const authorizedType = (this.state.authorizedTypeTxt).concat(this.state.authorizedTypeCsv).join(',')
+        const authorizedType = this.state.authorizedTypeString;
 
         let errorRestricted = null;
         if (this.state.errorRestricted && !error) {

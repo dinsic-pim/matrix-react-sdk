@@ -60,7 +60,7 @@ export default React.createClass({
             const opts = {
                 visibility: this.state.visibility,
                 preset: this.state.visibility === 'public' ? 'public_chat' : 'private_chat',
-                noFederate: !this.state.federate,
+                noFederate: Tchap.getShortDomain() === "agent" ? false : !this.state.federate,
                 access_rules: this.state.externAllowed === true ? 'unrestricted' : 'restricted'
             };
             this.props.onFinished(true, this.refs.textinput.value, opts);
@@ -141,6 +141,7 @@ export default React.createClass({
         const DialogButtons = sdk.getComponent('views.elements.DialogButtons');
         const errorText = this.state.errorText;
         const padlockImage = this.state.padlockImage;
+        const shortDomain = Tchap.getShortDomain();
 
         let errorTextSection;
         if (errorText) {
@@ -156,6 +157,17 @@ export default React.createClass({
             inputAvatarContainerClass += " mx_CreateRoomDialog_input_avatar_container_unrestricted";
         } else {
             inputAvatarContainerClass += " mx_CreateRoomDialog_input_avatar_container_restricted";
+        }
+
+        let roomFederateOpt;
+        if (shortDomain !== "agent") {
+            roomFederateOpt = (
+                <div className={"tc_CreateRoomDialog_RoomOption_suboption"}>
+                    <LabelledToggleSwitch label={ _t('Limit access to this room to domain members "%(domain)s"',
+                        {domain: shortDomain}) }
+                        onChange={this._onFederateSwitchChange} value={!this.state.federate} />
+                </div>
+            );
         }
 
         let roomOptions = (
@@ -177,11 +189,7 @@ export default React.createClass({
                     <div className={"tc_CreateRoomDialog_RoomOption_descr"} onClick={this.onRoomOptionChange} aria-label={"public"}>
                         { _t("Accessible to all users from the forum directory or from a shared link.") }
                     </div>
-                    <div className={"tc_CreateRoomDialog_RoomOption_suboption"}>
-                        <LabelledToggleSwitch label={ _t('Limit access to this room to domain members "%(domain)s"',
-                            {domain: Tchap.getShortDomain()}) }
-                            onChange={this._onFederateSwitchChange} value={!this.state.federate} />
-                    </div>
+                    { roomFederateOpt }
                 </AccessibleButton>
             </div>
         );

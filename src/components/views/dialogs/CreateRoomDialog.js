@@ -60,7 +60,7 @@ export default React.createClass({
             const opts = {
                 visibility: this.state.visibility,
                 preset: this.state.visibility === 'public' ? 'public_chat' : 'private_chat',
-                noFederate: Tchap.getShortDomain() === "agent" ? false : !this.state.federate,
+                noFederate: Tchap.getShortDomain() === "Agent" ? false : !this.state.federate,
                 access_rules: this.state.externAllowed === true ? 'unrestricted' : 'restricted'
             };
             this.props.onFinished(true, this.refs.textinput.value, opts);
@@ -160,7 +160,7 @@ export default React.createClass({
         }
 
         let roomFederateOpt;
-        if (shortDomain !== "agent") {
+        if (shortDomain !== "Agent") {
             roomFederateOpt = (
                 <div className={"tc_CreateRoomDialog_RoomOption_suboption"}>
                     <LabelledToggleSwitch label={ _t('Limit access to this room to domain members "%(domain)s"',

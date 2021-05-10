@@ -196,7 +196,12 @@ module.exports = React.createClass({
                 return;
             }
 
-            if (err && (err.errcode === "M_FORBIDDEN" || err.errcode === "M_UNKNOWN")) {
+            if (err && (
+                err.errcode === "M_FORBIDDEN" ||
+                err.errcode === "M_UNKNOWN" ||
+                err.errcode === "M_UNAUTHORIZED")
+            ) {
+                console.error("Failed to get publicRooms: %s", err.errcode);
                 // We don't care about federation denied error.
                 // Just go to the next server.
                 return;

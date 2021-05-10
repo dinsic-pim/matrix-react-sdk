@@ -333,7 +333,8 @@ function _showAnyInviteErrors(addrs, room, inviter) {
         for (const addr of failedUsers) {
             if (addrs[addr] === "error") {
                 const reason = inviter.getErrorText(addr);
-                const userName = MatrixClientPeg.get().getUser(addr).rawDisplayName || "";
+                const user = MatrixClientPeg.get().getUser(addr);
+                const userName = user ? user.rawDisplayName : "";
                 errorList.push(userName + ": " + reason);
             }
         }

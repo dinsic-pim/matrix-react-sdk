@@ -63,7 +63,8 @@ module.exports = React.createClass({
     },
 
     componentDidMount: function() {
-        this.scalarClient = null;
+        // [Tchap] Disabling Scalar Client
+        /*this.scalarClient = null;
         if (SdkConfig.get().integrations_ui_url && SdkConfig.get().integrations_rest_url) {
             this.scalarClient = new ScalarAuthClient();
             this.scalarClient.connect().then(() => {
@@ -75,7 +76,7 @@ module.exports = React.createClass({
                 //         scalar_error: err,
                 //     });
             });
-        }
+        }*/
 
         this.dispatcherRef = dis.register(this.onAction);
     },

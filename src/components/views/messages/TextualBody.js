@@ -396,7 +396,8 @@ module.exports = React.createClass({
         // the window.open command occurs in the same stack frame as the onClick callback.
 
         // Go fetch a scalar token
-        const scalarClient = new ScalarAuthClient();
+        // [Tchap] Disabling Scalar Client
+        /*const scalarClient = new ScalarAuthClient();
         scalarClient.connect().then(() => {
             const completeUrl = scalarClient.getStarterLink(starterLink);
             const QuestionDialog = sdk.getComponent("dialogs.QuestionDialog");
@@ -421,7 +422,7 @@ module.exports = React.createClass({
                     window.open(completeUrl, '_blank', `height=${height}, width=${width}, top=${top}, left=${left},`);
                 },
             });
-        });
+        });*/
     },
 
     render: function() {

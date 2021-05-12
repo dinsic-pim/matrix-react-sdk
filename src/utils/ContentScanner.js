@@ -96,12 +96,12 @@ class ContentScanner {
 
         if (content.url !== undefined) {
             if (isThumb) {
-                if (content.info.thumbnail_url) {
+                if (content.info && content.info.thumbnail_url) {
                     const fileUrl = content.info.thumbnail_url.split('//')[1];
                     url = `${baseUrl + TchapApi.downloadUnencryptedUrl}${fileUrl}`;
                 } else {
                     const fileUrl = content.url.split('//')[1];
-                    url = `${baseUrl + TchapApi.downloadUnencryptedThumbnailUrl}${fileUrl}${TchapApi.thumbnailParams}`;
+                    url = `${baseUrl + TchapApi.downloadUnencryptedThumbnailUrl}${fileUrl}`;
                 }
             } else {
                 const fileUrl = content.url.split('//')[1];

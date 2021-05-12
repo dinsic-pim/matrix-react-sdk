@@ -44,6 +44,7 @@ import MultiInviter from "../../../utils/MultiInviter";
 import SettingsStore from "../../../settings/SettingsStore";
 import E2EIcon from "./E2EIcon";
 import AutoHideScrollbar from "../../structures/AutoHideScrollbar";
+import ContentScanner from "../../../utils/ContentScanner";
 
 module.exports = withMatrixClient(React.createClass({
     displayName: 'MemberInfo',
@@ -903,8 +904,9 @@ module.exports = withMatrixClient(React.createClass({
         let avatarElement;
         if (avatarUrl) {
             const httpUrl = this.props.matrixClient.mxcUrlToHttp(avatarUrl, 800, 800);
+            const scImageUrl = ContentScanner.getUnencryptedContentUrl({url : Tchap.imgUrlToUri(httpUrl)}, true);
             avatarElement = <div className="mx_MemberInfo_avatar">
-                <img src={httpUrl} />
+                <img src={scImageUrl}  alt="Image"/>
             </div>;
         }
 

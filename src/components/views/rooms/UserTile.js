@@ -16,8 +16,11 @@ limitations under the License.
 
 'use strict';
 
+import ContentScanner from "../../../utils/ContentScanner";
+
 const React = require('react');
 import PropTypes from 'prop-types';
+import Tchap from "../../../Tchap";
 
 const Avatar = require("../../../Avatar");
 const MatrixClientPeg = require('../../../MatrixClientPeg');
@@ -43,9 +46,12 @@ module.exports = React.createClass({
             (Date.now() - (user.lastPresenceTs - user.lastActiveAgo)) : -1;
 
         const BaseAvatar = sdk.getComponent('avatars.BaseAvatar');
+        const avatarUrl = Avatar.avatarUrlForUser(user, 36, 36, "crop");
+        const scImageUrl = ContentScanner.getUnencryptedContentUrl({url : Tchap.imgUrlToUri(avatarUrl)}, true);
+
         const avatarJsx = (
             <BaseAvatar width={36} height={36} name={name} idName={user.userId}
-                        url={Avatar.avatarUrlForUser(user, 36, 36, "crop")} />
+                        url={scImageUrl} />
         );
 
         return (

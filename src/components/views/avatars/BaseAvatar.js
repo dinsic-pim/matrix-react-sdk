@@ -21,6 +21,8 @@ import { MatrixClient } from 'matrix-js-sdk';
 import AvatarLogic from '../../../Avatar';
 import sdk from '../../../index';
 import AccessibleButton from '../elements/AccessibleButton';
+import ContentScanner from "../../../utils/ContentScanner";
+import Tchap from "../../../Tchap";
 
 module.exports = React.createClass({
     displayName: 'BaseAvatar',
@@ -209,11 +211,13 @@ module.exports = React.createClass({
                 );
             }
         }
+
+        const scImageUrl = ContentScanner.getUnencryptedContentUrl({url : Tchap.imgUrlToUri(imageUrl)}, true);
         if (onClick != null) {
             return (
                 <AccessibleButton className="mx_BaseAvatar mx_BaseAvatar_image"
                     element='img'
-                    src={imageUrl}
+                    src={scImageUrl}
                     onClick={onClick}
                     onError={this.onError}
                     width={width} height={height}
@@ -222,7 +226,7 @@ module.exports = React.createClass({
             );
         } else {
             return (
-                <img className="mx_BaseAvatar mx_BaseAvatar_image" src={imageUrl}
+                <img className="mx_BaseAvatar mx_BaseAvatar_image" src={scImageUrl}
                     onError={this.onError}
                     width={width} height={height}
                     title={name} alt=""

@@ -109,14 +109,15 @@ export default class FavouriteDialog extends React.Component {
                 const roomName = ev.room.name;
                 const roomId = ev.room.roomId;
                 const messageDate = new Date(ev.origin_server_ts);
+                const evPureId = ev.event.event.event_id.substring(1).split(":")[0];
 
                 content.push(
-                    <div>
+                    <div key={`fav_${evPureId}`} className="tc_FavouritesDialog_eventBlock">
                         <div>
                             <div className="tc_FavouritesDialog_hr">
-                                <a onClick={() => {this._onRoomNameClick(roomId)}}>
+                                <a onClick={() => {this._onRoomNameClick(roomId)}} className="tc_FavouritesDialog_roomName">
                                     { roomName }
-                                </a> - { formatFullDateNoTime(messageDate) }
+                                </a> - <span className="tc_FavouritesDialog_timestamp">{ formatFullDateNoTime(messageDate) }</span>
                             </div>
                             <div>
                                 <FavouriteEventTile mxEvent={ev.event} onFinished={this.props.onFinished}/>
@@ -140,7 +141,7 @@ export default class FavouriteDialog extends React.Component {
 
     render() {
         const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
-        let content = this._getContent();
+        const content = this._getContent();
 
         return (
             <BaseDialog className='tc_FavouritesDialog' hasCancel={true}

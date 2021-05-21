@@ -49,8 +49,24 @@ export default class FavouriteDialog extends React.Component {
         }
     }
 
+    async _getEvent(room, eventId) {
+        const event = room.findEventById(eventId);
+        const cli = MatrixClientPeg.get();
+        if (event) return event;
 
-    _retrieveFavEventsData() {
+        try {
+            // ask the client to fetch the event we want using the context API, only interface to do so is to ask
+            // for a timeline with that event, but once it is loaded we can use findEventById to look up the ev map
+            await cli.getEventTimeline(room.getUnfilteredTimelineSet(), eventId);
+        } catch (e) {
+            // if it fails catch the error and return early, there's no point trying to find the event in this case.
+            // Return null as it is falsey and thus should be treated as an error (as the event cannot be resolved).
+            return null;
+        }
+        return room.findEventById(eventId);
+    }
+
+    async _retrieveFavEventsData() {
         const cli = MatrixClientPeg.get();
         const rooms = cli.getRooms();
         const roomsLength = rooms.length;
@@ -64,7 +80,7 @@ export default class FavouriteDialog extends React.Component {
 
                 if (eventsId.length > 0) {
                     for (let j = 0; j < eventsId.length; j++) {
-                        let ev = rooms[i].findEventById(eventsId[j]);
+                        let ev = await this._getEvent(rooms[i], eventsId[j])
 
                         if (ev && Object.keys(ev.getContent()).length !== 0) {
                             eventObj.push({

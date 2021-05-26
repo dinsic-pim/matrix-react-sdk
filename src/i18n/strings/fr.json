@@ -1982,5 +1982,7 @@
     "Direct messages": "Messages directs",
     "New direct": "Nouveau message direct",
     "Pin room": "Épingler le salon",
-    "Pinned": "Épinglés"
+    "Pinned": "Épinglés",
+    "Passphrase must be at least 8 character long": "La phrase secrète doit contenir au moins 8 caractères",
+    "Enter passphrase (8 characters minimum)": "Saisir la phrase secrète (8 caractères minimum)"
 }

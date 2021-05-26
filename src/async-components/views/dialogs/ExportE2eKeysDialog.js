@@ -53,6 +53,10 @@ export default React.createClass({
         ev.preventDefault();
 
         const passphrase = this.refs.passphrase1.value;
+        if (passphrase.length < 8) {
+            this.setState({errStr: _t('Passphrase must be at least 8 character long')});
+            return false;
+        }
         if (passphrase !== this.refs.passphrase2.value) {
             this.setState({errStr: _t('Passphrases must match')});
             return false;
@@ -143,7 +147,7 @@ export default React.createClass({
                             <div className='mx_E2eKeysDialog_inputRow'>
                                 <div className='mx_E2eKeysDialog_inputLabel'>
                                     <label htmlFor='passphrase1'>
-                                        { _t("Enter passphrase") }
+                                        { _t("Enter passphrase (8 characters minimum)") }
                                     </label>
                                 </div>
                                 <div className='mx_E2eKeysDialog_inputCell'>

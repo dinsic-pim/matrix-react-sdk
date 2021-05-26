@@ -750,8 +750,9 @@ module.exports = React.createClass({
     _getMessagesHeight() {
         const itemlist = this.refs.itemlist;
         const lastNode = itemlist.lastElementChild;
+        const offsetTop = lastNode.offsetTop || 0;
         // 18 is itemlist padding
-        return (lastNode.offsetTop + lastNode.clientHeight) - itemlist.firstElementChild.offsetTop + (18 * 2);
+        return (offsetTop + lastNode.clientHeight) - itemlist.firstElementChild.offsetTop + (18 * 2);
     },
 
     _topFromBottom(node) {

@@ -94,7 +94,7 @@ class ContentScanner {
         const baseUrl = MatrixClientPeg.get()['baseUrl'];
         let url;
 
-        if (content.url !== undefined) {
+        if (content.url) {
             if (isThumb) {
                 if (content.info && content.info.thumbnail_url) {
                     const fileUrl = content.info.thumbnail_url.split('//')[1];

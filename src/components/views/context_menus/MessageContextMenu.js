@@ -1,6 +1,5 @@
 /*
-Copyright 2015, 2016 OpenMarket Ltd
-Copyright 2018 New Vector Ltd
+Copyright 2021 New Vector Ltd
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -371,7 +370,7 @@ module.exports = React.createClass({
 
         let favouriteClasses = "mx_MessageContextMenu_field mx_MessageContextMenu_field_icon";
         favouriteClasses += this.state.isFavourite ? " mx_MessageContextMenu_field_favourite" : " mx_MessageContextMenu_field_favourite_out";
-        const favoriteButton = (
+        const favouriteButton = (
             <div className={favouriteClasses} onClick={this.onFavouriteClick}>
                 { _t('Favourite') }
             </div>
@@ -379,7 +378,7 @@ module.exports = React.createClass({
 
         return (
             <div className="mx_MessageContextMenu">
-                { favoriteButton }
+                { favouriteButton }
                 { resendButton }
                 { redactButton }
                 { cancelButton }

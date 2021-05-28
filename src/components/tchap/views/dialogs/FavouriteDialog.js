@@ -1,5 +1,5 @@
 /*
-Copyright 2019 New Vector Ltd
+Copyright 2021 Léo Mora <l.mora@outlook.fr>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -76,11 +76,11 @@ export default class FavouriteDialog extends React.Component {
             const taggedEvents = rooms[i].getAccountData("m.tagged_events");
 
             if (taggedEvents) {
-                let eventsId = Object.keys(taggedEvents.event.content.tags["m.favourite"]);
+                const eventsId = Object.keys(taggedEvents.event.content.tags["m.favourite"]);
 
                 if (eventsId.length > 0) {
                     for (let j = 0; j < eventsId.length; j++) {
-                        let ev = await this._getEvent(rooms[i], eventsId[j])
+                        const ev = await this._getEvent(rooms[i], eventsId[j])
 
                         if (ev && Object.keys(ev.getContent()).length !== 0) {
                             eventObj.push({
@@ -116,8 +116,8 @@ export default class FavouriteDialog extends React.Component {
 
         if (data) {
             data.sort((a, b) => {
-                if (a[Object.keys(a)].origin_server_ts < b[Object.keys(b)].origin_server_ts) return -1;
-                if (a[Object.keys(a)].origin_server_ts > b[Object.keys(b)].origin_server_ts) return 1;
+                if (a[Object.keys(a)].origin_server_ts < b[Object.keys(b)].origin_server_ts) return 1;
+                if (a[Object.keys(a)].origin_server_ts > b[Object.keys(b)].origin_server_ts) return -1;
                 return 0
             })
             for (let i = 0; i < data.length; i++) {

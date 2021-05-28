@@ -122,7 +122,7 @@ class ContentScanner {
     static async downloadEncryptedContent(content, isThumb = false) {
         let file;
 
-        if (isThumb && content.info.thumbnail_file !== undefined) {
+        if (isThumb && content.info && content.info.thumbnail_file !== undefined) {
             file = content.info.thumbnail_file;
         } else if (content.file !== undefined) {
             file = content.file;

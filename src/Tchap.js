@@ -274,10 +274,10 @@ class Tchap {
     static imgUrlToUri(url) {
         if (url && url.includes("/thumbnail/")) {
             const u = url.split("/thumbnail/")[1];
-            return `//${u}`;
+            return `mxc://${u}`;
         } else if (url && url.includes("/download/")) {
             const u = url.split("/download/")[1];
-            return `//${u}`;
+            return `mxc://${u}`;
         } else {
             return null;
         }

@@ -137,13 +137,17 @@ module.exports = React.createClass({
         const avatarUrl = this.props.room.getAvatarUrl(
             MatrixClientPeg.get().getHomeserverUrl(),
             null, null, null, false);
-        const ImageView = sdk.getComponent("elements.ImageView");
-        const params = {
-            src: avatarUrl,
-            name: this.props.room.name,
-        };
+        if (avatarUrl) {
+            const ImageView = sdk.getComponent("elements.ImageView");
+            const params = {
+                src: avatarUrl,
+                name: this.props.room.name,
+            };
 
-        Modal.createDialog(ImageView, params, "mx_Dialog_lightbox");
+            Modal.createDialog(ImageView, params, "mx_Dialog_lightbox");
+        } else {
+            return;
+        }
     },
 
     render: function() {

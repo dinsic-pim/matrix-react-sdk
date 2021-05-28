@@ -67,7 +67,7 @@ class ContentScanner {
                     return this.generateError(false, 'Error: Unable to join the MCS server');
                 }));
         } else if (content.url !== undefined) {
-            const fileUrl = content.url.split('//')[1];
+            const fileUrl = content.url.split('mxc://')[1];
 
             return Promise.resolve(fetch(`${baseUrl + TchapApi.scanUnencryptedUrl}${fileUrl}`)
                 .then(res => {
@@ -94,17 +94,17 @@ class ContentScanner {
         const baseUrl = MatrixClientPeg.get()['baseUrl'];
         let url;
 
-        if (content.url !== undefined) {
+        if (content.url) {
             if (isThumb) {
-                if (content.info.thumbnail_url) {
+                if (content.info && content.info.thumbnail_url) {
                     const fileUrl = content.info.thumbnail_url.split('//')[1];
                     url = `${baseUrl + TchapApi.downloadUnencryptedUrl}${fileUrl}`;
                 } else {
-                    const fileUrl = content.url.split('//')[1];
-                    url = `${baseUrl + TchapApi.downloadUnencryptedThumbnailUrl}${fileUrl}${TchapApi.thumbnailParams}`;
+                    const fileUrl = content.url.split('mxc://')[1];
+                    url = `${baseUrl + TchapApi.downloadUnencryptedThumbnailUrl}${fileUrl}`;
                 }
             } else {
-                const fileUrl = content.url.split('//')[1];
+                const fileUrl = content.url.split('mxc://')[1];
                 url = `${baseUrl + TchapApi.downloadUnencryptedUrl}${fileUrl}`;
             }
             return url;
@@ -122,7 +122,7 @@ class ContentScanner {
     static async downloadEncryptedContent(content, isThumb = false) {
         let file;
 
-        if (isThumb && content.info.thumbnail_file !== undefined) {
+        if (isThumb && content.info && content.info.thumbnail_file !== undefined) {
             file = content.info.thumbnail_file;
         } else if (content.file !== undefined) {
             file = content.file;

@@ -267,6 +267,23 @@ class Tchap {
     }
 
     /**
+     *
+     * @param url
+     * @returns {string|null}
+     */
+    static imgUrlToUri(url) {
+        if (url && url.includes("/thumbnail/")) {
+            const u = url.split("/thumbnail/")[1];
+            return `mxc://${u}`;
+        } else if (url && url.includes("/download/")) {
+            const u = url.split("/download/")[1];
+            return `mxc://${u}`;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * A fetch with a timeout option and an always resolver.
      * @param {string} url The url to fetch.
      * @param {object} opts init object from fetch() api plus a timeout option.

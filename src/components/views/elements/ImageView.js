@@ -16,6 +16,8 @@ limitations under the License.
 
 'use strict';
 
+import TchapApi from "../../../TchapApi";
+
 const React = require('react');
 
 const MatrixClientPeg = require('../../../MatrixClientPeg');
@@ -26,6 +28,8 @@ const AccessibleButton = require('../../../components/views/elements/AccessibleB
 const Modal = require('../../../Modal');
 const sdk = require('../../../index');
 import { _t } from '../../../languageHandler';
+import Tchap from "../../../Tchap";
+import ContentScanner from "../../../utils/ContentScanner";
 
 export default class ImageView extends React.Component {
     static propTypes = {
@@ -186,13 +190,17 @@ export default class ImageView extends React.Component {
 
         const rotationDegrees = this.state.rotationDegrees;
         const effectiveStyle = {transform: `rotate(${rotationDegrees}deg)`, ...style};
+        let imgSrc = this.props.src;
+        if (imgSrc && !imgSrc.startsWith("blob:")) {
+            imgSrc = ContentScanner.getUnencryptedContentUrl({url : Tchap.imgUrlToUri(this.props.src)});
+        }
 
         return (
             <div className="mx_ImageView">
                 <div className="mx_ImageView_lhs">
                 </div>
                 <div className="mx_ImageView_content">
-                    <img src={this.props.src} title={this.props.name} style={effectiveStyle} className="mainImage" />
+                    <img src={imgSrc} title={this.props.name} style={effectiveStyle} className="mainImage"  alt="Image"/>
                     <div className="mx_ImageView_labelWrapper">
                         <div className="mx_ImageView_label">
                             <AccessibleButton className="mx_ImageView_rotateCounterClockwise" onClick={ this.rotateCounterClockwise }>
@@ -210,7 +218,7 @@ export default class ImageView extends React.Component {
                                 { this.getName() }
                             </div>
                             { eventMeta }
-                            <a className="mx_ImageView_link" href={ this.props.src } download={ this.props.name } target="_blank" rel="noopener">
+                            <a className="mx_ImageView_link" href={ imgSrc } download={ this.props.name } target="_blank" rel="noopener">
                                 <div className="mx_ImageView_download">
                                         { _t('Download this file') }<br />
                                          <span className="mx_ImageView_size">{ size_res }</span>

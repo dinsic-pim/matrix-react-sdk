@@ -27,6 +27,7 @@ import Modal from '../../../Modal';
 import Tchap from '../../../Tchap';
 import {RoomPermalinkCreator} from "../../../matrix-to";
 import * as ContextualMenu from "../../structures/ContextualMenu";
+import ContentScanner from "../../../utils/ContentScanner";
 
 // TODO: Merge with ProfileSettings?
 export default class RoomProfileSettings extends React.Component {
@@ -361,7 +362,8 @@ export default class RoomProfileSettings extends React.Component {
         let avatarElement = <div className="mx_ProfileSettings_avatarPlaceholder" />;
         if (this.state.avatarUrl) {
             showOverlayAnyways = false;
-            avatarElement = <img src={this.state.avatarUrl}
+            const scAvatarUrl = ContentScanner.getUnencryptedContentUrl({url : Tchap.imgUrlToUri(this.state.avatarUrl)}, true);
+            avatarElement = <img src={scAvatarUrl}
                                  alt={_t("Room avatar")} />;
         }
 

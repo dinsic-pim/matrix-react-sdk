@@ -21,6 +21,8 @@ import Field from "../elements/Field";
 import AccessibleButton from "../elements/AccessibleButton";
 import classNames from 'classnames';
 import {User} from "matrix-js-sdk";
+import ContentScanner from "../../../utils/ContentScanner";
+import Tchap from "../../../Tchap";
 
 export default class ProfileSettings extends React.Component {
     constructor() {
@@ -120,7 +122,8 @@ export default class ProfileSettings extends React.Component {
         let avatarElement = <div className="mx_ProfileSettings_avatarPlaceholder" />;
         if (this.state.avatarUrl) {
             showOverlayAnyways = false;
-            avatarElement = <img src={this.state.avatarUrl}
+            const scAvatarUrl = ContentScanner.getUnencryptedContentUrl({url : Tchap.imgUrlToUri(this.state.avatarUrl)}, true);
+            avatarElement = <img src={scAvatarUrl}
                                  alt={_t("Profile picture")} />;
         }
 

@@ -21,6 +21,7 @@ import MatrixClientPeg from "./MatrixClientPeg";
 class TchapFavouriteManager {
 
     static addFavourite(event) {
+        if (event && TchapFavouriteManager.isEventFavourite(event)) return;
         const room = MatrixClientPeg.get().getRoom(event.getRoomId());
         const roomAccountData = room.getAccountData("m.tagged_events");
         let oldFavEvents = {};
@@ -28,18 +29,18 @@ class TchapFavouriteManager {
 
         if (roomAccountData) {
             otherTags = roomAccountData.event.content.tags;
-            delete otherTags["m.favourite"]
             oldFavEvents = roomAccountData.event.content.tags["m.favourite"];
+            delete otherTags["m.favourite"];
         }
 
         const taggedEvents = {
             "tags" : {
                 "m.favourite": {
-                    ...oldFavEvents,
                     [event.getId()]: {
                         "origin_server_ts": event.getTs(),
                         "tagged_at": Date.now()
-                    }
+                    },
+                    ...oldFavEvents,
                 },
                 ...otherTags,
             }
@@ -49,6 +50,7 @@ class TchapFavouriteManager {
     }
 
     static removeFavorite(event) {
+        if (event && !TchapFavouriteManager.isEventFavourite(event)) return;
         const room = MatrixClientPeg.get().getRoom(event.getRoomId());
         const roomAccountData = room.getAccountData("m.tagged_events");
         const eventId = event.getId();
@@ -57,8 +59,8 @@ class TchapFavouriteManager {
 
         if (roomAccountData) {
             otherTags = roomAccountData.event.content.tags;
-            delete otherTags["m.favourite"]
             favouriteEvents = roomAccountData.event.content.tags["m.favourite"];
+            delete otherTags["m.favourite"];
         }
 
         delete favouriteEvents[eventId];

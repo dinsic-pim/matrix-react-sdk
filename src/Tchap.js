@@ -284,6 +284,52 @@ class Tchap {
     }
 
     /**
+     * Transform a text event into a pill event.
+     * @param event
+     * @returns {{format: string, body, msgtype: string, formatted_body: string}}
+     */
+    static pillifyRoomUrl(event) {
+        const body = event.body;
+        const roomAlias = body.split("/#/room/")[1];
+        return {
+            body: roomAlias,
+            format: "org.matrix.custom.html",
+            formatted_body: `<a href="${body}">${roomAlias}</a>`,
+            msgtype: "m.text"
+        };
+    }
+
+    /**
+     * Does the given event looks like a room url ("/#/room/").
+     * @param event
+     * @returns {boolean}
+     */
+    static eventLooksLikeRoomUrl(event) {
+        if (event.msgtype && event.msgtype === "m.text") {
+            if (event.body && !event.format) {
+                const body = event.body;
+                return body.startsWith(SdkConfig.get()['base_host_url'] + '/#/room/#') ||
+                    body.startsWith(Tchap.addWwwToUrl(SdkConfig.get()['base_host_url']) + '/#/room/#');
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Add "www" to an URL.
+     * @param {string} str The url to add "www".
+     * @returns {string} The modified URL.
+     */
+    static addWwwToUrl(str) {
+        if (str.startsWith("https://www.")) {
+            return str;
+        } else {
+            const p = str.indexOf("//") + 2;
+            return [str.slice(0, p), "www.", str.slice(p)].join('');
+        }
+    }
+
+    /**
      * A fetch with a timeout option and an always resolver.
      * @param {string} url The url to fetch.
      * @param {object} opts init object from fetch() api plus a timeout option.

@@ -34,6 +34,7 @@ import SettingsStore from "../../../settings/SettingsStore";
 import PushProcessor from 'matrix-js-sdk/lib/pushprocessor';
 import ReplyThread from "../elements/ReplyThread";
 import {host as matrixtoHost} from '../../../matrix-to';
+import Tchap from "../../../Tchap";
 
 module.exports = React.createClass({
     displayName: 'TextualBody',
@@ -428,7 +429,11 @@ module.exports = React.createClass({
     render: function() {
         const EmojiText = sdk.getComponent('elements.EmojiText');
         const mxEvent = this.props.mxEvent;
-        const content = mxEvent.getContent();
+        let content = mxEvent.getContent();
+
+        if (Tchap.eventLooksLikeRoomUrl(content)) {
+            content = Tchap.pillifyRoomUrl(content);
+        }
 
         const stripReply = ReplyThread.getParentEventId(mxEvent);
         let body = HtmlUtils.bodyToHtml(content, this.props.highlights, {
